@@ -147,5 +147,60 @@
         </div>
     </div>
 </section>
+{{-- ===== TENTANG KAMI ===== --}}
+@php
+    $aboutParts = [
+        ['text' => 'Agrinova menghadirkan hasil kebun segar dan ilmu budidaya,', 'muted' => false],
+        ['text' => 'ditambah wisata edukatif dalam satu tempat.', 'muted' => true],
+    ];
+    $w = 0;
+@endphp
+
+<section class="section-about" id="tentang">
+    <div class="container">
+        <div class="text-center">
+            <span class="eyebrow">Tentang Kami</span>
+        </div>
+
+        <h2 class="scroll-text" data-scroll-text>
+            @foreach ($aboutParts as $part)
+                @foreach (explode(' ', $part['text']) as $word)
+                    <span class="word {{ $part['muted'] ? 'word--muted' : '' }}" style="--w: {{ $w }}">{{ $word }}</span>
+                    @php $w++; @endphp
+                @endforeach
+            @endforeach
+        </h2>
+
+        <div class="bento">
+            <div class="bento-card bento-a">
+                <span class="bento-photo">Foto menyusul</span>
+                <div class="bento-a-box">
+                    <div class="bento-number"><span class="counter" data-target="3">3</span></div>
+                    <p>Pilar bisnis dalam satu platform: produk segar, pelatihan, dan eduwisata.</p>
+                </div>
+            </div>
+
+            <div class="bento-card bento-b">
+                <span class="bento-label">Pre-order panen melon</span>
+                <div class="bento-number">H-<span class="counter" data-target="14">14</span></div>
+                <p>Pesan sebelum panen, stok lebih tertata.</p>
+            </div>
+
+            <div class="bento-card bento-c">
+                <span class="bento-label">Kategori produk</span>
+                <div class="bento-number"><span class="counter" data-target="3">3</span></div>
+                <p>Buah &amp; Sayur, Perlengkapan Kebun, dan Pupuk.</p>
+            </div>
+
+            <div class="bento-card bento-d">
+                <div>
+                    <span class="bento-label">Pesan online</span>
+                    <p class="mb-0">Tidak perlu menunggu balasan chat satu per satu.</p>
+                </div>
+                <div class="bento-number">24/7</div>
+            </div>
+        </div>
+    </div>
+</section>
 
 @endsection
