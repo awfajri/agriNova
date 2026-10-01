@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Kebun Melon & Sayur Segar Bekasi | Agrinova Farm')
+@section('title', 'Agrinova Farm')
 @section('meta_description', 'Agrinova Farm: kebun melon, sayur segar, pelatihan budidaya, dan eduwisata agribisnis.')
 @section('body_class', 'has-hero')
 
