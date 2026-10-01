@@ -1415,3 +1415,173 @@ html {
         gap: 0.6rem;
     }
 }
+/* ---------- FAQ ---------- */
+.section-faq {
+    background: var(--c-white);
+    padding: 6rem 0;
+}
+.section-faq .section-head h2 {
+    color: var(--c-deep);
+}
+.section-faq .section-head p {
+    color: rgba(9, 35, 40, 0.65);
+}
+
+.faq-cols {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 1.25rem;
+    align-items: start;
+    margin-top: 3rem;
+}
+
+.faq-acc {
+    --bs-accordion-bg: var(--c-paper);
+    --bs-accordion-border-width: 0;
+    --bs-accordion-border-radius: 1.2rem;
+    --bs-accordion-inner-border-radius: 1.2rem;
+    --bs-accordion-btn-bg: var(--c-paper);
+    --bs-accordion-active-bg: var(--c-paper);
+    --bs-accordion-btn-color: var(--c-ink);
+    --bs-accordion-active-color: var(--c-deep);
+    --bs-accordion-btn-icon: none;
+    --bs-accordion-btn-active-icon: none;
+    --bs-accordion-btn-icon-transform: none;
+    --bs-accordion-btn-focus-box-shadow: 0 0 0 0.2rem rgba(42, 131, 95, 0.3);
+}
+.faq-acc .accordion-item {
+    margin-bottom: 0.75rem;
+    overflow: hidden;
+}
+.faq-acc .accordion-button {
+    gap: 1rem;
+    padding: 1.1rem 1.25rem;
+    font-family: var(--font-heading);
+    font-weight: 700;
+}
+.faq-acc .accordion-button::after {
+    content: "+";
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background-color: var(--c-deep);
+    color: var(--c-white);
+    font-size: 1.2rem;
+    font-weight: 500;
+    line-height: 1;
+}
+.faq-acc .accordion-button:not(.collapsed)::after {
+    content: "\2212";
+    background-color: var(--c-sage);
+    color: var(--c-ink);
+}
+.faq-acc .accordion-body {
+    padding: 0 1.25rem 1.25rem;
+    color: rgba(9, 35, 40, 0.75);
+}
+
+@media (max-width: 767.98px) {
+    .faq-cols {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ---------- CTA WhatsApp ---------- */
+.btn-pill--light {
+    background: var(--c-white);
+    color: var(--c-deep);
+}
+.btn-pill--light:hover {
+    color: var(--c-ink);
+}
+.btn-pill--light .btn-pill-icon {
+    background: var(--c-deep);
+    color: var(--c-white);
+}
+
+.section-cta {
+    background: var(--c-paper);
+    padding: 5rem 0;
+}
+.cta-card {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    padding: clamp(1.75rem, 4vw, 3.5rem);
+    border-radius: 2rem;
+    color: var(--c-white);
+    background: linear-gradient(
+        135deg,
+        var(--c-ink),
+        var(--c-deep) 60%,
+        var(--c-green)
+    );
+}
+.cta-card h2 {
+    max-width: 30rem;
+    margin: 0.5rem 0 0.75rem;
+    color: var(--c-white);
+    font-size: clamp(1.6rem, 3.5vw, 2.5rem);
+}
+.cta-card p {
+    max-width: 30rem;
+    margin: 0;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* ---------- Footer ---------- */
+.site-footer {
+    background: var(--c-ink);
+    color: rgba(255, 255, 255, 0.72);
+    padding: 4.5rem 0 2rem;
+}
+.footer-brand {
+    display: inline-block;
+    margin-bottom: 0.75rem;
+    color: var(--c-white);
+    font-size: 1.6rem;
+    font-weight: 700;
+    text-decoration: none;
+}
+.footer-brand:hover {
+    color: var(--c-sage);
+}
+.site-footer h6 {
+    margin-bottom: 1rem;
+    color: var(--c-sage);
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+.footer-desc {
+    max-width: 22rem;
+    margin: 0;
+}
+.footer-links {
+    display: grid;
+    gap: 0.6rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.footer-links a {
+    color: inherit;
+    text-decoration: none;
+}
+.footer-links a:hover {
+    color: var(--c-sage);
+}
+.footer-bottom {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(139, 187, 146, 0.2);
+    font-size: 0.85rem;
+}

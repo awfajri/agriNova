@@ -430,5 +430,76 @@
         </div>
     </div>
 </div>
+{{-- ===== FAQ (accordion) ===== --}}
+@php
+    // TEKS CONTOH berdasarkan dokumen System Requirement: ganti/lengkapi dengan data resmi Agrinova
+    $faqs = [
+        ['q' => 'Bagaimana cara pre-order melon?',
+         'a' => 'Pre-order aktif H-14 sebelum panen. Pilih produk yang bertanda Pre-Order, lalu selesaikan checkout. Instruksi selanjutnya tampil di halaman sukses order.'],
+        ['q' => 'Apakah harus membeli lewat marketplace?',
+         'a' => 'Tidak. Checkout dilakukan langsung di website ini, tanpa dialihkan ke marketplace.'],
+        ['q' => 'Bagaimana cara pembayarannya?',
+         'a' => 'Pada tahap awal, pembayaran dikonfirmasi secara manual oleh admin. Petunjuk pembayaran ada di halaman sukses order.'],
+        ['q' => 'Bagaimana cara mendaftar pelatihan?',
+         'a' => 'Pilih kelas pelatihan (pembekalan pensiun atau budidaya), lalu isi formulir pendaftaran online. Status pendaftaranmu dikelola oleh admin.'],
+        ['q' => 'Bagaimana cara reservasi eduwisata?',
+         'a' => 'Isi formulir reservasi kunjungan. Admin akan mengonfirmasi atau menolak reservasi sesuai kapasitas kebun.'],
+        ['q' => 'Produk apa saja yang tersedia?',
+         'a' => 'Tersedia tiga kategori: Buah & Sayur, Perlengkapan Kebun, dan Pupuk.'],
+    ];
+    $faqCols = array_chunk($faqs, 3);
+@endphp
 
+<section class="section-faq" id="faq">
+    <div class="container">
+        <div class="section-head">
+            <h2>Pertanyaan yang Sering Diajukan</h2>
+            <p>Jawaban singkat untuk hal yang paling sering ditanyakan.</p>
+        </div>
+
+        <div class="faq-cols">
+            @foreach ($faqCols as $c => $col)
+                <div class="accordion faq-acc" id="faqAcc{{ $c }}">
+                    @foreach ($col as $j => $f)
+                        @php $id = "faq-{$c}-{$j}"; @endphp
+                        <div class="accordion-item">
+                            <h3 class="accordion-header">
+                                <button class="accordion-button {{ $j === 0 ? '' : 'collapsed' }}" type="button"
+                                        data-bs-toggle="collapse" data-bs-target="#{{ $id }}"
+                                        aria-expanded="{{ $j === 0 ? 'true' : 'false' }}" aria-controls="{{ $id }}">
+                                    {{ $f['q'] }}
+                                </button>
+                            </h3>
+                            <div id="{{ $id }}" class="accordion-collapse collapse {{ $j === 0 ? 'show' : '' }}"
+                                 data-bs-parent="#faqAcc{{ $c }}">
+                                <div class="accordion-body">{{ $f['a'] }}</div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            @endforeach
+        </div>
+    </div>
+</section>
+
+{{-- ===== CTA WHATSAPP ===== --}}
+<section class="section-cta">
+    <div class="container">
+        <div class="cta-card">
+            <div>
+                <span class="eyebrow eyebrow--light">Hubungi Kami</span>
+                <h2>Masih ada pertanyaan seputar Agrinova?</h2>
+                <p>Tim kami siap membantu soal produk, pre-order, pelatihan, dan kunjungan eduwisata.</p>
+            </div>
+
+            <a href="{{ config('agrinova.whatsapp_url') }}" class="btn-pill btn-pill--light"
+               @if (config('agrinova.whatsapp')) target="_blank" rel="noopener" @endif>
+                Chat WhatsApp
+                <span class="btn-pill-icon" aria-hidden="true">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+                </span>
+            </a>
+        </div>
+    </div>
+</section>
 @endsection
