@@ -347,5 +347,88 @@
         </div>
     </div>
 </div>
+{{-- ===== TEASER GALERI (linear modal) ===== --}}
+@php
+    // TEKS CONTOH: ganti dengan keterangan asli. Kalau foto sudah ada, isi 'img' => 'images/galeri/nama-file.webp'
+    $gallery = [
+        ['cat' => 'Panen',     'title' => 'Panen Melon',        'desc' => 'Suasana panen melon di kebun Agrinova.'],
+        ['cat' => 'Eduwisata', 'title' => 'Kunjungan Sekolah',  'desc' => 'Rombongan sekolah belajar langsung di kebun.'],
+        ['cat' => 'Fasilitas', 'title' => 'Green House',        'desc' => 'Green house tempat tanaman dibudidayakan.'],
+        ['cat' => 'Pelatihan', 'title' => 'Kelas Budidaya',     'desc' => 'Peserta pelatihan praktik budidaya tanaman.'],
+        ['cat' => 'Panen',     'title' => 'Sayur Segar',        'desc' => 'Sayur segar yang dipetik langsung dari kebun.'],
+        ['cat' => 'Eduwisata', 'title' => 'Kegiatan Edukasi',   'desc' => 'Kegiatan edukasi bagi komunitas dan keluarga.'],
+        ['cat' => 'Fasilitas', 'title' => 'Area Kebun',         'desc' => 'Hamparan area kebun Agrinova.'],
+    ];
+@endphp
+
+<section class="section-galeri" id="galeri">
+    <div class="container">
+        <div class="section-head">
+            <h2>Galeri Kebun &amp; Kegiatan</h2>
+            <p>Intip suasana panen, eduwisata, dan fasilitas Agrinova.</p>
+        </div>
+
+        <div class="gallery-grid">
+            @foreach ($gallery as $i => $g)
+                @php $img = isset($g['img']) ? asset($g['img']) : null; @endphp
+                <button type="button"
+                        class="gallery-card g-{{ $i }} gv-{{ $i % 5 }} {{ $img ? 'has-img' : '' }}"
+                        @if($img) style="--img: url('{{ $img }}')" data-img="{{ $img }}" @endif
+                        data-gallery-card
+                        data-title="{{ $g['title'] }}" data-cat="{{ $g['cat'] }}" data-desc="{{ $g['desc'] }}"
+                        aria-label="Buka foto {{ $g['title'] }}">
+                    @unless($img)<span class="gallery-ph">Foto menyusul</span>@endunless
+                    <span class="gallery-cap">
+                        <span class="gallery-cat">{{ $g['cat'] }}</span>
+                        <strong>{{ $g['title'] }}</strong>
+                    </span>
+                    <span class="gallery-plus" aria-hidden="true">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+                    </span>
+                </button>
+            @endforeach
+        </div>
+
+        <div class="text-center mt-5">
+            <a href="#" class="btn-pill btn-pill--solid">
+                Lihat Galeri Lengkap
+                <span class="btn-pill-icon" aria-hidden="true">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
+                </span>
+            </a>
+        </div>
+    </div>
+</section>
+
+{{-- Lightbox galeri --}}
+<div class="lightbox" id="lightbox" hidden>
+    <div class="lightbox-backdrop"></div>
+
+    <div class="lightbox-panel" role="dialog" aria-modal="true" aria-labelledby="lbTitle">
+        <button type="button" class="lightbox-close" aria-label="Tutup">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+
+        <div class="lightbox-media gv-0"><span>Foto menyusul</span></div>
+
+        <div class="lightbox-body">
+            <span class="pilar-tag" id="lbTag">Kategori</span>
+            <h3 id="lbTitle">Judul</h3>
+            <p id="lbDesc">Deskripsi.</p>
+
+            <div class="facility-nav">
+                <span class="facility-count" id="lbCount">1 / 7</span>
+                <div class="facility-nav-btns">
+                    <button type="button" class="facility-btn" id="lbPrev" aria-label="Foto sebelumnya">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+                    </button>
+                    <button type="button" class="facility-btn" id="lbNext" aria-label="Foto berikutnya">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 @endsection
