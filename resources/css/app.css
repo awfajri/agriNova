@@ -733,3 +733,207 @@ body:not(.has-hero) main {
         transition: none;
     }
 }
+/* ---------- Produk unggulan ---------- */
+.section-produk {
+    background: var(--c-white);
+    padding: 6rem 0;
+}
+.section-produk .section-head h2 {
+    color: var(--c-ink);
+}
+.section-produk .section-head p {
+    color: rgba(9, 35, 40, 0.65);
+}
+
+/* banner countdown */
+.eyebrow--light {
+    color: var(--c-sage);
+}
+.eyebrow--light::before {
+    background: var(--c-sage);
+}
+
+.preorder-banner {
+    margin-top: 3rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    padding: 2rem;
+    border-radius: 2rem;
+    color: var(--c-white);
+    background: linear-gradient(135deg, var(--c-ink), var(--c-deep));
+}
+.preorder-text {
+    max-width: 30rem;
+}
+.preorder-banner h3 {
+    color: var(--c-white);
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    margin: 0.5rem 0;
+}
+.preorder-banner p {
+    margin: 0 0 1.25rem;
+    color: rgba(255, 255, 255, 0.78);
+}
+
+.countdown {
+    display: flex;
+    gap: 0.75rem;
+}
+.cd-box {
+    min-width: 4.8rem;
+    padding: 1rem 0.6rem;
+    text-align: center;
+    border-radius: 1rem;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(139, 187, 146, 0.3);
+}
+.cd-box span {
+    display: block;
+    font-family: var(--font-heading);
+    font-size: 2.1rem;
+    font-weight: 700;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+}
+.cd-box small {
+    display: block;
+    margin-top: 0.45rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--c-sage);
+}
+
+/* grid + kartu produk */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+    margin-top: 2.5rem;
+}
+
+.product-card {
+    --rx: 0deg;
+    --ry: 0deg;
+    padding: 0.75rem;
+    border-radius: 1.5rem;
+    background: var(--c-paper);
+    border: 1px solid rgba(9, 35, 40, 0.08);
+    transform: perspective(900px) rotateX(var(--rx)) rotateY(var(--ry));
+    transition:
+        transform 0.35s ease,
+        box-shadow 0.35s ease;
+    will-change: transform;
+}
+.product-card.is-tilting {
+    transition:
+        transform 0.06s linear,
+        box-shadow 0.35s ease;
+    box-shadow: 0 22px 40px rgba(9, 35, 40, 0.18);
+}
+
+.product-media {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    display: grid;
+    place-items: center;
+    border-radius: 1.1rem;
+    background: linear-gradient(160deg, #12544f, #8bbb92);
+}
+.product-ph {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.6);
+}
+.product-badge {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    padding: 0.3rem 0.8rem;
+    border-radius: 999px;
+    background: var(--c-ink);
+    color: var(--c-white);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.product-info {
+    padding: 1rem 0.5rem 0.5rem;
+}
+.product-cat {
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--c-green);
+}
+.product-info h3 {
+    margin: 0.2rem 0 0.9rem;
+    font-size: 1.1rem;
+}
+.product-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+.product-price {
+    font-family: var(--font-heading);
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+.product-price small {
+    margin-left: 0.15rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    opacity: 0.6;
+}
+.product-add {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 2.5rem;
+    height: 2.5rem;
+    border: 0;
+    border-radius: 50%;
+    background: var(--c-deep);
+    color: var(--c-white);
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+.product-add:hover {
+    background: var(--c-sage);
+    color: var(--c-ink);
+    transform: scale(1.08);
+}
+
+@media (max-width: 991.98px) {
+    .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+@media (max-width: 575.98px) {
+    .product-grid {
+        gap: 0.75rem;
+    }
+    .product-info h3 {
+        font-size: 0.98rem;
+    }
+    .product-price {
+        font-size: 1rem;
+    }
+    .preorder-banner {
+        padding: 1.5rem;
+    }
+    .countdown {
+        width: 100%;
+    }
+    .cd-box {
+        flex: 1;
+        min-width: 0;
+    }
+}

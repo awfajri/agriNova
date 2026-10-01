@@ -202,5 +202,73 @@
         </div>
     </div>
 </section>
+{{-- ===== PRODUK UNGGULAN ===== --}}
+@php
+    // DATA CONTOH: nanti diganti data dari database (modul katalog & Kelola Pre-Order)
+    $harvestAt = now()->addDays(12)->setTime(7, 0)->toIso8601String();
+
+    $products = [
+        ['name' => 'Melon Premium',       'category' => 'Buah & Sayur',       'price' => 'Rp 35.000', 'unit' => '/kg',   'preorder' => true],
+        ['name' => 'Sayur Segar Pilihan', 'category' => 'Buah & Sayur',       'price' => 'Rp 15.000', 'unit' => '/ikat', 'preorder' => false],
+        ['name' => 'Pupuk Organik',       'category' => 'Pupuk',              'price' => 'Rp 45.000', 'unit' => '/pack', 'preorder' => false],
+        ['name' => 'Paket Perlengkapan',  'category' => 'Perlengkapan Kebun', 'price' => 'Rp 90.000', 'unit' => '/set',  'preorder' => false],
+    ];
+@endphp
+
+<section class="section-produk" id="produk">
+    <div class="container">
+        <div class="section-head">
+            <h2>Produk Unggulan</h2>
+            <p>Segar dari kebun, siap dipesan kapan saja.</p>
+        </div>
+
+        {{-- Banner countdown pre-order --}}
+        <div class="preorder-banner" data-countdown="{{ $harvestAt }}">
+            <div class="preorder-text">
+                <span class="eyebrow eyebrow--light">Pre-Order Panen Melon</span>
+                <h3>Panen berikutnya dimulai dalam</h3>
+                <p>Pre-order dibuka H-14 sebelum panen, amankan melonmu lebih awal.</p>
+                <a href="#" class="btn-pill btn-pill--solid">
+                    Pre-Order Sekarang
+                    <span class="btn-pill-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
+                    </span>
+                </a>
+            </div>
+
+            <div class="countdown" role="timer" aria-label="Hitung mundur menuju panen melon">
+                <div class="cd-box"><span data-cd="days">00</span><small>Hari</small></div>
+                <div class="cd-box"><span data-cd="hours">00</span><small>Jam</small></div>
+                <div class="cd-box"><span data-cd="minutes">00</span><small>Menit</small></div>
+                <div class="cd-box"><span data-cd="seconds">00</span><small>Detik</small></div>
+            </div>
+        </div>
+
+        {{-- Kartu produk (tilt saat hover) --}}
+        <div class="product-grid">
+            @foreach ($products as $p)
+                <article class="product-card" data-tilt>
+                    <div class="product-media">
+                        @if ($p['preorder'])
+                            <span class="product-badge">Pre-Order</span>
+                        @endif
+                        <span class="product-ph">Foto menyusul</span>
+                    </div>
+
+                    <div class="product-info">
+                        <span class="product-cat">{{ $p['category'] }}</span>
+                        <h3>{{ $p['name'] }}</h3>
+                        <div class="product-row">
+                            <div class="product-price">{{ $p['price'] }}<small>{{ $p['unit'] }}</small></div>
+                            <button type="button" class="product-add" aria-label="Tambah {{ $p['name'] }} ke keranjang">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                </article>
+            @endforeach
+        </div>
+    </div>
+</section>
 
 @endsection
