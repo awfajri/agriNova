@@ -1,11 +1,55 @@
-@import 'tailwindcss';
+@import "bootstrap/dist/css/bootstrap.min.css";
 
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../storage/framework/views/*.php';
-@source '../**/*.blade.php';
-@source '../**/*.js';
+/* ---------- Font ---------- */
+@font-face {
+    font-family: "Satoshi";
+    src: url("/fonts/Satoshi-Regular.woff2") format("woff2");
+    font-weight: 400;
+    font-display: swap;
+}
+@font-face {
+    font-family: "Satoshi";
+    src: url("/fonts/Satoshi-Medium.woff2") format("woff2");
+    font-weight: 500;
+    font-display: swap;
+}
+@font-face {
+    font-family: "Satoshi";
+    src: url("/fonts/Satoshi-Bold.woff2") format("woff2");
+    font-weight: 700;
+    font-display: swap;
+}
 
-@theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+/* ---------- Palet & token ---------- */
+:root {
+    --c-ink: #092328;
+    --c-deep: #12544f;
+    --c-green: #2a835f;
+    --c-sage: #8bbb92;
+    --c-paper: #f3f8f4;
+    --c-white: #ffffff;
+
+    --font-heading: "Satoshi", system-ui, sans-serif;
+    --font-body: "Satoshi", system-ui, sans-serif;
+
+    --bs-body-font-family: var(--font-body);
+    --bs-body-color: var(--c-ink);
+    --bs-body-bg: var(--c-paper);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.font-heading {
+    font-family: var(--font-heading);
+    color: var(--c-ink);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    font-family: var(--font-heading);
+    color: var(--c-ink);
+    font-weight: 700;
+    letter-spacing: -0.02em;
 }
