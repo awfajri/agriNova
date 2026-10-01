@@ -48,159 +48,267 @@ h6,
     color: var(--c-ink);
     font-weight: 700;
     letter-spacing: -0.02em;
-    font-family: var(--font-heading);
-    color: var(--c-ink);
-    font-weight: 700;
-    letter-spacing: -0.02em;
-}
-/* ---------- Tombol outline ---------- */
-.btn-agri-outline {
-    background: transparent;
-    color: var(--c-white);
-    border: 1.5px solid var(--c-sage);
-    border-radius: 999px;
-    padding: 0.6rem 1.4rem;
-    font-weight: 500;
-}
-.btn-agri-outline:hover {
-    background: var(--c-sage);
-    color: var(--c-ink);
 }
 
-/* ---------- Navbar ---------- */
+/* ---------- Navbar (pill melayang) ---------- */
 .site-nav {
-    background: var(--c-ink);
-    z-index: 20;
-}
-
-.site-nav .nav-link {
-    font-size: 0.78rem;
-    font-weight: 500;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.85);
-}
-.site-nav .nav-link:hover,
-.site-nav .nav-link.active {
-    color: var(--c-sage);
-}
-
-.has-hero .site-nav {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    background: transparent;
-    padding-top: 1rem;
+    z-index: 50;
+    padding: 0.9rem 0;
 }
-.has-hero .site-nav .navbar-collapse.show {
-    background: rgba(9, 35, 40, 0.96);
-    border-radius: 1rem;
-    padding: 1rem;
-    margin-top: 0.75rem;
+body:not(.has-hero) main {
+    padding-top: 6rem;
 }
 
-/* ---------- Tombol pill ---------- */
-.btn-agri-pill,
-.btn-ghost-dark {
+.nav-pill {
+    background: var(--c-deep);
+    border-radius: 999px;
+    padding: 0.55rem 0.6rem 0.55rem 1.6rem;
+    box-shadow: 0 10px 30px rgba(9, 35, 40, 0.25);
+}
+.nav-pill .navbar-brand {
+    color: var(--c-white);
+    font-size: 1.35rem;
+    margin: 0;
+}
+.nav-pill .nav-link {
+    color: rgba(255, 255, 255, 0.88);
+    font-weight: 500;
+    padding: 0.5rem 0.9rem;
+}
+.nav-pill .nav-link:hover,
+.nav-pill .nav-link.active {
+    color: var(--c-sage);
+}
+
+.nav-cta {
     display: inline-flex;
     align-items: center;
-    gap: 0.6rem;
-    padding: 0.7rem 1.3rem;
+    gap: 0.9rem;
+    padding: 0.4rem 0.4rem 0.4rem 1.4rem;
     border-radius: 999px;
-    font-size: 0.8rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+    background: var(--c-white);
+    color: var(--c-deep);
+    font-weight: 500;
     text-decoration: none;
-    transition:
-        transform 0.2s ease,
-        background 0.2s ease;
+    transition: transform 0.2s ease;
 }
-.btn-agri-pill {
-    background: var(--c-sage);
+.nav-cta:hover {
+    transform: translateY(-2px);
     color: var(--c-ink);
 }
-.btn-agri-pill:hover {
-    background: #a3cfaa;
-    color: var(--c-ink);
-    transform: translateY(-2px);
-}
-
-.btn-ghost-dark {
-    background: rgba(9, 35, 40, 0.55);
-    color: var(--c-white);
-    border: 1px solid rgba(139, 187, 146, 0.3);
-}
-.btn-ghost-dark:hover {
-    background: rgba(9, 35, 40, 0.8);
-    color: var(--c-white);
-    transform: translateY(-2px);
-}
-
-.arrow-circle {
+.nav-cta-icon {
     display: grid;
     place-items: center;
-    width: 1.7rem;
-    height: 1.7rem;
+    width: 2.4rem;
+    height: 2.4rem;
     border-radius: 50%;
-    background: var(--c-ink);
-    color: var(--c-sage);
+    background: #dff0ec;
+    color: var(--c-deep);
+}
+
+@media (max-width: 991.98px) {
+    .nav-pill {
+        border-radius: 1.75rem;
+        padding: 0.6rem 1rem;
+    }
+    .nav-pill .navbar-collapse {
+        padding: 1rem 0 0.5rem;
+    }
+    .nav-cta {
+        margin-top: 0.75rem;
+    }
+}
+
+/* ---------- Tombol pill berikon ---------- */
+.btn-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.5rem 0.5rem 0.5rem 1.6rem;
+    border-radius: 999px;
+    font-size: 1.05rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: transform 0.2s ease;
+}
+.btn-pill:hover {
+    transform: translateY(-2px);
+}
+.btn-pill-icon {
+    display: grid;
+    place-items: center;
+    width: 2.8rem;
+    height: 2.8rem;
+    border-radius: 50%;
+}
+.btn-pill--solid {
+    background: var(--c-deep);
+    color: var(--c-white);
+}
+.btn-pill--solid:hover {
+    color: var(--c-white);
+}
+.btn-pill--solid .btn-pill-icon {
+    background: var(--c-white);
+    color: var(--c-deep);
+}
+.btn-pill--glass {
+    background: rgba(255, 255, 255, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    color: var(--c-white);
+}
+.btn-pill--glass:hover {
+    color: var(--c-white);
+}
+.btn-pill--glass .btn-pill-icon {
+    background: var(--c-deep);
+    color: var(--c-white);
 }
 
 /* ---------- Hero ---------- */
 .hero {
     position: relative;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     overflow: hidden;
     color: var(--c-white);
-    padding-top: 9rem;
-    background:
-        radial-gradient(
-            45% 35% at 12% 92%,
-            rgba(255, 255, 255, 0.14),
-            transparent 70%
-        ),
-        radial-gradient(
-            40% 30% at 88% 88%,
-            rgba(255, 255, 255, 0.12),
-            transparent 70%
-        ),
-        linear-gradient(180deg, #092328 0%, #12544f 55%, #2a835f 100%);
+    padding: 8rem 0 9rem;
+    background-color: var(--c-ink);
+    background-image: url("/images/hero-bg.jpg");
+    background-size: cover;
+    background-position: center;
 }
 
 .hero-inner {
     text-align: center;
 }
 
+.hero-badge {
+    display: inline-block;
+    padding: 0.45rem 1.4rem;
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+}
+
 .hero-title {
     color: var(--c-white);
-    font-size: clamp(2.2rem, 5.5vw, 4rem);
+    font-size: clamp(2.2rem, 5.5vw, 4.2rem);
     line-height: 1.08;
     margin-bottom: 1.25rem;
 }
-.hero-accent {
-    color: var(--c-sage);
-}
 
 .hero-desc {
-    max-width: 36rem;
+    max-width: 38rem;
     margin: 0 auto 2rem;
-    font-size: 1.05rem;
-    color: rgba(255, 255, 255, 0.8);
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.88);
 }
 
 .hero-actions {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 0.9rem;
+    gap: 1rem;
 }
 
-.hero-stage {
-    height: 22rem;
+.hero-bottom {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 6.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 clamp(1.25rem, 6vw, 5rem);
+    border-radius: 3rem 3rem 0 0;
+    background: rgba(9, 35, 40, 0.35);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
 }
 
-/* Animasi masuk */
+.scroll-hint {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--c-white);
+    text-decoration: none;
+    font-size: 1.2rem;
+}
+.scroll-hint svg {
+    animation: nudge 1.6s ease-in-out infinite;
+}
+@keyframes nudge {
+    50% {
+        transform: translateY(4px);
+    }
+}
+
+.farmer-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.4rem 1.3rem 0.4rem 0.45rem;
+    border-radius: 999px;
+    background: var(--c-deep);
+    color: var(--c-white);
+    font-weight: 500;
+}
+.avatars {
+    display: flex;
+}
+.avatars span {
+    display: grid;
+    place-items: center;
+    width: 2.3rem;
+    height: 2.3rem;
+    margin-left: -0.6rem;
+    border-radius: 50%;
+    border: 2px solid var(--c-deep);
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+.avatars span:first-child {
+    margin-left: 0;
+}
+.avatars span:nth-child(1) {
+    background: var(--c-sage);
+    color: var(--c-ink);
+}
+.avatars span:nth-child(2) {
+    background: var(--c-green);
+    color: var(--c-white);
+}
+.avatars span:nth-child(3) {
+    background: #dff0ec;
+    color: var(--c-ink);
+}
+
+@media (max-width: 575.98px) {
+    .hero-bottom {
+        height: 5rem;
+        border-radius: 2rem 2rem 0 0;
+    }
+    .scroll-hint {
+        font-size: 1rem;
+    }
+}
+
+/* animasi masuk hero */
 .hero-inner > * {
     opacity: 0;
     transform: translateY(16px);
@@ -212,7 +320,9 @@ h6,
 .hero-inner > *:nth-child(3) {
     animation-delay: 0.2s;
 }
-
+.hero-inner > *:nth-child(4) {
+    animation-delay: 0.3s;
+}
 @keyframes rise {
     to {
         opacity: 1;
@@ -226,7 +336,11 @@ h6,
         opacity: 1;
         transform: none;
     }
+    .scroll-hint svg {
+        animation: none;
+    }
 }
+
 /* ---------- Marquee ---------- */
 .marquee {
     background: var(--c-green);
@@ -248,23 +362,19 @@ h6,
         transparent
     );
 }
-
 .marquee-track {
     display: flex;
     width: max-content;
     animation: marquee-scroll 35s linear infinite;
 }
-
 .marquee:hover .marquee-track {
     animation-play-state: paused;
 }
-
 .marquee-group {
     display: flex;
     align-items: center;
     flex-shrink: 0;
 }
-
 .marquee-item {
     display: flex;
     align-items: center;
@@ -274,8 +384,6 @@ h6,
     font-weight: 700;
     letter-spacing: -0.01em;
 }
-
-/* titik pemisah di antara teks */
 .marquee-item::after {
     content: "";
     width: 0.5rem;
@@ -284,15 +392,176 @@ h6,
     border-radius: 50%;
     background: var(--c-sage);
 }
-
 @keyframes marquee-scroll {
     to {
         transform: translateX(-25%);
     }
 }
-
 @media (prefers-reduced-motion: reduce) {
     .marquee-track {
         animation: none;
+    }
+}
+
+/* ---------- Section pilar bisnis ---------- */
+.section-pilar {
+    background: var(--c-ink);
+    color: var(--c-white);
+    padding: 5rem 0 3rem;
+}
+.section-head {
+    text-align: center;
+}
+.section-head h2 {
+    color: var(--c-white);
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    margin-bottom: 0.5rem;
+}
+.section-head p {
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 0;
+}
+
+/* ---------- Tiga pilar: kartu menumpuk saat scroll ---------- */
+.section-pilar {
+    padding: 5rem 0 6rem;
+}
+
+.pilar-stack {
+    margin-top: 3rem;
+}
+
+.pilar-item {
+    position: sticky;
+    top: calc(6rem + var(--i) * 1.5rem);
+    height: min(34rem, calc(100svh - 9rem));
+    margin-bottom: 3rem;
+}
+
+.pilar-card {
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    overflow: hidden;
+    border-radius: 2rem;
+    box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.35);
+}
+
+/* tema warna per kartu */
+.pilar-card--deep {
+    background: var(--c-deep);
+    color: var(--c-white);
+}
+.pilar-card--green {
+    background: var(--c-green);
+    color: var(--c-white);
+}
+.pilar-card--sage {
+    background: var(--c-sage);
+    color: var(--c-ink);
+}
+
+.pilar-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.9rem;
+    padding: 1rem 1.25rem;
+}
+
+.pilar-no {
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    opacity: 0.7;
+}
+
+.pilar-tag {
+    align-self: flex-start;
+    padding: 0.3rem 0.9rem;
+    border: 1px solid currentColor;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.pilar-card h3 {
+    color: inherit;
+    font-size: clamp(1.5rem, 3vw, 2.4rem);
+    line-height: 1.1;
+    margin: 0;
+}
+
+.pilar-card p {
+    max-width: 28rem;
+    margin: 0;
+    opacity: 0.88;
+}
+
+.pilar-link {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    margin-top: 0.4rem;
+    color: inherit;
+    font-weight: 700;
+    text-decoration: none;
+}
+.pilar-link span {
+    display: grid;
+    place-items: center;
+    width: 2.4rem;
+    height: 2.4rem;
+    border-radius: 50%;
+    background: var(--c-white);
+    color: var(--c-ink);
+    transition: transform 0.2s ease;
+}
+.pilar-link:hover span {
+    transform: translate(2px, -2px);
+}
+.pilar-card--sage .pilar-link span {
+    background: var(--c-ink);
+    color: var(--c-white);
+}
+
+/* placeholder foto: ganti dengan background-image saat aset ada */
+.pilar-visual {
+    min-height: 0;
+    display: grid;
+    place-items: center;
+    border-radius: 1.4rem;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.55);
+}
+.pilar-card--deep .pilar-visual {
+    background: linear-gradient(160deg, #092328, #2a835f);
+}
+.pilar-card--green .pilar-visual {
+    background: linear-gradient(160deg, #12544f, #8bbb92);
+}
+.pilar-card--sage .pilar-visual {
+    background: linear-gradient(160deg, #12544f, #092328);
+}
+
+@media (max-width: 767.98px) {
+    .pilar-item {
+        top: calc(5.5rem + var(--i) * 1rem);
+        height: min(36rem, calc(100svh - 8rem));
+    }
+    .pilar-card {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto minmax(0, 1fr);
+        padding: 1rem;
+        border-radius: 1.5rem;
+    }
+    .pilar-text {
+        padding: 0.5rem;
+        gap: 0.6rem;
     }
 }
