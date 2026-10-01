@@ -937,3 +937,248 @@ body:not(.has-hero) main {
         min-width: 0;
     }
 }
+/* ---------- Fasilitas: hotspot ---------- */
+.section-fasilitas {
+    background: var(--c-deep);
+    color: var(--c-white);
+    padding: 6rem 0;
+    overflow: hidden;
+}
+
+.hotspot-stage {
+    position: relative;
+    margin-top: 3rem;
+    aspect-ratio: 16 / 9;
+    border-radius: 2rem;
+    background: var(--stage-img, linear-gradient(160deg, #092328, #2a835f))
+        center / cover;
+    border: 1px solid rgba(139, 187, 146, 0.3);
+}
+.hotspot-ph {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.45);
+}
+
+.hotspot {
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    transform: translate(-50%, -50%);
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+}
+.hotspot-dot {
+    position: relative;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 50%;
+    background: var(--c-sage);
+    border: 3px solid var(--c-white);
+    box-shadow: 0 4px 14px rgba(9, 35, 40, 0.4);
+    transition: transform 0.2s ease;
+}
+.hotspot-dot::before {
+    content: "";
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    border: 2px solid var(--c-sage);
+    animation: ping 2s ease-out infinite;
+}
+@keyframes ping {
+    0% {
+        transform: scale(1);
+        opacity: 0.9;
+    }
+    100% {
+        transform: scale(2.6);
+        opacity: 0;
+    }
+}
+.hotspot:hover .hotspot-dot,
+.hotspot:focus-visible .hotspot-dot {
+    transform: scale(1.25);
+}
+.hotspot:focus-visible {
+    outline: 2px solid var(--c-white);
+    outline-offset: 2px;
+    border-radius: 50%;
+}
+
+.hotspot-tip {
+    position: absolute;
+    bottom: calc(100% + 0.1rem);
+    left: 50%;
+    padding: 0.35rem 0.85rem;
+    border-radius: 999px;
+    background: var(--c-white);
+    color: var(--c-ink);
+    font-size: 0.8rem;
+    font-weight: 700;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(-50%) translateY(4px);
+    transition:
+        opacity 0.2s ease,
+        transform 0.2s ease;
+}
+.hotspot:hover .hotspot-tip,
+.hotspot:focus-visible .hotspot-tip {
+    opacity: 1;
+    transform: translateX(-50%);
+}
+
+/* chip cadangan (HP & keyboard) */
+.hotspot-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.6rem;
+    margin-top: 1.5rem;
+}
+.hotspot-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.45rem 1.1rem 0.45rem 0.45rem;
+    border-radius: 999px;
+    border: 1px solid rgba(139, 187, 146, 0.4);
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--c-white);
+    font-weight: 500;
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+}
+.hotspot-chip:hover {
+    background: var(--c-sage);
+    color: var(--c-ink);
+}
+.hotspot-chip-no {
+    display: grid;
+    place-items: center;
+    width: 1.7rem;
+    height: 1.7rem;
+    border-radius: 50%;
+    background: var(--c-sage);
+    color: var(--c-ink);
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+.hotspot-chip:hover .hotspot-chip-no {
+    background: var(--c-ink);
+    color: var(--c-white);
+}
+
+@media (max-width: 767.98px) {
+    .hotspot-stage {
+        aspect-ratio: 4 / 3;
+        border-radius: 1.5rem;
+    }
+    .hotspot-tip {
+        display: none;
+    }
+}
+
+/* ---------- Fasilitas: modal ---------- */
+.modal.fade .modal-dialog {
+    transform: scale(0.92) translateY(20px);
+    transition: transform 0.35s cubic-bezier(0.22, 0.8, 0.3, 1);
+}
+.modal.show .modal-dialog {
+    transform: none;
+}
+
+.facility-modal {
+    position: relative;
+    overflow: hidden;
+    border: 0;
+    border-radius: 1.75rem;
+    background: var(--c-paper);
+    color: var(--c-ink);
+}
+.facility-close {
+    position: absolute;
+    top: 0.9rem;
+    right: 0.9rem;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    width: 2.4rem;
+    height: 2.4rem;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.92);
+    color: var(--c-ink);
+}
+.facility-media {
+    aspect-ratio: 16 / 9;
+    display: grid;
+    place-items: center;
+    background: linear-gradient(160deg, #12544f, #8bbb92);
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.6);
+}
+.facility-body {
+    padding: 1.5rem 1.75rem 1.75rem;
+}
+.facility-body h3 {
+    margin: 0.7rem 0 0.5rem;
+    font-size: 1.6rem;
+}
+.facility-body p {
+    margin: 0 0 1.5rem;
+    color: rgba(9, 35, 40, 0.75);
+}
+.facility-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.facility-count {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--c-green);
+}
+.facility-nav-btns {
+    display: flex;
+    gap: 0.6rem;
+}
+.facility-btn {
+    display: grid;
+    place-items: center;
+    width: 2.8rem;
+    height: 2.8rem;
+    border: 0;
+    border-radius: 50%;
+    background: var(--c-deep);
+    color: var(--c-white);
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+}
+.facility-btn:hover {
+    background: var(--c-sage);
+    color: var(--c-ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hotspot-dot::before {
+        animation: none;
+        opacity: 0;
+    }
+    .modal.fade .modal-dialog {
+        transition: none;
+    }
+}

@@ -270,5 +270,82 @@
         </div>
     </div>
 </section>
+{{-- ===== FASILITAS GREEN HOUSE (hotspot modal) ===== --}}
+@php
+    // TEKS CONTOH: ganti dengan data resmi Agrinova. x & y = posisi titik dalam persen.
+    $hotspots = [
+        ['title' => 'Green House',          'x' => 27, 'y' => 44, 'desc' => 'Bangunan green house tempat tanaman dibudidayakan dalam lingkungan yang lebih terkontrol.'],
+        ['title' => 'Area Budidaya Melon',  'x' => 61, 'y' => 56, 'desc' => 'Area tanam melon. Dari sini panen untuk penjualan dan pre-order berasal.'],
+        ['title' => 'Area Kegiatan Edukasi','x' => 44, 'y' => 74, 'desc' => 'Area untuk kegiatan edukasi dan pelatihan bagi pengunjung eduwisata.'],
+        ['title' => 'Parkir Bus',           'x' => 80, 'y' => 30, 'desc' => 'Area parkir untuk rombongan sekolah dan komunitas yang datang dengan bus.'],
+    ];
+@endphp
+
+<section class="section-fasilitas" id="fasilitas">
+    <div class="container">
+        <div class="section-head">
+            <h2>Jelajahi Fasilitas Kebun</h2>
+            <p>Klik titik pada foto untuk melihat info tiap fasilitas.</p>
+        </div>
+
+        {{-- Kalau foto sudah ada, tambahkan di tag di bawah:
+             style="--stage-img: url('{{ asset('images/greenhouse.webp') }}')"
+             lalu hapus <span class="hotspot-ph"> --}}
+        <div class="hotspot-stage">
+            <span class="hotspot-ph">Foto green house menyusul</span>
+
+            @foreach ($hotspots as $i => $h)
+                <button type="button" class="hotspot"
+                        style="--x: {{ $h['x'] }}%; --y: {{ $h['y'] }}%"
+                        data-hotspot data-index="{{ $i }}"
+                        data-title="{{ $h['title'] }}" data-desc="{{ $h['desc'] }}"
+                        aria-label="Lihat info {{ $h['title'] }}">
+                    <span class="hotspot-dot"></span>
+                    <span class="hotspot-tip">{{ $h['title'] }}</span>
+                </button>
+            @endforeach
+        </div>
+
+        <div class="hotspot-list">
+            @foreach ($hotspots as $i => $h)
+                <button type="button" class="hotspot-chip" data-hotspot data-index="{{ $i }}">
+                    <span class="hotspot-chip-no">{{ $i + 1 }}</span>
+                    {{ $h['title'] }}
+                </button>
+            @endforeach
+        </div>
+    </div>
+</section>
+
+{{-- Modal fasilitas (satu modal dipakai semua titik) --}}
+<div class="modal fade" id="facilityModal" tabindex="-1" aria-labelledby="facilityTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content facility-modal">
+            <button type="button" class="facility-close" data-bs-dismiss="modal" aria-label="Tutup">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+            </button>
+
+            <div class="facility-media"><span>Foto menyusul</span></div>
+
+            <div class="facility-body">
+                <span class="pilar-tag">Fasilitas</span>
+                <h3 id="facilityTitle">Judul fasilitas</h3>
+                <p id="facilityDesc">Deskripsi fasilitas.</p>
+
+                <div class="facility-nav">
+                    <span class="facility-count" id="facilityCount">1 / 4</span>
+                    <div class="facility-nav-btns">
+                        <button type="button" class="facility-btn" id="facilityPrev" aria-label="Fasilitas sebelumnya">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+                        </button>
+                        <button type="button" class="facility-btn" id="facilityNext" aria-label="Fasilitas berikutnya">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 @endsection
