@@ -1585,3 +1585,13 @@ html {
     border-top: 1px solid rgba(139, 187, 146, 0.2);
     font-size: 0.85rem;
 }
+/* ---------- Navigasi antar section ---------- */
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 6.5rem;
+}
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+}

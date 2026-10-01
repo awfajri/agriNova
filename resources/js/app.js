@@ -4,6 +4,7 @@ import { initReveal } from "./reveal";
 import { initProducts } from "./product";
 import { initHotspots } from "./hotspot";
 import { initGallery } from "./gallery";
+import { initNav } from "./nav";
 
 window.bootstrap = bootstrap;
 
@@ -11,3 +12,4 @@ initReveal();
 initProducts();
 initHotspots();
 initGallery();
+initNav();

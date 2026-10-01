@@ -223,7 +223,7 @@
         </div>
 
         {{-- Banner countdown pre-order --}}
-        <div class="preorder-banner" data-countdown="{{ $harvestAt }}">
+        <div class="preorder-banner" id="preorder" data-countdown="{{ $harvestAt }}">
             <div class="preorder-text">
                 <span class="eyebrow eyebrow--light">Pre-Order Panen Melon</span>
                 <h3>Panen berikutnya dimulai dalam</h3>
