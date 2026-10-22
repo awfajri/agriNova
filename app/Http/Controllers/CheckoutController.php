@@ -5,16 +5,23 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\Product;
 use App\Services\CartService;
+use App\Services\MidtransPaymentService;
+use App\Services\OrderStockService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
+use Throwable;
 
 class CheckoutController extends Controller
 {
-    public function __construct(private readonly CartService $cart)
+    public function __construct(
+        private readonly CartService $cart,
+        private readonly MidtransPaymentService $midtrans,
+        private readonly OrderStockService $stock,
+    )
     {
     }
 
@@ -38,7 +45,7 @@ class CheckoutController extends Controller
             'customer_name' => ['required', 'string', 'max:120'],
             'customer_whatsapp' => ['required', 'string', 'max:24', 'regex:/^[0-9+()\\s-]{8,24}$/'],
             'notes' => ['nullable', 'string', 'max:1000'],
-            'payment_method' => ['required', 'in:manual_transfer'],
+            'payment_method' => ['required', 'in:manual_transfer,midtrans_snap'],
         ]);
 
         $order = DB::transaction(function () use ($validated): Order {
@@ -100,8 +107,42 @@ class CheckoutController extends Controller
             return $order;
         });
 
+        $paymentToken = null;
+
+        if ($order->payment_method === 'midtrans_snap') {
+            try {
+                $paymentToken = $this->midtrans->createSnapToken($order);
+                $order->forceFill([
+                    'payment_provider' => 'midtrans',
+                    'payment_token' => $paymentToken,
+                    'payment_expires_at' => now()->addHours(24),
+                ])->save();
+            } catch (Throwable $exception) {
+                report($exception);
+
+                DB::transaction(function () use ($order): void {
+                    $lockedOrder = Order::query()
+                        ->with('items')
+                        ->whereKey($order->id)
+                        ->lockForUpdate()
+                        ->firstOrFail();
+
+                    $lockedOrder->forceFill([
+                        'status' => 'canceled',
+                        'payment_status' => 'failed',
+                    ])->save();
+                    $this->stock->releaseReservedStock($lockedOrder);
+                });
+
+                throw ValidationException::withMessages([
+                    'payment_method' => 'Pembayaran belum bisa disiapkan. Silakan coba lagi beberapa saat.',
+                ]);
+            }
+        }
+
         $this->cart->clear();
         session()->put('last_order_number', $order->order_number);
+        session()->put('last_payment_token', $paymentToken);
 
         return redirect()->route('order.success', $order->order_number);
     }

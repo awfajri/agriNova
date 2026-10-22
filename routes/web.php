@@ -4,6 +4,7 @@ use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\MidtransNotificationController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\AuthController;
 use App\Http\Middleware\EnsureCheckoutAuthentication;
@@ -28,3 +29,5 @@ Route::middleware(EnsureCheckoutAuthentication::class)->group(function () {
     Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
 });
 Route::get('/order/success/{orderNumber}', [CheckoutController::class, 'success'])->name('order.success');
+Route::post('/payments/midtrans/notification', [MidtransNotificationController::class, 'store'])
+    ->name('payments.midtrans.notification');

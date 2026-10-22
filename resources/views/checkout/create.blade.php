@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Checkout | Agrinova')
-@section('meta_description', 'Selesaikan pesanan produk Agrinova dengan checkout guest yang sederhana.')
+@section('meta_description', 'Selesaikan pesanan produk Agrinova dengan checkout sederhana dan pembayaran online yang aman.')
 @section('body_class', 'has-checkout')
 
 @section('content')
@@ -10,7 +10,7 @@
         <div class="commerce-heading">
             <span class="eyebrow">Langkah terakhir</span>
             <h1>Checkout</h1>
-            <p>Isi data kontak. Admin Agrinova akan menghubungi kamu untuk konfirmasi pesanan dan pembayaran.</p>
+            <p>Isi data kontak, lalu selesaikan pembayaran langsung di halaman Agrinova.</p>
         </div>
 
         @if ($errors->any())
@@ -54,17 +54,26 @@
                     <span class="checkout-step-number">2</span>
                     <div>
                         <h2>Metode pembayaran</h2>
-                        <p>Untuk MVP, pembayaran dikonfirmasi manual setelah order dibuat.</p>
+                        <p>Pilih metode pembayaran yang paling nyaman. Pembayaran online akan dibuka dalam popup yang aman.</p>
                     </div>
                 </div>
+                @if (filled(config('services.midtrans.client_key')) && filled(config('services.midtrans.server_key')))
+                    <label class="payment-option">
+                        <input type="radio" name="payment_method" value="midtrans_snap" @checked(old('payment_method', 'midtrans_snap') === 'midtrans_snap')>
+                        <span>
+                            <strong>Bayar online</strong>
+                            <small>Gunakan QRIS, transfer bank, e-wallet, atau kartu melalui Midtrans.</small>
+                        </span>
+                    </label>
+                @endif
                 <label class="payment-option">
-                    <input type="radio" name="payment_method" value="manual_transfer" checked>
+                    <input type="radio" name="payment_method" value="manual_transfer" @checked(old('payment_method', filled(config('services.midtrans.client_key')) && filled(config('services.midtrans.server_key')) ? 'midtrans_snap' : 'manual_transfer') === 'manual_transfer')>
                     <span>
                         <strong>Transfer manual</strong>
-                        <small>Instruksi rekening diberikan setelah pesanan tercatat.</small>
+                        <small>Admin mengirimkan instruksi rekening setelah pesanan tercatat.</small>
                     </span>
                 </label>
-                <button type="submit" class="commerce-checkout-button checkout-submit">Buat pesanan</button>
+                <button type="submit" class="commerce-checkout-button checkout-submit">Lanjut ke pembayaran</button>
                 <a href="{{ route('cart') }}" class="checkout-back">Kembali ke keranjang</a>
             </form>
 

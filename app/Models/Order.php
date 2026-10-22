@@ -18,6 +18,9 @@ class Order extends Model
         'payment_method',
         'payment_provider',
         'payment_reference',
+        'payment_token',
+        'payment_expires_at',
+        'stock_released_at',
         'paid_at',
         'subtotal',
         'shipping_cost',
@@ -30,6 +33,8 @@ class Order extends Model
         'shipping_cost' => 'decimal:2',
         'total' => 'decimal:2',
         'paid_at' => 'datetime',
+        'payment_expires_at' => 'datetime',
+        'stock_released_at' => 'datetime',
     ];
 
     public function items(): HasMany
