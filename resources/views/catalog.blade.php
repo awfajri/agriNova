@@ -13,8 +13,7 @@
                 <span class="eyebrow eyebrow--light">Belanja langsung dari Agrinova</span>
                 <h1>Produk segar untuk rumah, usaha, dan kebunmu.</h1>
                 <p>
-                    Pilih produk, masukkan ke keranjang, lalu selesaikan pesanan tanpa pindah ke marketplace.
-                    Data stok dan harga di halaman ini menjadi acuan saat checkout.
+                    Hasil kebun dan kebutuhan pertanian pilihan, dikirim dari ekosistem Agrinova.
                 </p>
                 <a href="#daftar-produk" class="btn-pill btn-pill--light">
                     Lihat semua produk
@@ -23,12 +22,8 @@
                     </span>
                 </a>
             </div>
-            <div class="catalog-hero-note">
-                <span class="catalog-hero-note-icon" aria-hidden="true">
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M3 12h18"/><path d="M5.5 8.5c2.4-1.9 4.7-1.9 6.5 0M12 15.5c2.4 1.9 4.7 1.9 6.5 0"/></svg>
-                </span>
-                <strong>Pesan dengan alur singkat</strong>
-                <span>Produk &rarr; Keranjang &rarr; Checkout</span>
+            <div class="catalog-hero-art" role="img" aria-label="Kebun Agrinova">
+                <span class="catalog-hero-art-label">Dari kebun Agrinova</span>
             </div>
         </div>
 
@@ -57,6 +52,10 @@
                     <input type="hidden" name="sort" value="{{ $sort }}">
                 @endif
                 <button type="submit">Cari</button>
+                <button type="button" class="catalog-filter-trigger" data-bs-toggle="modal" data-bs-target="#filterModal" aria-label="Buka filter produk">
+                    <svg aria-hidden="true" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16M7 12h10M10 19h4"/></svg>
+                    <span>Filter</span>
+                </button>
             </form>
 
             <a href="{{ route('cart') }}" class="catalog-cart-link">
@@ -141,14 +140,25 @@
                                     </div>
                                 </div>
                             </a>
-                            <form method="POST" action="{{ route('cart.store') }}" class="catalog-add-form">
+                            <div class="catalog-card-actions">
+                                <form method="POST" action="{{ route('cart.store') }}" class="catalog-add-form">
                                 @csrf
                                 <input type="hidden" name="product_id" value="{{ $product->id }}">
                                 <input type="hidden" name="quantity" value="{{ max(1, $product->min_order_quantity) }}">
-                                <button type="submit" class="catalog-add-button" {{ $product->stock < $product->min_order_quantity ? 'disabled' : '' }}>
-                                    {{ $product->stock < $product->min_order_quantity ? 'Stok habis' : 'Tambah ke keranjang' }}
-                                </button>
-                            </form>
+                                    <button type="submit" class="catalog-add-button catalog-add-button--icon" aria-label="Tambah {{ $product->name }} ke keranjang" {{ $product->stock < $product->min_order_quantity ? 'disabled' : '' }}>
+                                        <svg aria-hidden="true" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                                    </button>
+                                </form>
+                                <form method="POST" action="{{ route('cart.store') }}" class="catalog-buy-form">
+                                    @csrf
+                                    <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                    <input type="hidden" name="quantity" value="{{ max(1, $product->min_order_quantity) }}">
+                                    <input type="hidden" name="buy_now" value="1">
+                                    <button type="submit" class="catalog-buy-button" {{ $product->stock < $product->min_order_quantity ? 'disabled' : '' }}>
+                                        {{ $product->stock < $product->min_order_quantity ? 'Stok habis' : 'Beli sekarang' }}
+                                    </button>
+                                </form>
+                            </div>
                         </article>
                     @empty
                         <div class="catalog-empty">
@@ -166,4 +176,41 @@
         </div>
     </div>
 </section>
+
+<div class="modal fade filter-modal" id="filterModal" tabindex="-1" aria-labelledby="filterModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-bottom">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>
+                    <span class="eyebrow">Katalog</span>
+                    <h2 id="filterModalTitle">Filter produk</h2>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+            </div>
+            <form method="GET" action="{{ route('catalog') }}">
+                <div class="modal-body">
+                    @if ($search)<input type="hidden" name="q" value="{{ $search }}">@endif
+                    <div class="modal-filter-section">
+                        <h3>Kategori</h3>
+                        <label><input type="radio" name="category" value="" {{ empty($selectedCategory) ? 'checked' : '' }}> Semua produk</label>
+                        @foreach ($categories as $category)
+                            <label><input type="radio" name="category" value="{{ $category->slug }}" {{ $selectedCategory === $category->slug ? 'checked' : '' }}> {{ $category->name }}</label>
+                        @endforeach
+                    </div>
+                    <div class="modal-filter-section">
+                        <h3>Ketersediaan</h3>
+                        <label><input type="radio" name="availability" value="" {{ empty($availability) ? 'checked' : '' }}> Semua</label>
+                        <label><input type="radio" name="availability" value="in_stock" {{ $availability === 'in_stock' ? 'checked' : '' }}> Tersedia</label>
+                        <label><input type="radio" name="availability" value="preorder" {{ $availability === 'preorder' ? 'checked' : '' }}> Pre-order</label>
+                    </div>
+                    @if ($sort)<input type="hidden" name="sort" value="{{ $sort }}">@endif
+                </div>
+                <div class="modal-footer">
+                    <a href="{{ route('catalog') }}" class="catalog-action catalog-action--secondary">Reset</a>
+                    <button type="submit" class="catalog-action">Terapkan filter</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 @endsection

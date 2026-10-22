@@ -1,18 +1,6 @@
-import { Collapse } from "bootstrap";
-
 export function initNav() {
     const nav = document.querySelector(".nav-pill");
     if (!nav) return;
-
-    // ---- tutup menu lipat (HP) setelah link diklik ----
-    const collapseEl = document.getElementById("mainNav");
-    nav.querySelectorAll("a").forEach((a) => {
-        a.addEventListener("click", () => {
-            if (collapseEl && collapseEl.classList.contains("show")) {
-                Collapse.getOrCreateInstance(collapseEl).hide();
-            }
-        });
-    });
 
     // ---- menu aktif mengikuti section yang sedang terlihat ----
     const links = [...nav.querySelectorAll(".nav-link[data-spy]")];

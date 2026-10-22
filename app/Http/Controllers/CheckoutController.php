@@ -80,6 +80,7 @@ class CheckoutController extends Controller
 
             $order = Order::query()->create([
                 'order_number' => $this->makeOrderNumber(),
+                'user_id' => auth()->id(),
                 'customer_name' => $validated['customer_name'],
                 'customer_whatsapp' => $validated['customer_whatsapp'],
                 'status' => 'pending',
