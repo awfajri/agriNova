@@ -10,10 +10,10 @@
                 <h6>Menu</h6>
                 <ul class="footer-links">
                     <li><a href="{{ route('home') }}">Beranda</a></li>
-                    <li><a href="#">Profil</a></li>
-                    <li><a href="{{ route('home') }}#produk">Produk</a></li>
-                    <li><a href="#">Pelatihan</a></li>
-                    <li><a href="#">Eduwisata</a></li>
+                    <li><a href="{{ route('home') }}#tentang">Profil</a></li>
+                    <li><a href="{{ route('catalog') }}">Produk</a></li>
+                    <li><a href="{{ route('home') }}#pilar">Pelatihan</a></li>
+                    <li><a href="{{ route('home') }}#fasilitas">Eduwisata</a></li>
                     <li><a href="{{ route('home') }}#galeri">Galeri</a></li>
                 </ul>
             </div>
