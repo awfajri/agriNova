@@ -128,22 +128,61 @@ body:not(.has-hero) main {
     flex: 0 0 auto;
 }
 
+.navbar-toggler {
+    display: none;
+    width: 2.7rem;
+    height: 2.7rem;
+    padding: 0.65rem;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 50%;
+}
+
+.navbar-toggler span {
+    display: block;
+    height: 1px;
+    margin: 0.25rem 0;
+    background: var(--c-white);
+}
+
 @media (max-width: 991.98px) {
     .nav-pill {
         border-radius: 1.75rem;
         padding: 0.6rem 1rem;
     }
-    .nav-links {
-        display: none;
+
+    .nav-pill--home .navbar-toggler {
+        display: block;
+        order: 3;
     }
 
-    .nav-cta {
+    .nav-pill--home .home-nav-links {
         display: none;
+        flex-basis: 100%;
+        order: 4;
+        margin: 0;
+        padding-top: 0.75rem;
+    }
+
+    .nav-pill--home .home-nav-links.show {
+        display: grid;
+        gap: 0.15rem;
+    }
+
+    .nav-pill--home .nav-actions {
+        order: 2;
     }
 
     .nav-actions {
         margin-left: auto;
     }
+
+    .nav-cta {
+        display: none;
+    }
+}
+
+.nav-pill--compact .nav-actions {
+    margin-left: auto;
 }
 
 /* ---------- Tombol pill berikon ---------- */
@@ -641,60 +680,65 @@ body:not(.has-hero) main {
     box-shadow: 0 1.5rem 3rem rgba(9, 35, 40, 0.12);
 }
 
-.catalog-hero-copy {
-    max-width: 45rem;
+.catalog-slider {
+    overflow: hidden;
+    border-radius: 2rem;
+    background: var(--c-deep);
+    box-shadow: 0 1.5rem 3rem rgba(9, 35, 40, 0.12);
 }
 
-.catalog-hero h1,
-.catalog-hero p {
+.catalog-slide {
+    min-height: clamp(18rem, 34vw, 29rem);
+    background-image:
+        linear-gradient(90deg, rgba(9, 35, 40, 0.72), rgba(9, 35, 40, 0.08)),
+        url("/images/hero-bg.jpg");
+    background-position: center;
+    background-size: cover;
+}
+
+.catalog-slide--harvest {
+    background-position: 62% center;
+}
+
+.catalog-slide--fresh {
+    background-position: 34% center;
+}
+
+.catalog-slide-copy {
+    display: flex;
+    min-height: inherit;
+    flex-direction: column;
+    justify-content: flex-end;
+    max-width: 35rem;
+    padding: clamp(1.5rem, 5vw, 4rem);
     color: var(--c-white);
 }
 
-.catalog-hero h1 {
-    max-width: 40rem;
-    margin: 0.75rem 0 1rem;
-    font-size: clamp(2.2rem, 5vw, 4.25rem);
+.catalog-slide h1 {
+    max-width: 28rem;
+    margin: 0.55rem 0 0;
+    color: var(--c-white);
+    font-size: clamp(2rem, 5vw, 4rem);
     line-height: 1.03;
 }
 
-.catalog-hero p {
-    max-width: 38rem;
-    margin-bottom: 1.75rem;
-    color: rgba(255, 255, 255, 0.76);
-    font-size: 1.05rem;
+.catalog-slider .carousel-indicators {
+    z-index: 2;
+    justify-content: flex-start;
+    margin-right: auto;
+    margin-left: clamp(1.5rem, 5vw, 4rem);
 }
 
-.catalog-hero-art {
-    position: relative;
-    min-height: 15rem;
-    overflow: hidden;
-    border-radius: 1.5rem;
-    background:
-        linear-gradient(180deg, rgba(9, 35, 40, 0.05), rgba(9, 35, 40, 0.5)),
-        url("/images/hero-bg.jpg") center / cover;
-}
-
-.catalog-hero-art::after {
-    position: absolute;
-    right: 1rem;
-    bottom: 1rem;
-    left: 1rem;
-    height: 0.25rem;
+.catalog-slider .carousel-indicators button {
+    width: 2rem;
+    height: 0.2rem;
+    border: 0;
     border-radius: 999px;
-    background: var(--c-sage);
-    content: "";
 }
 
-.catalog-hero-art-label {
-    position: absolute;
-    right: 1rem;
-    bottom: 1.55rem;
-    left: 1rem;
-    color: var(--c-white);
-    font-size: 0.8rem;
-    font-weight: 600;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
+.catalog-slider .carousel-control-prev,
+.catalog-slider .carousel-control-next {
+    width: 3.5rem;
 }
 
 .eyebrow--light {
@@ -783,6 +827,10 @@ body:not(.has-hero) main {
     color: var(--c-green);
 }
 
+.catalog-search button svg {
+    color: currentColor;
+}
+
 .catalog-search input {
     min-width: 0;
     flex: 1;
@@ -793,21 +841,39 @@ body:not(.has-hero) main {
 }
 
 .catalog-search button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: 2.55rem;
     min-height: 2.55rem;
-    padding: 0 1.25rem;
+    padding: 0;
     border: 0;
     border-radius: 999px;
-    background: var(--c-deep);
     color: var(--c-white);
-    font-weight: 600;
 }
 
 .catalog-filter-trigger {
-    display: none;
+    display: inline-flex;
     align-items: center;
-    gap: 0.35rem;
-    background: var(--c-sage) !important;
-    color: var(--c-ink) !important;
+    background: var(--c-deep);
+}
+
+.catalog-search-submit {
+    display: none !important;
+    background: var(--c-deep);
+}
+
+.catalog-search.has-query .catalog-search-submit {
+    display: inline-flex !important;
+}
+
+.catalog-search.has-query .catalog-search-icon {
+    display: none;
+}
+
+.catalog-search.has-query .catalog-filter-trigger {
+    display: none;
 }
 
 .catalog-cart-link,
@@ -859,8 +925,7 @@ body:not(.has-hero) main {
 
 .catalog-layout {
     display: grid;
-    grid-template-columns: 14rem minmax(0, 1fr);
-    gap: 2rem;
+    grid-template-columns: minmax(0, 1fr);
 }
 
 .catalog-filters {
@@ -944,6 +1009,15 @@ body:not(.has-hero) main {
 
 .catalog-sort select {
     padding: 0.55rem 2rem 0.55rem 0.75rem;
+    border: 1px solid rgba(18, 84, 79, 0.15);
+    border-radius: 0.65rem;
+    background: var(--c-white);
+    color: var(--c-ink);
+}
+
+.modal-filter-section > select {
+    width: 100%;
+    padding: 0.65rem 2rem 0.65rem 0.75rem;
     border: 1px solid rgba(18, 84, 79, 0.15);
     border-radius: 0.65rem;
     background: var(--c-white);
@@ -1996,8 +2070,8 @@ body:not(.has-hero) main {
 @media (max-width: 991.98px) {
     .catalog-filter-trigger {
         display: inline-flex;
-        padding: 0 0.8rem !important;
-        background: var(--c-sage) !important;
+        background: var(--c-deep) !important;
+        color: var(--c-white) !important;
     }
 }
 

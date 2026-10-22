@@ -5,6 +5,7 @@ import { initProducts } from "./product";
 import { initHotspots } from "./hotspot";
 import { initGallery } from "./gallery";
 import { initNav } from "./nav";
+import { initCatalogSearch } from "./catalog";
 
 window.bootstrap = bootstrap;
 
@@ -13,3 +14,4 @@ initProducts();
 initHotspots();
 initGallery();
 initNav();
+initCatalogSearch();

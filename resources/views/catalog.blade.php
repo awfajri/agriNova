@@ -5,26 +5,40 @@
 @section('body_class', 'has-catalog')
 
 @section('content')
-@php($cartCount = array_sum(session('cart', [])))
 <section class="catalog-page">
     <div class="container">
-        <div class="catalog-hero">
-            <div class="catalog-hero-copy">
-                <span class="eyebrow eyebrow--light">Belanja langsung dari Agrinova</span>
-                <h1>Produk segar untuk rumah, usaha, dan kebunmu.</h1>
-                <p>
-                    Hasil kebun dan kebutuhan pertanian pilihan, dikirim dari ekosistem Agrinova.
-                </p>
-                <a href="#daftar-produk" class="btn-pill btn-pill--light">
-                    Lihat semua produk
-                    <span class="btn-pill-icon" aria-hidden="true">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
-                    </span>
-                </a>
+        <div id="catalogSlider" class="carousel slide catalog-slider" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#catalogSlider" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#catalogSlider" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#catalogSlider" data-bs-slide-to="2" aria-label="Slide 3"></button>
             </div>
-            <div class="catalog-hero-art" role="img" aria-label="Kebun Agrinova">
-                <span class="catalog-hero-art-label">Dari kebun Agrinova</span>
+            <div class="carousel-inner">
+                <div class="carousel-item active catalog-slide catalog-slide--garden">
+                    <div class="catalog-slide-copy">
+                        <span class="eyebrow eyebrow--light">Agrinova Farm</span>
+                        <h1>Segar dari kebun.</h1>
+                    </div>
+                </div>
+                <div class="carousel-item catalog-slide catalog-slide--harvest">
+                    <div class="catalog-slide-copy">
+                        <span class="eyebrow eyebrow--light">Panen Agrinova</span>
+                        <h1>Pilih hasil panenmu.</h1>
+                    </div>
+                </div>
+                <div class="carousel-item catalog-slide catalog-slide--fresh">
+                    <div class="catalog-slide-copy">
+                        <span class="eyebrow eyebrow--light">Belanja langsung</span>
+                        <h1>Untuk rumah dan kebun.</h1>
+                    </div>
+                </div>
             </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#catalogSlider" data-bs-slide="prev" aria-label="Slide sebelumnya">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#catalogSlider" data-bs-slide="next" aria-label="Slide berikutnya">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            </button>
         </div>
 
         @if (session('success'))
@@ -40,7 +54,7 @@
         <div class="catalog-toolbar">
             <form method="GET" action="{{ route('catalog') }}" class="catalog-search" role="search">
                 <label class="visually-hidden" for="catalog-search">Cari produk</label>
-                <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+                <svg class="catalog-search-icon" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
                 <input id="catalog-search" name="q" type="search" value="{{ $search }}" placeholder="Cari melon, sayur, pupuk..." autocomplete="off">
                 @if ($selectedCategory)
                     <input type="hidden" name="category" value="{{ $selectedCategory }}">
@@ -51,69 +65,22 @@
                 @if ($sort)
                     <input type="hidden" name="sort" value="{{ $sort }}">
                 @endif
-                <button type="submit">Cari</button>
+                <button type="submit" class="catalog-search-submit" aria-label="Cari produk">
+                    <svg aria-hidden="true" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+                </button>
                 <button type="button" class="catalog-filter-trigger" data-bs-toggle="modal" data-bs-target="#filterModal" aria-label="Buka filter produk">
                     <svg aria-hidden="true" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16M7 12h10M10 19h4"/></svg>
-                    <span>Filter</span>
                 </button>
             </form>
-
-            <a href="{{ route('cart') }}" class="catalog-cart-link">
-                <svg aria-hidden="true" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-                Keranjang
-                @if (($cartCount ?? 0) > 0)
-                    <span>{{ $cartCount }}</span>
-                @endif
-            </a>
         </div>
 
         <div class="catalog-layout" id="daftar-produk">
-            <aside class="catalog-filters" aria-label="Filter produk">
-                <div class="catalog-filter-head">
-                    <span class="eyebrow">Filter</span>
-                    @if ($search || $selectedCategory || $availability || $sort)
-                        <a href="{{ route('catalog') }}">Reset</a>
-                    @endif
-                </div>
-
-                <div class="catalog-filter-group">
-                    <h2>Kategori</h2>
-                    <a href="{{ route('catalog', array_filter(['q' => $search, 'availability' => $availability, 'sort' => $sort])) }}" class="{{ empty($selectedCategory) ? 'active' : '' }}">
-                        Semua produk <span>{{ $categories->sum('products_count') }}</span>
-                    </a>
-                    @foreach ($categories as $category)
-                        <a href="{{ route('catalog', array_filter(['q' => $search, 'category' => $category->slug, 'availability' => $availability, 'sort' => $sort])) }}" class="{{ $selectedCategory === $category->slug ? 'active' : '' }}">
-                            {{ $category->name }} <span>{{ $category->products_count }}</span>
-                        </a>
-                    @endforeach
-                </div>
-
-                <div class="catalog-filter-group">
-                    <h2>Ketersediaan</h2>
-                    <a href="{{ route('catalog', array_filter(['q' => $search, 'category' => $selectedCategory, 'sort' => $sort])) }}" class="{{ empty($availability) ? 'active' : '' }}">Semua</a>
-                    <a href="{{ route('catalog', array_filter(['q' => $search, 'category' => $selectedCategory, 'availability' => 'in_stock', 'sort' => $sort])) }}" class="{{ $availability === 'in_stock' ? 'active' : '' }}">Tersedia</a>
-                    <a href="{{ route('catalog', array_filter(['q' => $search, 'category' => $selectedCategory, 'availability' => 'preorder', 'sort' => $sort])) }}" class="{{ $availability === 'preorder' ? 'active' : '' }}">Pre-order</a>
-                </div>
-            </aside>
-
             <div class="catalog-results">
                 <div class="catalog-results-head">
                     <div>
                         <span class="eyebrow">Katalog Agrinova</span>
                         <h2>{{ $products->total() }} produk</h2>
                     </div>
-                    <form method="GET" action="{{ route('catalog') }}" class="catalog-sort">
-                        @if ($search)<input type="hidden" name="q" value="{{ $search }}">@endif
-                        @if ($selectedCategory)<input type="hidden" name="category" value="{{ $selectedCategory }}">@endif
-                        @if ($availability)<input type="hidden" name="availability" value="{{ $availability }}">@endif
-                        <label for="catalog-sort">Urutkan</label>
-                        <select id="catalog-sort" name="sort" onchange="this.form.submit()">
-                            <option value="" {{ empty($sort) ? 'selected' : '' }}>Rekomendasi</option>
-                            <option value="name" {{ $sort === 'name' ? 'selected' : '' }}>Nama A-Z</option>
-                            <option value="price_asc" {{ $sort === 'price_asc' ? 'selected' : '' }}>Harga terendah</option>
-                            <option value="price_desc" {{ $sort === 'price_desc' ? 'selected' : '' }}>Harga tertinggi</option>
-                        </select>
-                    </form>
                 </div>
 
                 <div class="catalog-product-grid">
@@ -203,7 +170,15 @@
                         <label><input type="radio" name="availability" value="in_stock" {{ $availability === 'in_stock' ? 'checked' : '' }}> Tersedia</label>
                         <label><input type="radio" name="availability" value="preorder" {{ $availability === 'preorder' ? 'checked' : '' }}> Pre-order</label>
                     </div>
-                    @if ($sort)<input type="hidden" name="sort" value="{{ $sort }}">@endif
+                    <div class="modal-filter-section">
+                        <label for="catalog-sort">Urutkan</label>
+                        <select id="catalog-sort" name="sort">
+                            <option value="" {{ empty($sort) ? 'selected' : '' }}>Rekomendasi</option>
+                            <option value="name" {{ $sort === 'name' ? 'selected' : '' }}>Nama A-Z</option>
+                            <option value="price_asc" {{ $sort === 'price_asc' ? 'selected' : '' }}>Harga terendah</option>
+                            <option value="price_desc" {{ $sort === 'price_desc' ? 'selected' : '' }}>Harga tertinggi</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <a href="{{ route('catalog') }}" class="catalog-action catalog-action--secondary">Reset</a>
