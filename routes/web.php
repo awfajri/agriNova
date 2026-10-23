@@ -6,6 +6,8 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PelatihanController;
+use App\Http\Controllers\EduwisataController;
 use App\Http\Middleware\EnsureCheckoutAuthentication;
 use Illuminate\Support\Facades\Route;
 
@@ -28,3 +30,10 @@ Route::middleware(EnsureCheckoutAuthentication::class)->group(function () {
     Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
 });
 Route::get('/order/success/{orderNumber}', [CheckoutController::class, 'success'])->name('order.success');
+
+Route::get('/pelatihan', [PelatihanController::class, 'index'])->name('pelatihan.index');
+Route::get('/pelatihan/{slug}', [PelatihanController::class, 'show'])->name('pelatihan.show');
+Route::post('/pelatihan/{slug}/daftar', [PelatihanController::class, 'register'])->name('pelatihan.register');
+
+Route::get('/eduwisata', [EduwisataController::class, 'index'])->name('eduwisata.index');
+Route::post('/eduwisata/reservasi', [EduwisataController::class, 'reserve'])->name('eduwisata.reserve');
