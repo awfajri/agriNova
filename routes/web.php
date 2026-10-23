@@ -8,7 +8,14 @@ use App\Http\Controllers\MidtransNotificationController;
 use App\Http\Controllers\OrderTrackingController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductReviewController;
+use App\Http\Controllers\Admin\AdminAuthController;
+use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\AdminOrderController;
+use App\Http\Controllers\Admin\AdminPreOrderController;
+use App\Http\Controllers\Admin\AdminProductController;
+use App\Http\Controllers\Admin\AdminReviewController;
 use App\Http\Controllers\AuthController;
+use App\Http\Middleware\EnsureAdminAuthentication;
 use App\Http\Middleware\EnsureCheckoutAuthentication;
 use Illuminate\Support\Facades\Route;
 
@@ -39,3 +46,22 @@ Route::middleware(EnsureCheckoutAuthentication::class)->group(function () {
 Route::get('/order/success/{orderNumber}', [CheckoutController::class, 'success'])->name('order.success');
 Route::post('/payments/midtrans/notification', [MidtransNotificationController::class, 'store'])
     ->name('payments.midtrans.notification');
+
+Route::get('/admin/login', [AdminAuthController::class, 'create'])->name('admin.login');
+Route::post('/admin/login', [AdminAuthController::class, 'store'])
+    ->middleware('throttle:5,1')
+    ->name('admin.login.store');
+Route::post('/admin/logout', [AdminAuthController::class, 'destroy'])->name('admin.logout');
+
+Route::prefix('admin')
+    ->name('admin.')
+    ->middleware(EnsureAdminAuthentication::class)
+    ->group(function (): void {
+        Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
+        Route::resource('products', AdminProductController::class)->except(['show']);
+        Route::resource('orders', AdminOrderController::class)->only(['index', 'show', 'update']);
+        Route::resource('preorders', AdminPreOrderController::class)->except(['show']);
+        Route::get('reviews', [AdminReviewController::class, 'index'])->name('reviews.index');
+        Route::patch('reviews/{review}', [AdminReviewController::class, 'update'])->name('reviews.update');
+        Route::delete('reviews/{review}', [AdminReviewController::class, 'destroy'])->name('reviews.destroy');
+    });
