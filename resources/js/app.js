@@ -6,6 +6,7 @@ import { initHotspots } from "./hotspot";
 import { initGallery } from "./gallery";
 import { initNav } from "./nav";
 import { initCatalogSearch } from "./catalog";
+import { initCatalogSlider } from "./catalog-slider";
 
 window.bootstrap = bootstrap;
 
@@ -15,3 +16,4 @@ initHotspots();
 initGallery();
 initNav();
 initCatalogSearch();
+initCatalogSlider();
