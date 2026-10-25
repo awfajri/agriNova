@@ -38,21 +38,20 @@ class MidtransNotificationController extends Controller
             return response()->json(['message' => 'Signature notification tidak valid.'], 403);
         }
 
-        $order = Order::query()->where('order_number', $validated['order_id'])->first();
-        if (! $order) {
-            return response()->json(['message' => 'Order tidak ditemukan.'], 404);
-        }
-
-        if (number_format((float) $order->total, 2, '.', '') !== $validated['gross_amount']) {
-            return response()->json(['message' => 'Nominal notification tidak sesuai order.'], 422);
-        }
-
-        DB::transaction(function () use ($validated): void {
+        return DB::transaction(function () use ($validated): JsonResponse {
             $order = Order::query()
                 ->with('items')
                 ->where('order_number', $validated['order_id'])
                 ->lockForUpdate()
-                ->firstOrFail();
+                ->first();
+
+            if (! $order) {
+                return response()->json(['message' => 'Order tidak ditemukan.'], 404);
+            }
+
+            if (number_format((float) $order->total, 2, '.', '') !== $validated['gross_amount']) {
+                return response()->json(['message' => 'Nominal notification tidak sesuai order.'], 422);
+            }
 
             $transactionStatus = strtolower($validated['transaction_status']);
             $paymentReference = $validated['transaction_id'] ?? $validated['order_id'];
@@ -68,7 +67,7 @@ class MidtransNotificationController extends Controller
                     'status' => $order->status === 'pending' ? 'processing' : $order->status,
                 ])->save();
 
-                return;
+                return response()->json(['ok' => true]);
             }
 
             if (in_array($transactionStatus, ['deny', 'cancel', 'expire', 'failure'], true)) {
@@ -80,15 +79,15 @@ class MidtransNotificationController extends Controller
 
                 $this->stock->releaseReservedStock($order);
 
-                return;
+                return response()->json(['ok' => true]);
             }
 
             $order->forceFill([
                 'payment_status' => $transactionStatus,
                 'payment_reference' => $paymentReference,
             ])->save();
-        });
 
-        return response()->json(['ok' => true]);
+            return response()->json(['ok' => true]);
+        });
     }
 }

@@ -161,7 +161,11 @@ class CheckoutController extends Controller
 
     private function makeOrderNumber(): string
     {
+        $attempts = 0;
         do {
+            if (++$attempts > 10) {
+                throw new \RuntimeException('Gagal membuat nomor order unik.');
+            }
             $number = 'AGR-' . now()->format('ymd') . '-' . Str::upper(Str::random(6));
         } while (Order::query()->where('order_number', $number)->exists());
 

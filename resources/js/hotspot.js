@@ -12,12 +12,14 @@ export function initHotspots() {
     ].map((el) => ({
         title: el.dataset.title,
         desc: el.dataset.desc,
+        img: el.dataset.img,
     }));
     if (!items.length) return;
 
     const titleEl = document.getElementById("facilityTitle");
     const descEl = document.getElementById("facilityDesc");
     const countEl = document.getElementById("facilityCount");
+    const imgEl = modalEl.querySelector("#facilityImg");
     let current = 0;
 
     function render(index) {
@@ -25,6 +27,10 @@ export function initHotspots() {
         titleEl.textContent = items[current].title;
         descEl.textContent = items[current].desc;
         countEl.textContent = `${current + 1} / ${items.length}`;
+        if (imgEl && items[current].img) {
+            imgEl.src = items[current].img;
+            imgEl.alt = items[current].title;
+        }
     }
 
     // titik di foto dan chip sama-sama membuka modal

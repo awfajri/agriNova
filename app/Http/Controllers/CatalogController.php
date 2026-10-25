@@ -5,10 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class CatalogController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         $query = Product::query()->with('category')->where('is_active', true);
 
