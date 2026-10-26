@@ -7,14 +7,15 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Illuminate\View\View;
 use Laravel\Socialite\Facades\Socialite;
 use Throwable;
 
 class AuthController extends Controller
 {
-    public function login(Request $request)
+    public function login(Request $request): View
     {
-        $intended = $this->safeIntended($request->input('redirect', route('checkout.create')));
+        $intended = $this->safeIntended($request->input('redirect'));
 
         return view('auth.login', [
             'intended' => $intended,
@@ -24,7 +25,7 @@ class AuthController extends Controller
 
     public function redirectToGoogle(Request $request): RedirectResponse
     {
-        $intended = $this->safeIntended($request->input('redirect', route('checkout.create')));
+        $intended = $this->safeIntended($request->input('redirect'));
         session()->put('auth.intended', $intended);
 
         if (! filled(config('services.google.client_id')) || ! filled(config('services.google.client_secret'))) {
@@ -82,18 +83,20 @@ class AuthController extends Controller
         return redirect()->route('home');
     }
 
-    private function safeIntended(?string $url): string
+    private function safeIntended(?string $url, ?string $default = null): string
     {
+        $fallback = $default ?? route('home');
+
         if (! $url) {
-            return route('checkout.create');
+            return $fallback;
         }
 
         $parsed = parse_url($url);
 
         if (isset($parsed['host']) || isset($parsed['scheme'])) {
-            return route('checkout.create');
+            return $fallback;
         }
 
-        return Str::startsWith($url, '/') ? $url : route('checkout.create');
+        return Str::startsWith($url, '/') ? $url : $fallback;
     }
 }

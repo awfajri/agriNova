@@ -4,6 +4,7 @@ use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\MidtransNotificationController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PelatihanController;
@@ -37,3 +38,5 @@ Route::post('/pelatihan/{slug}/daftar', [PelatihanController::class, 'register']
 
 Route::get('/eduwisata', [EduwisataController::class, 'index'])->name('eduwisata.index');
 Route::post('/eduwisata/reservasi', [EduwisataController::class, 'reserve'])->name('eduwisata.reserve');
+Route::post('/payments/midtrans/notification', [MidtransNotificationController::class, 'store'])
+    ->name('payments.midtrans.notification');

@@ -2536,10 +2536,26 @@ body:not(.has-hero) main {
 .product-media {
     position: relative;
     aspect-ratio: 1 / 1;
+    overflow: hidden;
     display: grid;
     place-items: center;
     border-radius: 1.1rem;
     background: linear-gradient(160deg, #12544f, #8bbb92);
+}
+
+.home-product-link,
+.home-product-link:hover,
+.home-product-link:focus-visible {
+    color: inherit;
+    text-decoration: none;
+}
+
+.home-product-link .product-media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
 }
 .product-ph {
     font-size: 0.8rem;

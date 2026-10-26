@@ -77,8 +77,11 @@ class CartService
         $this->put($cart);
     }
 
+    private ?Collection $cachedItems = null;
+
     public function clear(): void
     {
+        $this->cachedItems = null;
         session()->forget(self::SESSION_KEY);
     }
 
@@ -87,10 +90,14 @@ class CartService
      */
     public function items(): Collection
     {
+        if ($this->cachedItems !== null) {
+            return $this->cachedItems;
+        }
+
         $cart = $this->raw();
 
         if ($cart === []) {
-            return collect();
+            return $this->cachedItems = collect();
         }
 
         $products = Product::query()
@@ -99,7 +106,7 @@ class CartService
             ->get()
             ->keyBy(fn (Product $product) => (string) $product->id);
 
-        return collect($cart)
+        return $this->cachedItems = collect($cart)
             ->map(function (int $quantity, string $productId) use ($products) {
                 $product = $products->get($productId);
 
@@ -130,6 +137,7 @@ class CartService
 
     private function put(array $cart): void
     {
+        $this->cachedItems = null;
         session()->put(self::SESSION_KEY, $cart);
     }
 

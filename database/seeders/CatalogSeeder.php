@@ -41,7 +41,7 @@ class CatalogSeeder extends Seeder
                 'is_preorder' => true,
                 'is_featured' => true,
                 'is_active' => true,
-                'image_url' => null,
+                'image_url' => '/images/mln.webp',
             ],
             [
                 'category_id' => $buahSayur?->id,
@@ -56,7 +56,7 @@ class CatalogSeeder extends Seeder
                 'is_preorder' => false,
                 'is_featured' => true,
                 'is_active' => true,
-                'image_url' => null,
+                'image_url' => '/images/mix.webp',
             ],
             [
                 'category_id' => $perlengkapan?->id,
@@ -91,7 +91,7 @@ class CatalogSeeder extends Seeder
         ];
 
         foreach ($products as $product) {
-            Product::query()->firstOrCreate(
+            Product::query()->updateOrCreate(
                 ['slug' => $product['slug']],
                 $product
             );
