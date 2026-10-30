@@ -15,6 +15,8 @@ use App\Http\Controllers\Admin\AdminPreOrderController;
 use App\Http\Controllers\Admin\AdminProductController;
 use App\Http\Controllers\Admin\AdminReviewController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\EduwisataController;
+use App\Http\Controllers\PelatihanController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\EnsureAdminAuthentication;
 use App\Http\Middleware\EnsureCheckoutAuthentication;
@@ -52,6 +54,13 @@ Route::middleware(EnsureCheckoutAuthentication::class)->group(function () {
 Route::get('/order/success/{orderNumber}', [CheckoutController::class, 'success'])->name('order.success');
 Route::post('/payments/midtrans/notification', [MidtransNotificationController::class, 'store'])
     ->name('payments.midtrans.notification');
+
+Route::get('/pelatihan', [PelatihanController::class, 'index'])->name('pelatihan.index');
+Route::get('/pelatihan/{slug}', [PelatihanController::class, 'show'])->name('pelatihan.show');
+Route::post('/pelatihan/{slug}/daftar', [PelatihanController::class, 'register'])->name('pelatihan.register');
+
+Route::get('/eduwisata', [EduwisataController::class, 'index'])->name('eduwisata.index');
+Route::post('/eduwisata/reservasi', [EduwisataController::class, 'reserve'])->name('eduwisata.reserve');
 
 Route::get('/admin/login', [AdminAuthController::class, 'create'])->name('admin.login');
 Route::post('/admin/login', [AdminAuthController::class, 'store'])

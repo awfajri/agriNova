@@ -2,19 +2,17 @@
     <div class="container">
         @php($cartCount = array_sum(session('cart', [])))
         @php($isHome = request()->routeIs('home'))
-        <nav class="navbar navbar-dark nav-pill {{ $isHome ? 'nav-pill--home' : 'nav-pill--compact' }}">
+        <nav class="navbar navbar-dark nav-pill nav-pill--home">
             <a class="navbar-brand font-heading fw-bold" href="{{ route('home') }}#hero">Agrinova</a>
 
-            @if ($isHome)
-                <div class="nav-links home-nav-links" id="mainNav">
-                    <a class="nav-link {{ request()->is('/') ? 'active' : '' }}" data-spy="hero" href="{{ route('home') }}#hero">Beranda</a>
-                    <a class="nav-link" data-spy="tentang" href="{{ route('home') }}#tentang">Profil</a>
-                    <a class="nav-link" data-spy="produk" href="{{ route('home') }}#produk">Produk</a>
-                    <a class="nav-link" data-spy="pilar" href="{{ route('home') }}#pilar">Pelatihan</a>
-                    <a class="nav-link" data-spy="fasilitas" href="{{ route('home') }}#fasilitas">Eduwisata</a>
-                    <a class="nav-link" data-spy="galeri" href="{{ route('home') }}#galeri">Galeri</a>
-                </div>
-            @endif
+            <div class="nav-links home-nav-links" id="mainNav">
+                <a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}" @if($isHome) data-spy="hero" @endif href="{{ route('home') }}#hero">Beranda</a>
+                <a class="nav-link" @if($isHome) data-spy="tentang" @endif href="{{ route('home') }}#tentang">Profil</a>
+                <a class="nav-link {{ request()->routeIs('catalog*') || request()->routeIs('products.*') ? 'active' : '' }}" @if($isHome) data-spy="produk" @endif href="{{ $isHome ? route('home').'#produk' : route('catalog') }}">Produk</a>
+                <a class="nav-link {{ request()->routeIs('pelatihan.*') ? 'active' : '' }}" href="{{ route('pelatihan.index') }}">Pelatihan</a>
+                <a class="nav-link {{ request()->routeIs('eduwisata.*') ? 'active' : '' }}" href="{{ route('eduwisata.index') }}">Eduwisata</a>
+                <a class="nav-link" @if($isHome) data-spy="galeri" @endif href="{{ route('home') }}#galeri">Galeri</a>
+            </div>
 
             <div class="nav-actions">
                 @if ($isHome)
@@ -42,7 +40,7 @@
                         </form>
                     @else
                         <a class="nav-login" href="{{ route('auth.login') }}" aria-label="Masuk">
-                            <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5"/></svg>
+                            <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5"/>                            </svg>
                         </a>
                     @endauth
                 </div>

@@ -16,8 +16,8 @@
                 <h6>Jelajahi</h6>
                 <a href="{{ route('home') }}#tentang">Profil</a>
                 <a href="{{ route('catalog') }}">Produk</a>
-                <a href="{{ route('home') }}#pilar">Pelatihan</a>
-                <a href="{{ route('home') }}#fasilitas">Eduwisata</a>
+                <a href="{{ route('pelatihan.index') }}">Pelatihan</a>
+                <a href="{{ route('eduwisata.index') }}">Eduwisata</a>
             </div>
 
             <div class="footer-column footer-contact">
