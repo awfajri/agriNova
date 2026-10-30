@@ -36,6 +36,7 @@ class CheckoutController extends Controller
         return view('checkout.create', [
             'items' => $this->cart->items(),
             'subtotal' => $this->cart->subtotal(),
+            'user' => auth()->user(),
         ]);
     }
 

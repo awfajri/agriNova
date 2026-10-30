@@ -25,6 +25,27 @@
                         </span>
                     </a>
                 @endif
+                <div class="nav-auth">
+                    @auth
+                        <a class="nav-profile" href="{{ route('profile.show') }}" aria-label="Profil saya">
+                            @if (auth()->user()->avatar_url)
+                                <img src="{{ auth()->user()->avatar_url }}" alt="" referrerpolicy="no-referrer">
+                            @else
+                                <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5"/></svg>
+                            @endif
+                        </a>
+                        <form method="POST" action="{{ route('auth.logout') }}">
+                            @csrf
+                            <button type="submit" class="nav-logout" aria-label="Keluar">
+                                <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></svg>
+                            </button>
+                        </form>
+                    @else
+                        <a class="nav-login" href="{{ route('auth.login') }}" aria-label="Masuk">
+                            <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5"/></svg>
+                        </a>
+                    @endauth
+                </div>
                 <a class="nav-cart" href="{{ route('cart') }}" aria-label="Buka keranjang{{ $cartCount > 0 ? ', '.$cartCount.' item' : '' }}">
                     <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h2l2.2 11.1a2 2 0 0 0 2 1.6h7.9a2 2 0 0 0 1.9-1.5L21 8H6"/><circle cx="10" cy="20" r="1.25"/><circle cx="18" cy="20" r="1.25"/></svg>
                     @if ($cartCount > 0)

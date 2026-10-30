@@ -37,11 +37,11 @@
                 <div class="checkout-fields">
                     <div class="checkout-field">
                         <label for="customer-name">Nama lengkap</label>
-                        <input id="customer-name" name="customer_name" type="text" value="{{ old('customer_name') }}" autocomplete="name" required maxlength="120">
+                        <input id="customer-name" name="customer_name" type="text" value="{{ old('customer_name', $user->name ?? '') }}" autocomplete="name" required maxlength="120">
                     </div>
                     <div class="checkout-field">
                         <label for="customer-whatsapp">Nomor WhatsApp</label>
-                        <input id="customer-whatsapp" name="customer_whatsapp" type="tel" value="{{ old('customer_whatsapp') }}" placeholder="Contoh: 081234567890" autocomplete="tel" required maxlength="24">
+                        <input id="customer-whatsapp" name="customer_whatsapp" type="tel" value="{{ old('customer_whatsapp', $user->phone ?? '') }}" placeholder="Contoh: 081234567890" autocomplete="tel" required maxlength="24">
                         <small>Gunakan nomor yang aktif dan bisa menerima pesan.</small>
                     </div>
                     <div class="checkout-field checkout-field--full">
