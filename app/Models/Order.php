@@ -46,4 +46,9 @@ class Order extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(ProductReview::class);
+    }
 }

@@ -58,6 +58,7 @@
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Buka menu">
                     <span></span>
                     <span></span>
+                    <span></span>
                 </button>
             @endif
         </nav>
