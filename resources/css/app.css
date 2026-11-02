@@ -3320,6 +3320,38 @@ body:not(.has-hero) .context-nav + main {
     font-size: 0.9rem;
 }
 
+.order-whatsapp-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    padding: 0.7rem 1rem;
+    border-radius: 0.7rem;
+    background: #198754;
+    color: var(--c-white);
+    font-size: 0.86rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background-color 0.15s ease, transform 0.15s ease;
+}
+
+.order-whatsapp-button:hover {
+    background: #157347;
+    color: var(--c-white);
+    transform: translateY(-1px);
+}
+
+.order-whatsapp-button:focus-visible {
+    outline: 3px solid rgba(25, 135, 84, 0.28);
+    outline-offset: 3px;
+}
+
+.order-next-step-warning {
+    color: #8a4b08 !important;
+    font-size: 0.82rem !important;
+}
+
 .order-success-actions {
     display: flex;
     flex-wrap: wrap;
@@ -3613,6 +3645,7 @@ body:not(.has-hero) .context-nav + main {
     min-height: 0;
     display: grid;
     place-items: center;
+    overflow: hidden;
     border-radius: 1.4rem;
     font-size: 0.85rem;
     color: rgba(255, 255, 255, 0.55);
@@ -3625,6 +3658,7 @@ body:not(.has-hero) .context-nav + main {
 }
 .pilar-visual img {
     min-height: 100%;
+    border-radius: 1.4rem;
 }
 .pilar-card--deep .pilar-visual {
     background: linear-gradient(160deg, #092328, #2a835f);

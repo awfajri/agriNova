@@ -11,7 +11,7 @@
     $farmerLabel = 'Komunitas Petani';
 @endphp
 
-<section class="hero" id="hero">
+<section class="hero" id="hero" style="background-image: linear-gradient(180deg, rgba(9, 35, 40, 0.35), rgba(9, 35, 40, 0.6)), url('{{ asset('images/hero-bg.jpg') }}');">
     <div class="container hero-inner">
         <span class="hero-badge">Kebun Melon Agrinova</span>
 
@@ -26,7 +26,7 @@
         </p>
 
         <div class="hero-actions">
-            <a href="#produk" class="btn-pill btn-pill--solid">
+            <a href="{{ route('catalog') }}" class="btn-pill btn-pill--solid">
                 Belanja Produk
                 <span class="btn-pill-icon" aria-hidden="true">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
