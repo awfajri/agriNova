@@ -1,13 +1,23 @@
 export function initCatalogSearch() {
-    const form = document.querySelector(".catalog-search");
-    const input = form?.querySelector("input[type='search']");
+    const forms = document.querySelectorAll(".catalog-search, .nav-search");
 
-    if (!form || !input) return;
+    forms.forEach((form) => {
+        const input = form.querySelector("input[type='search']");
+        const clearButton = form.querySelector(".nav-search-clear");
 
-    const updateSearchState = () => {
-        form.classList.toggle("has-query", input.value.trim().length > 0);
-    };
+        if (!input) return;
 
-    input.addEventListener("input", updateSearchState);
-    updateSearchState();
+        const updateSearchState = () => {
+            form.classList.toggle("has-query", input.value.trim().length > 0);
+        };
+
+        clearButton?.addEventListener("click", () => {
+            input.value = "";
+            updateSearchState();
+            form.submit();
+        });
+
+        input.addEventListener("input", updateSearchState);
+        updateSearchState();
+    });
 }
