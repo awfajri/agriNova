@@ -17,19 +17,25 @@
                 <div class="carousel-item active catalog-slide catalog-slide--garden">
                     <div class="catalog-slide-copy">
                         <span class="eyebrow eyebrow--light">Agrinova Farm</span>
-                        <h1>Segar dari kebun.</h1>
+                        <h1>Segar langsung dari kebun.</h1>
+                        <p>Hasil panen pilihan untuk kebutuhan rumah dan usaha kamu.</p>
+                        <a href="#daftar-produk" class="catalog-action">Lihat panen</a>
                     </div>
                 </div>
                 <div class="carousel-item catalog-slide catalog-slide--harvest">
                     <div class="catalog-slide-copy">
                         <span class="eyebrow eyebrow--light">Panen Agrinova</span>
                         <h1>Pilih hasil panenmu.</h1>
+                        <p>Pesan produk segar tanpa perlu berpindah ke marketplace.</p>
+                        <a href="#daftar-produk" class="catalog-action">Beli sekarang</a>
                     </div>
                 </div>
                 <div class="carousel-item catalog-slide catalog-slide--fresh">
                     <div class="catalog-slide-copy">
                         <span class="eyebrow eyebrow--light">Belanja langsung</span>
-                        <h1>Untuk rumah dan kebun.</h1>
+                        <h1>Dari kebun untuk kebutuhan.</h1>
+                        <p>Temukan buah, sayur, perlengkapan kebun, dan pupuk di satu tempat.</p>
+                        <a href="#daftar-produk" class="catalog-action">Lihat produk</a>
                     </div>
                 </div>
             </div>
@@ -52,26 +58,10 @@
         @endif
 
         <div class="catalog-toolbar">
-            <form method="GET" action="{{ route('catalog') }}" class="catalog-search" role="search">
-                <label class="visually-hidden" for="catalog-search">Cari produk</label>
-                <svg class="catalog-search-icon" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
-                <input id="catalog-search" name="q" type="search" value="{{ $search }}" placeholder="Cari melon, sayur, pupuk..." autocomplete="off">
-                @if ($selectedCategory)
-                    <input type="hidden" name="category" value="{{ $selectedCategory }}">
-                @endif
-                @if ($availability)
-                    <input type="hidden" name="availability" value="{{ $availability }}">
-                @endif
-                @if ($sort)
-                    <input type="hidden" name="sort" value="{{ $sort }}">
-                @endif
-                <button type="submit" class="catalog-search-submit" aria-label="Cari produk">
-                    <svg aria-hidden="true" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
-                </button>
-                <button type="button" class="catalog-filter-trigger" data-bs-toggle="modal" data-bs-target="#filterModal" aria-label="Buka filter produk">
-                    <svg aria-hidden="true" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16M7 12h10M10 19h4"/></svg>
-                </button>
-            </form>
+            <button type="button" class="catalog-filter-trigger" data-bs-toggle="modal" data-bs-target="#filterModal" aria-label="Buka filter produk">
+                <svg aria-hidden="true" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16M7 12h10M10 19h4"/></svg>
+                <span>Filter produk</span>
+            </button>
         </div>
 
         <div class="catalog-layout" id="daftar-produk">
