@@ -31,8 +31,8 @@
         <div class="admin-form-field">
             <label for="order-status">Status order</label>
             <select id="order-status" name="status" required>
-                @foreach (['pending', 'processing', 'shipped', 'completed', 'canceled'] as $status)
-                    <option value="{{ $status }}" @selected($order->status === $status)>{{ ucfirst($status) }}</option>
+                @foreach (\App\Models\Order::statusOptions() as $status => $label)
+                    <option value="{{ $status }}" @selected($order->status === $status)>{{ $label }}</option>
                 @endforeach
             </select>
         </div>

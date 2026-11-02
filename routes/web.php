@@ -39,8 +39,11 @@ Route::get('/orders/{orderNumber}/tracking', [OrderTrackingController::class, 's
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
 });
+
+Route::view('/terms', 'terms')->name('terms');
 
 Route::get('/cart', [CartController::class, 'index'])->name('cart');
 Route::post('/cart/items', [CartController::class, 'store'])->name('cart.store');

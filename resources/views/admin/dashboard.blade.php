@@ -20,7 +20,7 @@
         @forelse ($recentOrders as $order)
             <a href="{{ route('admin.orders.show', $order) }}" class="admin-list-row">
                 <span><strong>{{ $order->order_number }}</strong><small>{{ $order->customer_name }}</small></span>
-                <span><strong>Rp {{ number_format((float) $order->total, 0, ',', '.') }}</strong><small>{{ ucfirst($order->status) }}</small></span>
+                <span><strong>Rp {{ number_format((float) $order->total, 0, ',', '.') }}</strong><small>{{ $order->statusLabel() }}</small></span>
             </a>
         @empty
             <p class="admin-empty">Belum ada order.</p>

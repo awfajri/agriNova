@@ -51,4 +51,68 @@ class Order extends Model
     {
         return $this->hasMany(ProductReview::class);
     }
+
+    public static function statusOptions(): array
+    {
+        return [
+            'pending' => 'Menunggu pembayaran',
+            'processing' => 'Sedang disiapkan',
+            'ready_for_pickup' => 'Siap diambil',
+            'picked_up' => 'Sudah diambil',
+            'canceled' => 'Dibatalkan',
+        ];
+    }
+
+    public static function activeStatuses(): array
+    {
+        return ['pending', 'processing', 'ready_for_pickup'];
+    }
+
+    public static function completedStatuses(): array
+    {
+        return ['picked_up'];
+    }
+
+    public function statusLabel(): string
+    {
+        return self::statusOptions()[$this->status] ?? ucfirst(str_replace('_', ' ', $this->status));
+    }
+
+    public function trackingSteps(): array
+    {
+        $steps = [
+            'pending' => ['label' => 'Pesanan diterima', 'description' => 'Pesanan sudah tercatat di sistem Agrinova.'],
+            'processing' => ['label' => 'Sedang disiapkan', 'description' => 'Pesanan sedang disiapkan oleh tim Agrinova.'],
+            'ready_for_pickup' => ['label' => 'Siap diambil', 'description' => 'Pesanan sudah siap diambil di lokasi Agrinova.'],
+            'picked_up' => ['label' => 'Sudah diambil', 'description' => 'Pesanan telah diambil dan proses selesai.'],
+        ];
+
+        if ($this->status === 'canceled') {
+            return [[
+                'key' => 'canceled',
+                'label' => 'Pesanan dibatalkan',
+                'description' => 'Pesanan ini tidak lagi diproses.',
+                'active' => true,
+                'current' => true,
+            ]];
+        }
+
+        $currentStatus = $this->status;
+        $currentIndex = array_search($currentStatus, array_keys($steps), true);
+        $currentIndex = $currentIndex === false ? 0 : $currentIndex;
+
+        $trackingSteps = [];
+
+        foreach (array_keys($steps) as $index => $key) {
+            $trackingSteps[] = [
+                'key' => $key,
+                'label' => $steps[$key]['label'],
+                'description' => $steps[$key]['description'],
+                'active' => $index <= $currentIndex,
+                'current' => $key === $currentStatus,
+            ];
+        }
+
+        return $trackingSteps;
+    }
 }
