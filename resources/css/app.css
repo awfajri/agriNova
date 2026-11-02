@@ -141,16 +141,58 @@ body:not(.has-hero) main {
     margin-left: auto;
 }
 
-.nav-login-text,
-.nav-user-text {
+.nav-links {
+    display: flex;
+    flex: 1 1 auto;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+}
+
+.nav-account-link {
+    display: inline-grid;
+    place-items: center;
+    flex: 0 0 auto;
+    width: 2.8rem;
+    height: 2.8rem;
+    margin-left: 0.65rem;
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    border-radius: 50%;
     color: var(--c-white);
-    font-size: 0.85rem;
-    font-weight: 700;
     text-decoration: none;
 }
 
-.nav-login-text:hover {
-    color: var(--c-sage);
+.nav-account-link img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.nav-account-link:hover {
+    border-color: rgba(255, 255, 255, 0.55);
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--c-white);
+}
+
+.nav-pill .collapse.nav-links:not(.show) {
+    display: flex;
+}
+
+.navbar-toggler {
+    display: none;
+    width: 2.7rem;
+    height: 2.7rem;
+    padding: 0.65rem;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 50%;
+}
+
+.navbar-toggler span {
+    display: block;
+    height: 2px;
+    margin: 0.25rem 0;
+    background: var(--c-white);
 }
 
 .nav-search {
@@ -227,6 +269,24 @@ body:not(.has-hero) main {
         padding: 0.6rem 0;
     }
 
+    .navbar-toggler {
+        display: block;
+        order: 3;
+    }
+
+    .nav-pill .collapse.nav-links:not(.show) {
+        display: none;
+        flex-basis: 100%;
+        order: 4;
+        margin: 0;
+        padding-top: 0.75rem;
+    }
+
+    .nav-pill .collapse.nav-links.show {
+        display: grid;
+        gap: 0.15rem;
+    }
+
     .nav-search {
         width: clamp(11rem, 30vw, 15rem);
     }
@@ -239,10 +299,7 @@ body:not(.has-hero) main {
         text-align: center;
     }
 
-    .nav-login-text,
-    .nav-user-text {
-        display: none;
-    }
+
 }
 
 .minimal-enclosed-header {
@@ -333,6 +390,20 @@ body:not(.has-hero) main {
 }
 .btn-pill--glass .btn-pill-icon {
     background: var(--c-deep);
+    color: var(--c-white);
+}
+.btn-pill--outline {
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    background: transparent;
+    color: var(--c-white);
+}
+.btn-pill--outline:hover {
+    border-color: var(--c-white);
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--c-white);
+}
+.btn-pill--outline .btn-pill-icon {
+    background: rgba(255, 255, 255, 0.16);
     color: var(--c-white);
 }
 
