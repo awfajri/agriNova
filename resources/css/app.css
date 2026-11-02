@@ -1302,6 +1302,54 @@ body:not(.has-hero) main {
     min-height: 2.85rem;
 }
 
+@media (max-width: 767.98px) {
+    .catalog-product-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.75rem;
+    }
+
+    .catalog-product-media {
+        height: 9.5rem;
+    }
+
+    .catalog-product-body {
+        gap: 0.35rem;
+        padding: 0.75rem;
+    }
+
+    .catalog-product-body h3 {
+        font-size: 1rem;
+    }
+
+    .catalog-product-body p {
+        min-height: 2.45rem;
+        font-size: 0.78rem;
+    }
+
+    .catalog-product-price {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 0.15rem;
+    }
+
+    .catalog-card-actions {
+        gap: 0.35rem;
+        padding: 0 0.75rem 0.75rem;
+    }
+
+    .catalog-add-button,
+    .catalog-buy-button {
+        min-height: 2.55rem;
+        padding: 0.55rem 0.6rem;
+        font-size: 0.78rem;
+    }
+
+    .catalog-add-button--icon {
+        width: 2.55rem;
+        padding: 0;
+    }
+}
+
 .filter-modal .modal-content,
 .auth-gate-modal .modal-content {
     border: 0;
@@ -2173,7 +2221,7 @@ body:not(.has-hero) main {
 
 @media (max-width: 575.98px) {
     .catalog-product-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .product-buy-controls {

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" role="img" aria-labelledby="title desc">
+    <title id="title">Ilustrasi sayur campur segar</title>
+    <desc id="desc">Keranjang berisi sayuran segar.</desc>
+    <defs>
+        <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+            <stop offset="0" stop-color="#f2f4d2"/>
+            <stop offset="1" stop-color="#b8dca6"/>
+        </linearGradient>
+        <linearGradient id="basket" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0" stop-color="#c98c4b"/>
+            <stop offset="1" stop-color="#8b542e"/>
+        </linearGradient>
+    </defs>
+    <rect width="640" height="480" fill="url(#bg)"/>
+    <circle cx="120" cy="106" r="52" fill="#fff" opacity=".3"/>
+    <circle cx="514" cy="90" r="76" fill="#fff" opacity=".22"/>
+    <ellipse cx="320" cy="390" rx="220" ry="28" fill="#568b4e" opacity=".25"/>
+    <path d="M205 245c0-95 43-151 86-151s86 56 86 151" fill="none" stroke="#55954f" stroke-width="22" stroke-linecap="round"/>
+    <path d="M149 236h342l-29 153c-6 28-29 46-57 46H235c-28 0-51-18-57-46Z" fill="url(#basket)" stroke="#794726" stroke-width="8"/>
+    <path d="m171 272 299 0M164 311l313 0M157 350l326 0" fill="none" stroke="#e0aa63" stroke-width="9" opacity=".75"/>
+    <circle cx="219" cy="214" r="53" fill="#e84f3e" stroke="#bd3d34" stroke-width="7"/>
+    <path d="M208 166c17-24 37-27 56-13-19 7-35 13-56 13Z" fill="#3f8d4a"/>
+    <path d="M287 213c15-49 57-69 99-49 18 42-5 86-52 97-25 5-43-10-47-48Z" fill="#5caa51" stroke="#3b7d43" stroke-width="7"/>
+    <path d="M402 196c20-27 61-30 82-2 9 44-15 76-56 78-36-5-44-42-26-76Z" fill="#e9b948" stroke="#bb8d29" stroke-width="7"/>
+    <path d="M246 193c13-34 38-54 70-56-9 32-27 54-70 56Z" fill="#438e4b"/>
+</svg>

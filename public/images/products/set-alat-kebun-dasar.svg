@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" role="img" aria-labelledby="title desc">
+    <title id="title">Ilustrasi set alat kebun</title>
+    <desc id="desc">Sekop dan alat berkebun untuk pemula.</desc>
+    <defs>
+        <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+            <stop offset="0" stop-color="#e7efe4"/>
+            <stop offset="1" stop-color="#b7cda9"/>
+        </linearGradient>
+        <linearGradient id="handle" x1="0" x2="1">
+            <stop offset="0" stop-color="#8e502e"/>
+            <stop offset="1" stop-color="#c57a3e"/>
+        </linearGradient>
+    </defs>
+    <rect width="640" height="480" fill="url(#bg)"/>
+    <path d="M0 354c138-48 247-33 363 0 111 32 183 27 277-11v137H0Z" fill="#779c58"/>
+    <ellipse cx="320" cy="408" rx="218" ry="24" fill="#4d7745" opacity=".3"/>
+    <path d="M255 355 366 102" stroke="url(#handle)" stroke-width="23" stroke-linecap="round"/>
+    <path d="m341 121 34-58" stroke="#8e502e" stroke-width="17" stroke-linecap="round"/>
+    <path d="M365 84c28-12 56-8 79 11-27 14-52 12-79-11Z" fill="#4c7f48"/>
+    <path d="M196 364 277 151c8-22 33-22 41 0l82 213c-65 23-136 23-204 0Z" fill="#a9c5c6" stroke="#4e7074" stroke-width="8"/>
+    <path d="M220 347c52 13 106 14 159 0" fill="none" stroke="#e5eeee" stroke-width="10" opacity=".7"/>
+    <circle cx="463" cy="313" r="45" fill="#e7a93e" stroke="#b87824" stroke-width="8"/>
+    <path d="M463 270v87M420 313h86" stroke="#fff1bc" stroke-width="7" opacity=".8"/>
+</svg>
