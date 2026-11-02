@@ -41,7 +41,7 @@ class CatalogSeeder extends Seeder
                 'is_preorder' => true,
                 'is_featured' => true,
                 'is_active' => true,
-                'image_url' => '/images/mln.webp',
+                'image_url' => '/images/products/melon-premium.svg',
             ],
             [
                 'category_id' => $buahSayur?->id,
@@ -56,7 +56,7 @@ class CatalogSeeder extends Seeder
                 'is_preorder' => false,
                 'is_featured' => true,
                 'is_active' => true,
-                'image_url' => '/images/mix.webp',
+                'image_url' => '/images/products/sayur-campur-segar.svg',
             ],
             [
                 'category_id' => $perlengkapan?->id,
@@ -71,7 +71,7 @@ class CatalogSeeder extends Seeder
                 'is_preorder' => false,
                 'is_featured' => false,
                 'is_active' => true,
-                'image_url' => null,
+                'image_url' => '/images/products/set-alat-kebun-dasar.svg',
             ],
             [
                 'category_id' => $pupuk?->id,
@@ -86,7 +86,7 @@ class CatalogSeeder extends Seeder
                 'is_preorder' => false,
                 'is_featured' => false,
                 'is_active' => true,
-                'image_url' => null,
+                'image_url' => '/images/products/pupuk-organik-cair.svg',
             ],
         ];
 

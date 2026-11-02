@@ -8,6 +8,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Product extends Model
 {
+    private const DEFAULT_IMAGES = [
+        'melon-premium' => '/images/products/melon-premium.svg',
+        'sayur-campur-segar' => '/images/products/sayur-campur-segar.svg',
+        'set-alat-kebun-dasar' => '/images/products/set-alat-kebun-dasar.svg',
+        'pupuk-organik-cair' => '/images/products/pupuk-organik-cair.svg',
+    ];
+
     protected $fillable = [
         'category_id',
         'name',
@@ -32,6 +39,15 @@ class Product extends Model
         'is_featured' => 'boolean',
         'is_active' => 'boolean',
     ];
+
+    public function getImageUrlAttribute(?string $value): ?string
+    {
+        if ($value && (!str_starts_with($value, '/') || is_file(public_path(ltrim($value, '/'))))) {
+            return $value;
+        }
+
+        return self::DEFAULT_IMAGES[$this->slug] ?? null;
+    }
 
     public function category(): BelongsTo
     {

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" role="img" aria-labelledby="title desc">
+    <title id="title">Ilustrasi melon premium</title>
+    <desc id="desc">Melon hijau segar di atas latar kebun.</desc>
+    <defs>
+        <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+            <stop offset="0" stop-color="#e6f4d8"/>
+            <stop offset="1" stop-color="#a8d7a1"/>
+        </linearGradient>
+        <radialGradient id="melon" cx=".35" cy=".25" r=".8">
+            <stop offset="0" stop-color="#f8f6b3"/>
+            <stop offset=".48" stop-color="#c5db68"/>
+            <stop offset="1" stop-color="#74a946"/>
+        </radialGradient>
+    </defs>
+    <rect width="640" height="480" fill="url(#bg)"/>
+    <path d="M0 348c108-55 190-50 286-8 104 45 212 36 354-39v179H0Z" fill="#6aa45b"/>
+    <ellipse cx="320" cy="362" rx="188" ry="28" fill="#477d49" opacity=".3"/>
+    <ellipse cx="320" cy="265" rx="158" ry="132" fill="url(#melon)" stroke="#4f813e" stroke-width="8"/>
+    <path d="M186 221c84 31 184 31 268 0M174 271c96 31 196 31 292 0M194 321c78 25 174 25 252 0M242 143c-19 87-19 184 0 244M320 133c-10 91-10 190 0 263M398 143c19 87 19 184 0 244" fill="none" stroke="#759c4a" stroke-width="8" opacity=".65"/>
+    <path d="M318 129c5-34 31-53 65-48-13 30-34 48-65 48Z" fill="#3c8649"/>
+    <path d="M321 127c-12-27-5-51 18-68 17 26 11 51-18 68Z" fill="#559f52"/>
+</svg>
