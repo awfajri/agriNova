@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin-auth')
 
 @section('title', 'Login Admin | Agrinova')
 @section('meta_description', 'Login panel admin Agrinova.')

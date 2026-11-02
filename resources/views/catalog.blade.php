@@ -14,7 +14,7 @@
                 <button type="button" data-bs-target="#catalogSlider" data-bs-slide-to="2" aria-label="Slide 3"></button>
             </div>
             <div class="carousel-inner">
-                <div class="carousel-item active catalog-slide catalog-slide--garden">
+                <div class="carousel-item active catalog-slide catalog-slide--garden" style="--catalog-slide-image: url('{{ asset('images/banner-1.jpg') }}');">
                     <div class="catalog-slide-copy">
                         <span class="eyebrow eyebrow--light">Agrinova Farm</span>
                         <h1>Segar langsung dari kebun.</h1>
@@ -22,7 +22,7 @@
                         <a href="#daftar-produk" class="catalog-action">Lihat panen</a>
                     </div>
                 </div>
-                <div class="carousel-item catalog-slide catalog-slide--harvest">
+                <div class="carousel-item catalog-slide catalog-slide--harvest" style="--catalog-slide-image: url('{{ asset('images/banner-2.jpg') }}');">
                     <div class="catalog-slide-copy">
                         <span class="eyebrow eyebrow--light">Panen Agrinova</span>
                         <h1>Pilih hasil panenmu.</h1>
@@ -30,7 +30,7 @@
                         <a href="#daftar-produk" class="catalog-action">Beli sekarang</a>
                     </div>
                 </div>
-                <div class="carousel-item catalog-slide catalog-slide--fresh">
+                <div class="carousel-item catalog-slide catalog-slide--fresh" style="--catalog-slide-image: url('{{ asset('images/banner-3.jpg') }}');">
                     <div class="catalog-slide-copy">
                         <span class="eyebrow eyebrow--light">Belanja langsung</span>
                         <h1>Dari kebun untuk kebutuhan.</h1>
