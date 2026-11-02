@@ -26,16 +26,16 @@
         </p>
 
         <div class="hero-actions">
-            <a href="{{ route('catalog') }}" class="btn-pill btn-pill--solid">
-                Belanja Sekarang
+            <a href="#produk" class="btn-pill btn-pill--solid">
+                Belanja Produk
                 <span class="btn-pill-icon" aria-hidden="true">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
                 </span>
             </a>
-            <a href="{{ route('catalog') }}" class="btn-pill btn-pill--glass">
-                Jelajahi Produk
+            <a href="#pilar" class="btn-pill btn-pill--outline">
+                Daftar Pelatihan
                 <span class="btn-pill-icon" aria-hidden="true">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
                 </span>
             </a>
         </div>
@@ -93,7 +93,6 @@
             'cta'   => 'Lihat Produk',
             'href'  => '#',
             'theme' => 'deep',
-            'img'   => 'images/fotobuah.webp',
         ],
         [
             'no'    => '02',
@@ -103,7 +102,6 @@
             'cta'   => 'Lihat Kelas',
             'href'  => '#',
             'theme' => 'green',
-            'img'   => 'images/pelatihan.webp',
         ],
         [
             'no'    => '03',
@@ -113,7 +111,6 @@
             'cta'   => 'Reservasi Kunjungan',
             'href'  => '#',
             'theme' => 'sage',
-            'img'   => 'images/eduwisata.webp',
         ],
     ];
 @endphp
@@ -141,14 +138,9 @@
                                 </span>
                             </a>
                         </div>
-                       <div class="pilar-visual" style="overflow: hidden;">
-                            @if (!empty($p['img']))
-                                <img src="{{ asset($p['img']) }}" alt="{{ $p['title'] }}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 1.4rem;">
-                            @else
-                                <span>Foto menyusul</span>
-                            @endif
+                        <div class="pilar-visual">
+                            <span>Foto menyusul</span>
                         </div>
-
                     </div>
                 </article>
             @endforeach
@@ -212,7 +204,15 @@
 </section>
 {{-- ===== PRODUK UNGGULAN ===== --}}
 @php
-    $harvestAt = $preorder?->booking_close_at?->toIso8601String();
+    // DATA CONTOH: nanti diganti data dari database (modul katalog & Kelola Pre-Order)
+    $harvestAt = now()->addDays(12)->setTime(7, 0)->toIso8601String();
+
+    $products = [
+        ['name' => 'Melon Premium',       'category' => 'Buah & Sayur',       'price' => 'Rp 35.000', 'unit' => '/kg',   'preorder' => true],
+        ['name' => 'Sayur Segar Pilihan', 'category' => 'Buah & Sayur',       'price' => 'Rp 15.000', 'unit' => '/ikat', 'preorder' => false],
+        ['name' => 'Pupuk Organik',       'category' => 'Pupuk',              'price' => 'Rp 45.000', 'unit' => '/pack', 'preorder' => false],
+        ['name' => 'Paket Perlengkapan',  'category' => 'Perlengkapan Kebun', 'price' => 'Rp 90.000', 'unit' => '/set',  'preorder' => false],
+    ];
 @endphp
 
 <section class="section-produk" id="produk">
@@ -223,66 +223,62 @@
         </div>
 
         {{-- Banner countdown pre-order --}}
-        <div class="preorder-banner" id="preorder" @if ($harvestAt) data-countdown="{{ $harvestAt }}" @endif>
+        <div class="preorder-banner" id="preorder" data-countdown="{{ $harvestAt }}">
             <div class="preorder-text">
                 <span class="eyebrow eyebrow--light">Pre-Order Panen Melon</span>
-                <h3>{{ $preorder ? 'Booking panen sedang dibuka' : 'Jadwal panen akan diumumkan' }}</h3>
-                <p>{{ $preorder?->description ?: 'Informasi pre-order dan jadwal panen akan diperbarui oleh tim Agrinova.' }}</p>
-                <a href="{{ route('catalog', ['availability' => 'preorder']) }}" class="btn-pill btn-pill--solid">
-                    Lihat Pre-Order
+                <h3>Panen berikutnya dimulai dalam</h3>
+                <p>Pre-order dibuka H-14 sebelum panen, amankan melonmu lebih awal.</p>
+                <a href="#" class="btn-pill btn-pill--solid">
+                    Pre-Order Sekarang
                     <span class="btn-pill-icon" aria-hidden="true">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
                     </span>
                 </a>
             </div>
 
-            @if ($harvestAt)
-                <div class="countdown" role="timer" aria-label="Hitung mundur penutupan booking panen">
-                    <div class="cd-box"><span data-cd="days">00</span><small>Hari</small></div>
-                    <div class="cd-box"><span data-cd="hours">00</span><small>Jam</small></div>
-                    <div class="cd-box"><span data-cd="minutes">00</span><small>Menit</small></div>
-                    <div class="cd-box"><span data-cd="seconds">00</span><small>Detik</small></div>
-                </div>
-            @endif
+            <div class="countdown" role="timer" aria-label="Hitung mundur menuju panen melon">
+                <div class="cd-box"><span data-cd="days">00</span><small>Hari</small></div>
+                <div class="cd-box"><span data-cd="hours">00</span><small>Jam</small></div>
+                <div class="cd-box"><span data-cd="minutes">00</span><small>Menit</small></div>
+                <div class="cd-box"><span data-cd="seconds">00</span><small>Detik</small></div>
+            </div>
         </div>
 
         {{-- Kartu produk (tilt saat hover) --}}
         <div class="product-grid">
-            @forelse ($products as $product)
+            @foreach ($products as $p)
                 <article class="product-card" data-tilt>
-                    <a href="{{ route('products.show', $product) }}" class="home-product-link">
                     <div class="product-media">
-                        @if ($product->is_preorder)
+                        @if ($p['preorder'])
                             <span class="product-badge">Pre-Order</span>
                         @endif
-                        @if ($product->image_url)
-                            <img src="{{ $product->image_url }}" alt="{{ $product->name }}" loading="lazy">
-                        @else
-                            <span class="product-ph">{{ $product->category->name ?? 'Produk Agrinova' }}</span>
-                        @endif
+                        <span class="product-ph">Foto menyusul</span>
                     </div>
 
                     <div class="product-info">
-                        <span class="product-cat">{{ $product->category->name ?? 'Produk' }}</span>
-                        <h3>{{ $product->name }}</h3>
+                        <span class="product-cat">{{ $p['category'] }}</span>
+                        <h3>{{ $p['name'] }}</h3>
                         <div class="product-row">
-                            <div class="product-price">Rp {{ number_format((float) $product->price, 0, ',', '.') }}</div>
-                            <span class="product-add" aria-hidden="true">
+                            <div class="product-price">{{ $p['price'] }}<small>{{ $p['unit'] }}</small></div>
+                            <button type="button" class="product-add" aria-label="Tambah {{ $p['name'] }} ke keranjang">
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
-                            </span>
+                            </button>
                         </div>
                     </div>
-                    </a>
                 </article>
-            @empty
-                <p class="text-center text-white-50">Produk unggulan akan tampil setelah data katalog tersedia.</p>
-            @endforelse
+            @endforeach
         </div>
     </div>
 </section>
 {{-- ===== FASILITAS GREEN HOUSE (hotspot modal) ===== --}}
 @php
-    $hotspots = $hotspots ?? [];
+    // TEKS CONTOH: ganti dengan data resmi Agrinova. x & y = posisi titik dalam persen.
+    $hotspots = [
+        ['title' => 'Green House',          'x' => 27, 'y' => 44, 'desc' => 'Bangunan green house tempat tanaman dibudidayakan dalam lingkungan yang lebih terkontrol.'],
+        ['title' => 'Area Budidaya Melon',  'x' => 61, 'y' => 56, 'desc' => 'Area tanam melon. Dari sini panen untuk penjualan dan pre-order berasal.'],
+        ['title' => 'Area Kegiatan Edukasi','x' => 44, 'y' => 74, 'desc' => 'Area untuk kegiatan edukasi dan pelatihan bagi pengunjung eduwisata.'],
+        ['title' => 'Parkir Bus',           'x' => 80, 'y' => 30, 'desc' => 'Area parkir untuk rombongan sekolah dan komunitas yang datang dengan bus.'],
+    ];
 @endphp
 
 <section class="section-fasilitas" id="fasilitas">
@@ -292,13 +288,17 @@
             <p>Klik titik pada foto untuk melihat info tiap fasilitas.</p>
         </div>
 
-        <div class="hotspot-stage" style="--stage-img: url('{{ asset('images/greenhouse.webp') }}')">
+        {{-- Kalau foto sudah ada, tambahkan di tag di bawah:
+             style="--stage-img: url('{{ asset('images/greenhouse.webp') }}')"
+             lalu hapus <span class="hotspot-ph"> --}}
+        <div class="hotspot-stage">
+            <span class="hotspot-ph">Foto green house menyusul</span>
+
             @foreach ($hotspots as $i => $h)
                 <button type="button" class="hotspot"
                         style="--x: {{ $h['x'] }}%; --y: {{ $h['y'] }}%"
                         data-hotspot data-index="{{ $i }}"
                         data-title="{{ $h['title'] }}" data-desc="{{ $h['desc'] }}"
-                        data-img="{{ asset($h['img']) }}"
                         aria-label="Lihat info {{ $h['title'] }}">
                     <span class="hotspot-dot"></span>
                     <span class="hotspot-tip">{{ $h['title'] }}</span>
@@ -308,9 +308,7 @@
 
         <div class="hotspot-list">
             @foreach ($hotspots as $i => $h)
-                <button type="button" class="hotspot-chip" data-hotspot data-index="{{ $i }}"
-                        data-title="{{ $h['title'] }}" data-desc="{{ $h['desc'] }}"
-                        data-img="{{ asset($h['img']) }}">
+                <button type="button" class="hotspot-chip" data-hotspot data-index="{{ $i }}">
                     <span class="hotspot-chip-no">{{ $i + 1 }}</span>
                     {{ $h['title'] }}
                 </button>
@@ -327,9 +325,7 @@
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
             </button>
 
-            <div class="facility-media" style="overflow: hidden;">
-                <img id="facilityImg" src="{{ asset('images/greenhouse2.webp') }}" alt="Fasilitas Agrinova" style="width: 100%; height: 100%; object-fit: cover;">
-            </div>
+            <div class="facility-media"><span>Foto menyusul</span></div>
 
             <div class="facility-body">
                 <span class="pilar-tag">Fasilitas</span>
@@ -353,7 +349,16 @@
 </div>
 {{-- ===== TEASER GALERI (linear modal) ===== --}}
 @php
-    $gallery = $gallery ?? [];
+    // TEKS CONTOH: ganti dengan keterangan asli. Kalau foto sudah ada, isi 'img' => 'images/galeri/nama-file.webp'
+    $gallery = [
+        ['cat' => 'Panen',     'title' => 'Panen Melon',        'desc' => 'Suasana panen melon di kebun Agrinova.'],
+        ['cat' => 'Eduwisata', 'title' => 'Kunjungan Sekolah',  'desc' => 'Rombongan sekolah belajar langsung di kebun.'],
+        ['cat' => 'Fasilitas', 'title' => 'Green House',        'desc' => 'Green house tempat tanaman dibudidayakan.'],
+        ['cat' => 'Pelatihan', 'title' => 'Kelas Budidaya',     'desc' => 'Peserta pelatihan praktik budidaya tanaman.'],
+        ['cat' => 'Panen',     'title' => 'Sayur Segar',        'desc' => 'Sayur segar yang dipetik langsung dari kebun.'],
+        ['cat' => 'Eduwisata', 'title' => 'Kegiatan Edukasi',   'desc' => 'Kegiatan edukasi bagi komunitas dan keluarga.'],
+        ['cat' => 'Fasilitas', 'title' => 'Area Kebun',         'desc' => 'Hamparan area kebun Agrinova.'],
+    ];
 @endphp
 
 <section class="section-galeri" id="galeri">

@@ -1,64 +1,33 @@
+<div class="announcement-topbar">
+    <div class="container announcement-topbar-inner">
+        <span>Panen melon berikutnya segera dibuka.</span>
+        <a href="{{ route('home') }}#preorder">Pre-Order Melon <span aria-hidden="true">↗</span></a>
+    </div>
+</div>
+
 <header class="site-nav">
     <div class="container">
-        @php($cartCount = array_sum(session('cart', [])))
-        @php($isHome = request()->routeIs('home'))
-        <nav class="navbar navbar-dark nav-pill nav-pill--home">
+        <nav class="navbar navbar-expand-lg navbar-dark nav-pill">
             <a class="navbar-brand font-heading fw-bold" href="{{ route('home') }}#hero">Agrinova</a>
 
-            <div class="nav-links home-nav-links" id="mainNav">
-                <a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}" @if($isHome) data-spy="hero" @endif href="{{ route('home') }}#hero">Beranda</a>
-                <a class="nav-link" @if($isHome) data-spy="tentang" @endif href="{{ route('home') }}#tentang">Profil</a>
-                <a class="nav-link {{ request()->routeIs('catalog*') || request()->routeIs('products.*') ? 'active' : '' }}" @if($isHome) data-spy="produk" @endif href="{{ $isHome ? route('home').'#produk' : route('catalog') }}">Produk</a>
-                <a class="nav-link {{ request()->routeIs('pelatihan.*') ? 'active' : '' }}" href="{{ route('pelatihan.index') }}">Pelatihan</a>
-                <a class="nav-link {{ request()->routeIs('eduwisata.*') ? 'active' : '' }}" href="{{ route('eduwisata.index') }}">Eduwisata</a>
-                <a class="nav-link" @if($isHome) data-spy="galeri" @endif href="{{ route('home') }}#galeri">Galeri</a>
-            </div>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Buka menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
 
-            <div class="nav-actions">
-                @if ($isHome)
-                    <a class="nav-cta" href="{{ route('catalog', ['availability' => 'preorder']) }}">
-                        Pre-Order Melon
-                        <span class="nav-cta-icon" aria-hidden="true">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
-                        </span>
-                    </a>
+            <div class="collapse navbar-collapse" id="mainNav">
+                <ul class="navbar-nav mx-auto align-items-lg-center">
+                    <li class="nav-item"><a class="nav-link" data-spy="tentang" href="{{ route('home') }}#tentang">Tentang Kami</a></li>
+                    <li class="nav-item"><a class="nav-link" data-spy="produk" href="{{ route('home') }}#produk">Produk</a></li>
+                    <li class="nav-item"><a class="nav-link" data-spy="pilar" href="{{ route('home') }}#pilar">Layanan</a></li>
+                </ul>
+
+                @if (Route::has('auth.login'))
+                    <a class="nav-login-text" href="{{ route('auth.login') }}">Masuk / Daftar</a>
                 @endif
-                <div class="nav-auth">
-                    @auth
-                        <a class="nav-profile" href="{{ route('profile.show') }}" aria-label="Profil saya">
-                            @if (auth()->user()->avatar_url)
-                                <img src="{{ auth()->user()->avatar_url }}" alt="" referrerpolicy="no-referrer">
-                            @else
-                                <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5"/></svg>
-                            @endif
-                        </a>
-                        <form method="POST" action="{{ route('auth.logout') }}">
-                            @csrf
-                            <button type="submit" class="nav-logout" aria-label="Keluar">
-                                <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></svg>
-                            </button>
-                        </form>
-                    @else
-                        <a class="nav-login" href="{{ route('auth.login') }}" aria-label="Masuk">
-                            <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5"/>                            </svg>
-                        </a>
-                    @endauth
-                </div>
-                <a class="nav-cart" href="{{ route('cart') }}" aria-label="Buka keranjang{{ $cartCount > 0 ? ', '.$cartCount.' item' : '' }}">
-                    <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h2l2.2 11.1a2 2 0 0 0 2 1.6h7.9a2 2 0 0 0 1.9-1.5L21 8H6"/><circle cx="10" cy="20" r="1.25"/><circle cx="18" cy="20" r="1.25"/></svg>
-                    @if ($cartCount > 0)
-                        <span>{{ $cartCount }}</span>
-                    @endif
-                </a>
             </div>
-
-            @if ($isHome)
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Buka menu">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
-            @endif
         </nav>
     </div>
 </header>
