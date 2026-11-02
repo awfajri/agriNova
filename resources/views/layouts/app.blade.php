@@ -9,7 +9,18 @@
 </head>
 <body class="@yield('body_class')">
     @php($funnelContext = request()->routeIs('cart') || request()->routeIs('checkout.*') || request()->routeIs('auth.login'))
-    @if ($funnelContext)
+    @php($accountContext = request()->routeIs('profile.*') || request()->routeIs('terms') || request()->routeIs('orders.tracking'))
+    @if ($accountContext)
+        <header class="context-nav">
+            <div class="context-nav-inner">
+                <a href="{{ request()->routeIs('profile.show') ? route('home') : route('profile.show') }}" class="context-back" aria-label="{{ request()->routeIs('profile.show') ? 'Kembali ke beranda' : 'Kembali ke akun' }}">
+                    <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+                </a>
+                <span class="context-brand">{{ request()->routeIs('orders.tracking') ? 'Lacak pesanan' : 'Agrinova' }}</span>
+                <span class="context-spacer" aria-hidden="true"></span>
+            </div>
+        </header>
+    @elseif ($funnelContext)
         @include('partials.minimal-enclosed-header')
     @else
         @include('partials.navbar')
@@ -19,9 +30,11 @@
         @yield('content')
     </main>
 
-    @include('partials.footer')
+    @if (! request()->routeIs('profile.*') && ! request()->routeIs('orders.tracking'))
+        @include('partials.footer')
+    @endif
 
-    @if (!request()->routeIs('home') && ! $funnelContext)
+    @if (!request()->routeIs('home') && ! $funnelContext && ! $accountContext)
         <a href="{{ route('home') }}#hero" class="floating-home" aria-label="Kembali ke beranda">
             <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1z"/><path d="M9 21v-6h6v6"/></svg>
             <span>Beranda</span>

@@ -19,7 +19,10 @@
                     <span>Nomor pesanan</span>
                     <strong>{{ $order->order_number }}</strong>
                 </div>
-                <span class="tracking-payment-status">{{ ucfirst($order->payment_status) }}</span>
+                <div class="tracking-card-meta">
+                    <span class="tracking-payment-status">{{ $order->statusLabel() }}</span>
+                    <small>Diperbarui {{ $order->updated_at->format('d M Y, H:i') }}</small>
+                </div>
             </div>
 
             <div class="tracking-timeline">
@@ -42,6 +45,11 @@
                         <strong>Rp {{ number_format((float) $item->total_price, 0, ',', '.') }}</strong>
                     </div>
                 @endforeach
+            </div>
+
+            <div class="tracking-pickup-note">
+                <strong>Pengambilan di lokasi Agrinova</strong>
+                <p>Pesanan tidak dikirim melalui kurir. Tunggu status berubah menjadi “Siap diambil”, lalu bawa nomor pesanan saat datang ke lokasi Agrinova.</p>
             </div>
         </div>
     </div>

@@ -41,7 +41,7 @@ class AdminOrderController extends Controller
     public function update(Request $request, Order $order, OrderStockService $stock): RedirectResponse
     {
         $validated = $request->validate([
-            'status' => ['required', Rule::in(['pending', 'processing', 'shipped', 'completed', 'canceled'])],
+            'status' => ['required', Rule::in(array_keys(Order::statusOptions()))],
             'payment_status' => ['required', Rule::in(['pending', 'paid', 'failure', 'expire', 'cancel', 'deny'])],
             'notes' => ['nullable', 'string', 'max:1000'],
         ]);

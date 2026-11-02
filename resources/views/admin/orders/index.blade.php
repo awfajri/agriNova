@@ -9,8 +9,8 @@
         <input type="search" name="q" value="{{ request('q') }}" placeholder="Cari nomor order atau nama...">
         <select name="status" aria-label="Filter status order">
             <option value="">Semua status</option>
-            @foreach (['pending', 'processing', 'shipped', 'completed', 'canceled'] as $status)
-                <option value="{{ $status }}" @selected(request('status') === $status)>{{ ucfirst($status) }}</option>
+            @foreach (\App\Models\Order::statusOptions() as $status => $label)
+                <option value="{{ $status }}" @selected(request('status') === $status)>{{ $label }}</option>
             @endforeach
         </select>
         <button type="submit" class="admin-button admin-button--secondary">Terapkan</button>
@@ -28,7 +28,7 @@
                     <td><strong>{{ $order->customer_name }}</strong><small>{{ $order->customer_whatsapp }}</small></td>
                     <td>Rp {{ number_format((float) $order->total, 0, ',', '.') }}</td>
                     <td><span class="admin-status admin-status--{{ $order->payment_status === 'paid' ? 'success' : 'muted' }}">{{ ucfirst($order->payment_status) }}</span></td>
-                    <td><span class="admin-status admin-status--{{ $order->status === 'canceled' ? 'danger' : 'info' }}">{{ ucfirst($order->status) }}</span></td>
+                    <td><span class="admin-status admin-status--{{ $order->status === 'canceled' ? 'danger' : 'info' }}">{{ $order->statusLabel() }}</span></td>
                     <td><a href="{{ route('admin.orders.show', $order) }}" class="admin-text-link">Detail</a></td>
                 </tr>
             @empty
