@@ -26,16 +26,16 @@
         </p>
 
         <div class="hero-actions">
-            <a href="#" class="btn-pill btn-pill--solid">
-                Belanja Sekarang
+            <a href="#produk" class="btn-pill btn-pill--solid">
+                Belanja Produk
                 <span class="btn-pill-icon" aria-hidden="true">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
                 </span>
             </a>
-            <a href="#" class="btn-pill btn-pill--glass">
-                Jelajahi Produk
+            <a href="#pilar" class="btn-pill btn-pill--outline">
+                Daftar Pelatihan
                 <span class="btn-pill-icon" aria-hidden="true">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
                 </span>
             </a>
         </div>

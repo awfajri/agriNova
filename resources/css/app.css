@@ -50,24 +50,46 @@ h6,
     letter-spacing: -0.02em;
 }
 
-/* ---------- Navbar (pill melayang) ---------- */
+/* ---------- Global navigation ---------- */
 .site-nav {
-    position: fixed;
+    position: sticky;
     top: 0;
     left: 0;
     right: 0;
     z-index: 50;
-    padding: 0.9rem 0;
+    padding: 0;
+    background: var(--c-deep);
+    box-shadow: 0 0.5rem 1.5rem rgba(9, 35, 40, 0.14);
 }
 body:not(.has-hero) main {
-    padding-top: 6rem;
+    padding-top: 0;
+}
+
+.announcement-topbar {
+    position: relative;
+    z-index: 51;
+    padding: 0.45rem 0;
+    background: var(--c-ink);
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 0.78rem;
+}
+
+.announcement-topbar-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.7rem;
+}
+
+.announcement-topbar a {
+    color: var(--c-sage);
+    font-weight: 700;
+    text-decoration: none;
 }
 
 .nav-pill {
-    background: var(--c-deep);
-    border-radius: 999px;
-    padding: 0.55rem 0.6rem 0.55rem 1.6rem;
-    box-shadow: 0 10px 30px rgba(9, 35, 40, 0.25);
+    min-height: 4.25rem;
+    padding: 0.65rem 0;
 }
 .nav-pill .navbar-brand {
     color: var(--c-white);
@@ -84,42 +106,36 @@ body:not(.has-hero) main {
     color: var(--c-sage);
 }
 
-.nav-cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.9rem;
-    padding: 0.4rem 0.4rem 0.4rem 1.4rem;
-    border-radius: 999px;
-    background: var(--c-white);
-    color: var(--c-deep);
-    font-weight: 500;
+.nav-login-text {
+    color: var(--c-white);
+    font-size: 0.9rem;
+    font-weight: 700;
     text-decoration: none;
-    transition: transform 0.2s ease;
 }
-.nav-cta:hover {
-    transform: translateY(-2px);
-    color: var(--c-ink);
-}
-.nav-cta-icon {
-    display: grid;
-    place-items: center;
-    width: 2.4rem;
-    height: 2.4rem;
-    border-radius: 50%;
-    background: #dff0ec;
-    color: var(--c-deep);
+.nav-login-text:hover {
+    color: var(--c-sage);
 }
 
 @media (max-width: 991.98px) {
     .nav-pill {
-        border-radius: 1.75rem;
-        padding: 0.6rem 1rem;
+        padding: 0.6rem 0;
     }
     .nav-pill .navbar-collapse {
         padding: 1rem 0 0.5rem;
     }
-    .nav-cta {
-        margin-top: 0.75rem;
+    .nav-login-text {
+        display: inline-block;
+        margin-top: 0.5rem;
+        padding-bottom: 0.5rem;
+    }
+
+    .announcement-topbar-inner {
+        flex-wrap: wrap;
+        gap: 0.25rem 0.6rem;
+    }
+
+    .announcement-topbar {
+        text-align: center;
     }
 }
 
@@ -156,17 +172,17 @@ body:not(.has-hero) main {
     background: var(--c-white);
     color: var(--c-deep);
 }
-.btn-pill--glass {
+.btn-pill--outline {
     background: rgba(255, 255, 255, 0.18);
     border: 1px solid rgba(255, 255, 255, 0.35);
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
     color: var(--c-white);
 }
-.btn-pill--glass:hover {
+.btn-pill--outline:hover {
     color: var(--c-white);
 }
-.btn-pill--glass .btn-pill-icon {
+.btn-pill--outline .btn-pill-icon {
     background: var(--c-deep);
     color: var(--c-white);
 }
