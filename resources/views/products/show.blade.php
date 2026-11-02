@@ -64,6 +64,68 @@
             </div>
         </div>
 
+        <section class="product-reviews" aria-labelledby="reviews-title">
+            <div class="product-reviews-head">
+                <div>
+                    <span class="eyebrow">Pengalaman pembeli</span>
+                    <h2 id="reviews-title">Rating dan komentar</h2>
+                </div>
+                <div class="product-rating-summary">
+                    <strong>{{ $reviewCount > 0 ? number_format($averageRating, 1) : '—' }}</strong>
+                    <span aria-label="{{ $reviewCount > 0 ? number_format($averageRating, 1) . ' dari 5' : 'Belum ada rating' }}">★</span>
+                    <small>{{ $reviewCount }} ulasan</small>
+                </div>
+            </div>
+
+            @if ($errors->has('review'))
+                <div class="catalog-alert catalog-alert--error" role="alert">{{ $errors->first('review') }}</div>
+            @endif
+
+            @auth
+                @if ($reviewableOrder)
+                    <form method="POST" action="{{ route('products.reviews.store', $product) }}" class="product-review-form">
+                        @csrf
+                        <div>
+                            <label for="review-rating">Rating kamu</label>
+                            <select id="review-rating" name="rating" required>
+                                @for ($rating = 5; $rating >= 1; $rating--)
+                                    <option value="{{ $rating }}" @selected((int) old('rating', $existingReview?->rating ?? 5) === $rating)>{{ $rating }} dari 5</option>
+                                @endfor
+                            </select>
+                        </div>
+                        <div class="product-review-comment">
+                            <label for="review-comment">Komentar <span>(opsional)</span></label>
+                            <textarea id="review-comment" name="comment" rows="3" maxlength="1000" placeholder="Bagaimana pengalamanmu dengan produk ini?">{{ old('comment', $existingReview?->comment) }}</textarea>
+                        </div>
+                        <button type="submit" class="catalog-action">{{ $existingReview ? 'Perbarui ulasan' : 'Kirim ulasan' }}</button>
+                    </form>
+                @else
+                    <p class="product-review-note">Beli dan selesaikan pembayaran produk ini untuk memberikan rating dan komentar.</p>
+                @endif
+            @else
+                <p class="product-review-note">Login dengan Google setelah membeli produk ini untuk memberikan rating dan komentar.</p>
+            @endauth
+
+            @if ($reviews->isNotEmpty())
+                <div class="product-review-list">
+                    @foreach ($reviews as $review)
+                        <article class="product-review">
+                            <div class="product-review-meta">
+                                <strong>{{ $review->user->name }}</strong>
+                                <span>{{ str_repeat('★', $review->rating) }}{{ str_repeat('☆', 5 - $review->rating) }}</span>
+                            </div>
+                            @if ($review->comment)
+                                <p>{{ $review->comment }}</p>
+                            @endif
+                            <small>{{ $review->created_at->translatedFormat('d F Y') }}</small>
+                        </article>
+                    @endforeach
+                </div>
+            @else
+                <p class="product-review-note">Belum ada ulasan untuk produk ini.</p>
+            @endif
+        </section>
+
         @if ($relatedProducts->isNotEmpty())
             <div class="related-products">
                 <div class="catalog-results-head">
@@ -71,7 +133,7 @@
                         <span class="eyebrow">Masih satu kategori</span>
                         <h2>Produk lainnya</h2>
                     </div>
-                    <a href="{{ route('catalog', ['category' => $product->category?->slug]) }}" class="catalog-action">Lihat semua</a>
+                    <a href="{{ route('catalog', ['category' => $product->category?->slug]) }}" class="related-products-label">Lihat semua produk kategori</a>
                 </div>
                 <div class="catalog-product-grid">
                     @foreach ($relatedProducts as $related)

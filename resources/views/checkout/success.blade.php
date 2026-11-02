@@ -36,6 +36,9 @@
                 </div>
             @endif
             <div class="order-success-actions">
+                @auth
+                    <a href="{{ route('orders.tracking', $order->order_number) }}" class="catalog-action">Lacak pesanan</a>
+                @endauth
                 <a href="{{ route('catalog') }}" class="catalog-action">Kembali belanja</a>
                 <a href="{{ route('home') }}" class="catalog-action catalog-action--secondary">Ke beranda</a>
             </div>

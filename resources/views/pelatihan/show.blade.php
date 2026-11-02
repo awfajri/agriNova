@@ -55,7 +55,7 @@
                 <div class="p-3 rounded-4 mb-4" style="background: var(--c-white); border: 1px solid rgba(18, 84, 79, 0.12);">
                     <strong class="d-block mb-2 small text-uppercase" style="color: var(--c-green); letter-spacing: 0.06em;">Fokus Materi:</strong>
                     <div class="d-grid gap-2" style="font-size: 0.92rem; color: rgba(9, 35, 40, 0.82);">
-                        @foreach ($kelas['materi'] as$materi)
+                        @foreach ($kelas['materi'] as $materi)
                             <div class="d-flex align-items-start gap-2">
                                 <svg class="mt-1 shrink-0" style="color: var(--c-green);" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                                 <span>{{ $materi }}</span>

@@ -7,38 +7,43 @@
 @section('content')
 <section class="catalog-page">
     <div class="container">
-        <div id="catalogSlider" class="carousel slide catalog-slider" data-bs-ride="carousel">
-            <div class="carousel-indicators">
-                <button type="button" data-bs-target="#catalogSlider" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                <button type="button" data-bs-target="#catalogSlider" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                <button type="button" data-bs-target="#catalogSlider" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        <div class="catalog-slider" data-catalog-slider tabindex="0" aria-label="Banner Agrinova">
+            <div class="catalog-slider-viewport">
+                <div class="catalog-slider-track" data-catalog-slider-track>
+                    <div class="catalog-slide" data-catalog-slide>
+                        <img src="{{ asset('images/banner-1.jpg') }}" alt="Suasana Agrinova Farm" draggable="false">
+                        <div class="catalog-slide-copy">
+                            <h1>Segar langsung dari kebun.</h1>
+                            <p>Pilih hasil panen dan kebutuhan kebun untuk rumahmu.</p>
+                        </div>
+                    </div>
+                    <div class="catalog-slide" data-catalog-slide>
+                        <img src="{{ asset('images/banner-2.jpg') }}" alt="Hasil panen Agrinova" draggable="false">
+                        <div class="catalog-slide-copy">
+                            <h1>Temukan produk pilihanmu.</h1>
+                            <p>Belanja produk segar dan perlengkapan kebun dengan mudah.</p>
+                        </div>
+                    </div>
+                    <div class="catalog-slide" data-catalog-slide>
+                        <img src="{{ asset('images/banner-3.png') }}" alt="Produk segar Agrinova" draggable="false">
+                        <div class="catalog-slide-copy">
+                            <h1>Dari kebun untuk kebutuhan sehari-hari.</h1>
+                            <p>Pesan produk Agrinova dalam satu alur belanja yang sederhana.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="carousel-inner">
-                <div class="carousel-item active catalog-slide catalog-slide--garden">
-                    <div class="catalog-slide-copy">
-                        <span class="eyebrow eyebrow--light">Agrinova Farm</span>
-                        <h1>Segar dari kebun.</h1>
-                    </div>
-                </div>
-                <div class="carousel-item catalog-slide catalog-slide--harvest">
-                    <div class="catalog-slide-copy">
-                        <span class="eyebrow eyebrow--light">Panen Agrinova</span>
-                        <h1>Pilih hasil panenmu.</h1>
-                    </div>
-                </div>
-                <div class="carousel-item catalog-slide catalog-slide--fresh">
-                    <div class="catalog-slide-copy">
-                        <span class="eyebrow eyebrow--light">Belanja langsung</span>
-                        <h1>Untuk rumah dan kebun.</h1>
-                    </div>
-                </div>
+            <button class="catalog-slider-control catalog-slider-control--prev" type="button" data-catalog-prev aria-label="Banner sebelumnya">
+                <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+            </button>
+            <button class="catalog-slider-control catalog-slider-control--next" type="button" data-catalog-next aria-label="Banner berikutnya">
+                <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+            </button>
+            <div class="catalog-slider-dots" role="tablist" aria-label="Pilih banner">
+                <button type="button" class="is-active" data-catalog-dot="0" role="tab" aria-selected="true" aria-label="Banner 1"></button>
+                <button type="button" data-catalog-dot="1" role="tab" aria-selected="false" aria-label="Banner 2"></button>
+                <button type="button" data-catalog-dot="2" role="tab" aria-selected="false" aria-label="Banner 3"></button>
             </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#catalogSlider" data-bs-slide="prev" aria-label="Slide sebelumnya">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#catalogSlider" data-bs-slide="next" aria-label="Slide berikutnya">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            </button>
         </div>
 
         @if (session('success'))
