@@ -11,6 +11,8 @@ export function initCatalogSearch() {
             form.classList.toggle("has-query", input.value.trim().length > 0);
         };
 
+        input.addEventListener("focus", () => form.classList.add("is-active"));
+        input.addEventListener("blur", () => form.classList.remove("is-active"));
         clearButton?.addEventListener("click", () => {
             input.value = "";
             updateSearchState();

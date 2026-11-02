@@ -5,6 +5,9 @@
 @section('body_class', 'has-product-detail')
 
 @section('content')
+@php
+    $productImage = $product->image_url ?: asset('images/sayursegar.webp');
+@endphp
 <section class="product-detail-page">
     <div class="container">
         <nav class="breadcrumb-nav" aria-label="Breadcrumb">
@@ -21,12 +24,8 @@
         @endif
 
         <div class="product-detail-grid">
-            <div class="product-detail-media {{ $product->image_url ? '' : 'product-detail-media--placeholder' }}">
-                @if ($product->image_url)
-                    <img src="{{ $product->image_url }}" alt="{{ $product->name }}">
-                @else
-                    <span>{{ $product->category->name ?? 'Produk Agrinova' }}</span>
-                @endif
+            <div class="product-detail-media">
+                <img src="{{ $productImage }}" alt="{{ $product->name }}">
                 @if ($product->is_preorder)
                     <span class="product-badge product-badge--preorder">Pre-order</span>
                 @endif
@@ -137,14 +136,13 @@
                 </div>
                 <div class="catalog-product-grid">
                     @foreach ($relatedProducts as $related)
+                        @php
+                            $relatedImage = $related->image_url ?: asset('images/sayursegar.webp');
+                        @endphp
                         <article class="catalog-product-card">
                             <a href="{{ route('products.show', $related) }}" class="catalog-product-link">
-                                <div class="catalog-product-media {{ $related->image_url ? '' : 'catalog-product-media--placeholder' }}">
-                                    @if ($related->image_url)
-                                        <img src="{{ $related->image_url }}" alt="{{ $related->name }}" loading="lazy">
-                                    @else
-                                        <span>{{ $related->category->name ?? 'Produk Agrinova' }}</span>
-                                    @endif
+                                <div class="catalog-product-media">
+                                    <img src="{{ $relatedImage }}" alt="{{ $related->name }}" loading="lazy">
                                 </div>
                                 <div class="catalog-product-body">
                                     <span class="product-category">{{ $related->category->name ?? 'Produk' }}</span>

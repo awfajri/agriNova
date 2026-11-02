@@ -91,8 +91,9 @@
             'title' => 'Buah & Sayur Segar',
             'desc'  => 'Melon, buah, dan sayur dipanen langsung dari kebun Agrinova. Bisa dibeli langsung atau di-pre-order sebelum panen.',
             'cta'   => 'Lihat Produk',
-            'href'  => '#',
+            'href'  => route('catalog'),
             'theme' => 'deep',
+            'img'   => 'images/mix.webp',
         ],
         [
             'no'    => '02',
@@ -100,8 +101,9 @@
             'title' => 'Pelatihan Budidaya & Pembekalan Pensiun',
             'desc'  => 'Kelas budidaya melon, anggur, dan tanaman lainnya, serta pembekalan usaha tani bagi yang memasuki masa pensiun.',
             'cta'   => 'Lihat Kelas',
-            'href'  => '#',
+            'href'  => route('pelatihan.index'),
             'theme' => 'green',
+            'img'   => 'images/pelatihan.webp',
         ],
         [
             'no'    => '03',
@@ -109,8 +111,9 @@
             'title' => 'Eduwisata Kebun',
             'desc'  => 'Kunjungan edukatif ke kebun untuk sekolah, komunitas, dan keluarga. Reservasi mudah lewat formulir online.',
             'cta'   => 'Reservasi Kunjungan',
-            'href'  => '#',
+            'href'  => route('eduwisata.index'),
             'theme' => 'sage',
+            'img'   => 'images/eduwisata.webp',
         ],
     ];
 @endphp
@@ -139,7 +142,7 @@
                             </a>
                         </div>
                         <div class="pilar-visual">
-                            <span>Foto menyusul</span>
+                            <img src="{{ asset($p['img']) }}" alt="{{ $p['title'] }}" loading="lazy">
                         </div>
                     </div>
                 </article>
@@ -173,7 +176,7 @@
 
         <div class="bento">
             <div class="bento-card bento-a">
-                <span class="bento-photo">Foto menyusul</span>
+                <img class="bento-photo" src="{{ asset('images/greenhouse.webp') }}" alt="Green house Agrinova" loading="lazy">
                 <div class="bento-a-box">
                     <div class="bento-number"><span class="counter" data-target="3">3</span></div>
                     <p>Pilar bisnis dalam satu platform: produk segar, pelatihan, dan eduwisata.</p>
@@ -208,10 +211,10 @@
     $harvestAt = now()->addDays(12)->setTime(7, 0)->toIso8601String();
 
     $products = [
-        ['name' => 'Melon Premium',       'category' => 'Buah & Sayur',       'price' => 'Rp 35.000', 'unit' => '/kg',   'preorder' => true],
-        ['name' => 'Sayur Segar Pilihan', 'category' => 'Buah & Sayur',       'price' => 'Rp 15.000', 'unit' => '/ikat', 'preorder' => false],
-        ['name' => 'Pupuk Organik',       'category' => 'Pupuk',              'price' => 'Rp 45.000', 'unit' => '/pack', 'preorder' => false],
-        ['name' => 'Paket Perlengkapan',  'category' => 'Perlengkapan Kebun', 'price' => 'Rp 90.000', 'unit' => '/set',  'preorder' => false],
+        ['name' => 'Melon Premium',       'category' => 'Buah & Sayur',       'price' => 'Rp 35.000', 'unit' => '/kg',   'preorder' => true,  'img' => 'images/panenmelon.webp'],
+        ['name' => 'Sayur Segar Pilihan', 'category' => 'Buah & Sayur',       'price' => 'Rp 15.000', 'unit' => '/ikat', 'preorder' => false, 'img' => 'images/sayursegar.webp'],
+        ['name' => 'Pupuk Organik',       'category' => 'Pupuk',              'price' => 'Rp 45.000', 'unit' => '/pack', 'preorder' => false, 'img' => 'images/mln.webp'],
+        ['name' => 'Paket Perlengkapan',  'category' => 'Perlengkapan Kebun', 'price' => 'Rp 90.000', 'unit' => '/set',  'preorder' => false, 'img' => 'images/mix.webp'],
     ];
 @endphp
 
@@ -249,10 +252,10 @@
             @foreach ($products as $p)
                 <article class="product-card" data-tilt>
                     <div class="product-media">
+                        <img src="{{ asset($p['img']) }}" alt="{{ $p['name'] }}" loading="lazy">
                         @if ($p['preorder'])
                             <span class="product-badge">Pre-Order</span>
                         @endif
-                        <span class="product-ph">Foto menyusul</span>
                     </div>
 
                     <div class="product-info">
@@ -291,8 +294,7 @@
         {{-- Kalau foto sudah ada, tambahkan di tag di bawah:
              style="--stage-img: url('{{ asset('images/greenhouse.webp') }}')"
              lalu hapus <span class="hotspot-ph"> --}}
-        <div class="hotspot-stage">
-            <span class="hotspot-ph">Foto green house menyusul</span>
+        <div class="hotspot-stage" style="--stage-img: url('{{ asset('images/greenhouse.webp') }}')">
 
             @foreach ($hotspots as $i => $h)
                 <button type="button" class="hotspot"
@@ -325,7 +327,7 @@
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
             </button>
 
-            <div class="facility-media"><span>Foto menyusul</span></div>
+            <div class="facility-media" style="background-image: url('{{ asset('images/greenhouse2.webp') }}')"></div>
 
             <div class="facility-body">
                 <span class="pilar-tag">Fasilitas</span>
@@ -349,15 +351,14 @@
 </div>
 {{-- ===== TEASER GALERI (linear modal) ===== --}}
 @php
-    // TEKS CONTOH: ganti dengan keterangan asli. Kalau foto sudah ada, isi 'img' => 'images/galeri/nama-file.webp'
     $gallery = [
-        ['cat' => 'Panen',     'title' => 'Panen Melon',        'desc' => 'Suasana panen melon di kebun Agrinova.'],
-        ['cat' => 'Eduwisata', 'title' => 'Kunjungan Sekolah',  'desc' => 'Rombongan sekolah belajar langsung di kebun.'],
-        ['cat' => 'Fasilitas', 'title' => 'Green House',        'desc' => 'Green house tempat tanaman dibudidayakan.'],
-        ['cat' => 'Pelatihan', 'title' => 'Kelas Budidaya',     'desc' => 'Peserta pelatihan praktik budidaya tanaman.'],
-        ['cat' => 'Panen',     'title' => 'Sayur Segar',        'desc' => 'Sayur segar yang dipetik langsung dari kebun.'],
-        ['cat' => 'Eduwisata', 'title' => 'Kegiatan Edukasi',   'desc' => 'Kegiatan edukasi bagi komunitas dan keluarga.'],
-        ['cat' => 'Fasilitas', 'title' => 'Area Kebun',         'desc' => 'Hamparan area kebun Agrinova.'],
+    ['cat' => 'Panen',     'title' => 'Panen Melon',        'desc' => 'Suasana panen melon di kebun Agrinova.', 'img' => 'images/panenmelon.webp'],
+    ['cat' => 'Eduwisata', 'title' => 'Kunjungan Sekolah',  'desc' => 'Rombongan sekolah belajar langsung di kebun.', 'img' => 'images/edukasi2.webp'],
+    ['cat' => 'Fasilitas', 'title' => 'Green House',        'desc' => 'Green house tempat tanaman dibudidayakan.', 'img' => 'images/greenhouse.webp'],
+    ['cat' => 'Pelatihan', 'title' => 'Kelas Budidaya',     'desc' => 'Peserta pelatihan praktik budidaya tanaman.', 'img' => 'images/pelatihan.webp'],
+    ['cat' => 'Panen',     'title' => 'Sayur Segar',        'desc' => 'Sayur segar yang dipetik langsung dari kebun.', 'img' => 'images/sayursegar.webp'],
+    ['cat' => 'Eduwisata', 'title' => 'Kegiatan Edukasi',   'desc' => 'Kegiatan edukasi bagi komunitas dan keluarga.', 'img' => 'images/eduwisata.webp'],
+    ['cat' => 'Fasilitas', 'title' => 'Area Kebun',         'desc' => 'Hamparan area kebun Agrinova.', 'img' => 'images/greenhouse2.webp'],
     ];
 @endphp
 

@@ -70,11 +70,11 @@
             @forelse ($kelasList as $item)
                 <article class="catalog-product-card">
                     <a href="{{ route('pelatihan.show', $item['slug']) }}" class="catalog-product-link">
-                        <div class="catalog-product-media catalog-product-media--placeholder">
+                        <div class="catalog-product-media">
+                            <img src="{{ asset($item['image']) }}" alt="{{ $item['judul'] }}" loading="lazy">
                             <span class="product-badge {{ $item['is_available'] ? 'product-badge--preorder' : '' }}">
                                 {{ $item['status'] }}
                             </span>
-                            <span>Foto Kelas Menyusul</span>
                         </div>
 
                         <div class="catalog-product-body">

@@ -8,15 +8,24 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="@yield('body_class')">
-    @php($funnelContext = request()->routeIs('cart') || request()->routeIs('checkout.*') || request()->routeIs('auth.login'))
-    @php($accountContext = request()->routeIs('profile.*') || request()->routeIs('terms') || request()->routeIs('orders.tracking'))
+    @php
+        $funnelContext = request()->routeIs('cart') || request()->routeIs('checkout.*') || request()->routeIs('auth.login');
+        $accountContext = request()->routeIs('profile.*') || request()->routeIs('terms') || request()->routeIs('orders.tracking');
+    @endphp
     @if ($accountContext)
+        @php
+            $contextTitle = request()->routeIs('orders.tracking')
+                ? 'Lacak Pesanan'
+                : (request()->routeIs('terms') ? 'Ketentuan' : 'Akun Saya');
+            $contextBackLabel = request()->routeIs('profile.show') ? 'Beranda' : 'Akun';
+        @endphp
         <header class="context-nav">
             <div class="context-nav-inner">
-                <a href="{{ request()->routeIs('profile.show') ? route('home') : route('profile.show') }}" class="context-back" aria-label="{{ request()->routeIs('profile.show') ? 'Kembali ke beranda' : 'Kembali ke akun' }}">
+                <a href="{{ request()->routeIs('profile.show') ? route('home') : route('profile.show') }}" class="context-back" aria-label="{{ $contextBackLabel }}">
                     <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+                    <span>{{ $contextBackLabel }}</span>
                 </a>
-                <span class="context-brand">{{ request()->routeIs('orders.tracking') ? 'Lacak pesanan' : 'Agrinova' }}</span>
+                <span class="context-brand">{{ $contextTitle }}</span>
                 <span class="context-spacer" aria-hidden="true"></span>
             </div>
         </header>

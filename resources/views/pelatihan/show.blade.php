@@ -21,11 +21,11 @@
         @endif
 
         <div class="product-detail-grid">
-            <div class="product-detail-media product-detail-media--placeholder">
+            <div class="product-detail-media">
+                <img src="{{ asset($kelas['image']) }}" alt="{{ $kelas['judul'] }}" loading="lazy">
                 <span class="product-badge {{ $kelas['is_available'] ? 'product-badge--preorder' : '' }}">
                     {{ $kelas['status'] }}
                 </span>
-                <span>Foto Kegiatan Pelatihan Menyusul</span>
             </div>
 
             <div class="product-detail-copy">

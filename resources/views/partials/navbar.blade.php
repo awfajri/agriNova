@@ -7,9 +7,11 @@
 
 <header class="site-nav">
     <div class="container">
-        @php($cartCount = array_sum(session('cart', [])))
-        @php($isCatalogPage = request()->routeIs('catalog*') || request()->routeIs('products.*'))
-        @php($isHome = request()->routeIs('home'))
+        @php
+            $cartCount = array_sum(session('cart', []));
+            $isCatalogPage = request()->routeIs('catalog*') || request()->routeIs('products.*');
+            $isHome = request()->routeIs('home');
+        @endphp
         <nav class="navbar navbar-dark nav-pill">
             <a class="navbar-brand font-heading fw-bold" href="{{ route('home') }}#hero">Agrinova</a>
 

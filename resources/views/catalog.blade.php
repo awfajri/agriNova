@@ -75,14 +75,18 @@
 
                 <div class="catalog-product-grid">
                     @forelse ($products as $product)
+                        @php
+                            $categoryName = strtolower($product->category->name ?? '');
+                            $productImage = $product->image_url ?: asset(
+                                str_contains($categoryName, 'pupuk')
+                                    ? 'images/mln.webp'
+                                    : (str_contains($categoryName, 'perlengkapan') ? 'images/mix.webp' : 'images/sayursegar.webp')
+                            );
+                        @endphp
                         <article class="catalog-product-card">
                             <a href="{{ route('products.show', $product) }}" class="catalog-product-link">
-                                <div class="catalog-product-media {{ $product->image_url ? '' : 'catalog-product-media--placeholder' }}">
-                                    @if ($product->image_url)
-                                        <img src="{{ $product->image_url }}" alt="{{ $product->name }}" loading="lazy">
-                                    @else
-                                        <span>{{ $product->category->name ?? 'Produk Agrinova' }}</span>
-                                    @endif
+                                <div class="catalog-product-media">
+                                    <img src="{{ $productImage }}" alt="{{ $product->name }}" loading="lazy">
                                     @if ($product->is_preorder)
                                         <span class="product-badge product-badge--preorder">Pre-order</span>
                                     @endif

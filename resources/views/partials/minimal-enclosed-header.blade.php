@@ -1,10 +1,10 @@
 @php
     if (request()->routeIs('cart')) {
         $backUrl = route('catalog');
-        $backLabel = 'Kembali belanja';
+        $backLabel = 'Belanja';
     } elseif (request()->routeIs('checkout.*')) {
         $backUrl = route('cart');
-        $backLabel = 'Kembali ke keranjang';
+        $backLabel = 'Keranjang';
     } else {
         $backUrl = route('catalog');
         $backLabel = 'Batal';

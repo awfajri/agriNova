@@ -38,13 +38,12 @@
                     @csrf
                     @method('PATCH')
                     @foreach ($items as $item)
+                        @php
+                            $cartImage = $item['product']->image_url ?: asset('images/sayursegar.webp');
+                        @endphp
                         <article class="cart-item {{ ! $item['available'] ? 'cart-item--unavailable' : '' }}">
-                            <a href="{{ route('products.show', $item['product']) }}" class="cart-item-media {{ $item['product']->image_url ? '' : 'catalog-product-media--placeholder' }}">
-                                @if ($item['product']->image_url)
-                                    <img src="{{ $item['product']->image_url }}" alt="{{ $item['product']->name }}">
-                                @else
-                                    <span>{{ $item['product']->category->name ?? 'Produk' }}</span>
-                                @endif
+                            <a href="{{ route('products.show', $item['product']) }}" class="cart-item-media">
+                                <img src="{{ $cartImage }}" alt="{{ $item['product']->name }}">
                             </a>
                             <div class="cart-item-copy">
                                 <span class="product-category">{{ $item['product']->category->name ?? 'Produk' }}</span>

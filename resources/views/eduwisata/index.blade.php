@@ -14,6 +14,7 @@
             'satuan' => '/ siswa (Min. 20 org)',
             'deskripsi' => 'Tur terpandu mengenal siklus hidroponik melon dan anatomi tanaman bersama agronomi.',
             'chips' => ['Pemandu Kebun', 'Lembar Materi', 'Welcome Drink'],
+            'image' => 'images/edukasi2.webp',
         ],
         [
             'id' => 'Paket Wisata Petik Melon',
@@ -23,6 +24,7 @@
             'satuan' => '/ orang (Min. 5 org)',
             'deskripsi' => 'Sensasi memilih dan memetik melon premium langsung dari pohon di dalam Green House.',
             'chips' => ['Tiket Green House', 'Voucher Buah', 'Alat Petik'],
+            'image' => 'images/panenmelon.webp',
         ],
         [
             'id' => 'Paket Studi Banding Agribisnis',
@@ -32,6 +34,7 @@
             'satuan' => '/ peserta (Min. 15 org)',
             'deskripsi' => 'Bedah operasional kebun, sistem fertigasi otomatis, dan diskusi bisnis agrowisata.',
             'chips' => ['Diskusi Manajemen', 'Tur Teknis Irigasi', 'Sajian Melon'],
+            'image' => 'images/greenhouse2.webp',
         ],
     ];
 
@@ -301,9 +304,9 @@
             <div class="catalog-product-grid">
                 @foreach ($paketEduwisata as $paket)
                     <article class="catalog-product-card">
-                        <div class="catalog-product-media catalog-product-media--placeholder">
+                        <div class="catalog-product-media">
+                            <img src="{{ asset($paket['image']) }}" alt="{{ $paket['judul'] }}" loading="lazy">
                             <span class="product-badge product-badge--preorder">{{ $paket['tag'] }}</span>
-                            <span>Foto Eduwisata Menyusul</span>
                         </div>
 
                         <div class="catalog-product-body">
@@ -346,7 +349,7 @@
 
             <div class="bento">
                 <div class="bento-card bento-a" style="min-height: 21rem;">
-                    <span class="bento-photo">Foto Area Green House Menyusul</span>
+                    <img class="bento-photo" src="{{ asset('images/greenhouse.webp') }}" alt="Area green house Agrinova" loading="lazy">
                     <div class="bento-a-box">
                         <span class="eyebrow">Lingkungan Nyaman</span>
                         <h3 class="mt-2 mb-1 fs-4">Dirancang Ramah Rombongan</h3>
