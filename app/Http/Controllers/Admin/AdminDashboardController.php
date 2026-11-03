@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\ProductReview;
+use App\Models\EduwisataReservation;
+use App\Models\TrainingRegistration;
+use App\Models\TrainingClass;
 use App\Models\User;
 use Illuminate\Contracts\View\View;
 
@@ -21,6 +24,9 @@ class AdminDashboardController extends Controller
                 'lowStock' => Product::query()->where('is_active', true)->whereColumn('stock', '<=', 'min_order_quantity')->count(),
                 'reviews' => ProductReview::query()->where('is_approved', false)->count(),
                 'customers' => User::query()->where('is_admin', false)->count(),
+                'trainingRegistrations' => TrainingRegistration::query()->where('status', 'pending')->count(),
+                'eduwisataReservations' => EduwisataReservation::query()->where('status', 'pending')->count(),
+                'trainingClasses' => TrainingClass::query()->where('is_available', true)->count(),
             ],
             'recentOrders' => Order::query()->latest()->limit(8)->get(),
             'lowStockProducts' => Product::query()

@@ -1,3 +1,8 @@
+@php
+    $siteAddress = \App\Models\SiteSetting::get('address', config('agrinova.address'));
+    $siteWhatsapp = \App\Models\SiteSetting::get('whatsapp', config('agrinova.whatsapp'));
+    $siteWhatsappUrl = $siteWhatsapp ? 'https://wa.me/' . preg_replace('/\D+/', '', $siteWhatsapp) : null;
+@endphp
 <footer class="site-footer">
     <div class="container">
         <div class="footer-topline">
@@ -22,9 +27,9 @@
 
             <div class="footer-column footer-contact">
                 <h6>Hubungi Agrinova</h6>
-                <span>{{ config('agrinova.address') ?: 'Alamat menunggu konfirmasi Agrinova' }}</span>
-                @if (config('agrinova.whatsapp'))
-                    <a href="{{ config('agrinova.whatsapp_url') }}" target="_blank" rel="noopener">WhatsApp +{{ config('agrinova.whatsapp') }}</a>
+                <span>{{ $siteAddress ?: 'Alamat menunggu konfirmasi Agrinova' }}</span>
+                @if ($siteWhatsapp)
+                    <a href="{{ $siteWhatsappUrl }}" target="_blank" rel="noopener">WhatsApp {{ $siteWhatsapp }}</a>
                 @else
                     <span>WhatsApp menunggu konfirmasi Agrinova</span>
                 @endif

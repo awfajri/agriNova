@@ -9,6 +9,8 @@
     <div class="admin-metric"><span>Pendapatan terbayar</span><strong>Rp {{ number_format((float) $metrics['revenue'], 0, ',', '.') }}</strong><small>Dari order berstatus paid</small></div>
     <div class="admin-metric"><span>Stok perlu dicek</span><strong>{{ $metrics['lowStock'] }}</strong><small>Di bawah batas minimum</small></div>
     <div class="admin-metric"><span>Review menunggu</span><strong>{{ $metrics['reviews'] }}</strong><small>{{ $metrics['customers'] }} akun pelanggan</small></div>
+    <div class="admin-metric"><span>Pendaftar pelatihan</span><strong>{{ $metrics['trainingRegistrations'] }}</strong><small>Perlu ditinjau</small></div>
+    <div class="admin-metric"><span>Reservasi eduwisata</span><strong>{{ $metrics['eduwisataReservations'] }}</strong><small>Perlu dikonfirmasi</small></div>
 </div>
 
 <div class="admin-grid-two">
@@ -40,6 +42,21 @@
         @empty
             <p class="admin-empty">Semua stok masih aman.</p>
         @endforelse
+    </section>
+
+    <section class="admin-panel">
+        <div class="admin-panel-head">
+            <div><span class="eyebrow">Edukasi</span><h2>Permintaan terbaru</h2></div>
+            <a href="{{ route('admin.training-registrations.index') }}" class="admin-text-link">Lihat pendaftar</a>
+        </div>
+        <a href="{{ route('admin.eduwisata.index') }}" class="admin-list-row">
+            <span><strong>Reservasi eduwisata</strong><small>Kelola jadwal kunjungan dan kapasitas kebun</small></span>
+            <span class="admin-stock-warning">{{ $metrics['eduwisataReservations'] }} menunggu</span>
+        </a>
+        <a href="{{ route('admin.trainings.index') }}" class="admin-list-row">
+            <span><strong>Kelas pelatihan aktif</strong><small>Atur jadwal, harga, dan kuota</small></span>
+            <span>{{ $metrics['trainingClasses'] }} kelas</span>
+        </a>
     </section>
 </div>
 @endsection

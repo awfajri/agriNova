@@ -2,121 +2,66 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\TrainingClass;
+use App\Models\TrainingRegistration;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class PelatihanController extends Controller
 {
-    private function getDaftarKelas(): array
+    public function index(Request $request): View
     {
-        return [
-            'budidaya-melon-hidroponik' => [
-                'slug' => 'budidaya-melon-hidroponik',
-                'kategori' => 'Budidaya Tanaman',
-                'judul' => 'Budidaya Melon Green House',
-                'harga' => 450000,
-                'durasi' => '2 Hari Praktik',
-                'jadwal' => '14–15 Nov 2026',
-                'kuota' => 'Sisa 8 Kursi',
-                'status' => 'Tersedia',
-                'is_available' => true,
-                'image' => 'images/pelatihan.webp',
-                'highlight' => ['Modul & Sertifikat', 'Bibit & AB Mix', 'Praktik Kebun'],
-                'ringkasan' => 'Praktik semai, racik nutrisi AB Mix, hingga panen melon premium.',
-                'deskripsi' => 'Kuasa standar budidaya melon eksklusif di dalam Green House Agrinova. Peserta belajar langsung manajemen iklim mikro, polinasi buatan, hingga seleksi buah kualitas supermarket.',
-                'materi' => [
-                    'Pengenalan varietas melon & instalasi Green House',
-                    'Manajemen nutrisi fertigasi (AB Mix) & kontrol EC/pH',
-                    'Teknik polinasi, seleksi buah, dan pemangkasan cabang',
-                    'Analisis usaha tani & kemitraan pasar hasil panen',
-                ],
-            ],
-            'pembekalan-pensiun-agribisnis' => [
-                'slug' => 'pembekalan-pensiun-agribisnis',
-                'kategori' => 'Pembekalan Pensiun',
-                'judul' => 'Wirausaha Tani Masa Pensiun',
-                'harga' => 1250000,
-                'durasi' => '3 Hari Intensif',
-                'jadwal' => '20–22 Nov 2026',
-                'kuota' => 'Sisa 5 Kursi',
-                'status' => 'Dibuka',
-                'is_available' => true,
-                'image' => 'images/edukasi2.webp',
-                'highlight' => ['Perencanaan Bisnis', 'Tur Kebun Mitra', 'Konsultasi Privat'],
-                'ringkasan' => 'Rancang bisnis kebun produktif & terukur jelang masa purnabakti.',
-                'deskripsi' => 'Program khusus bagi karyawan menjelang masa purnabakti yang ingin membangun agribisnis mandiri. Mencakup hitung RAB Green House, pemilihan komoditas, hingga manajemen risiko.',
-                'materi' => [
-                    'Mindset wirausaha & manajemen risiko di masa pensiun',
-                    'Perancangan RAB Green House skala rumahan & komersial',
-                    'Praktik budidaya melon, anggur, dan sayur hidroponik',
-                    'Simulasi finansial & studi kasus kebun mitra Agrinova',
-                ],
-            ],
-            'budidaya-anggur-dan-sayur' => [
-                'slug' => 'budidaya-anggur-dan-sayur',
-                'kategori' => 'Budidaya Tanaman',
-                'judul' => 'Anggur & Sayur Hidroponik',
-                'harga' => 350000,
-                'durasi' => '1 Hari (6 Jam)',
-                'jadwal' => '28 Nov 2026',
-                'kuota' => 'Kuota Penuh',
-                'status' => 'Penuh',
-                'is_available' => false,
-                'image' => 'images/sayursegar.webp',
-                'highlight' => ['Teknik Pruning', 'Sistem NFT/DFT', 'Starter Kit'],
-                'ringkasan' => 'Teknik pembuahan anggur meja & instalasi sayur di lahan sempit.',
-                'deskripsi' => 'Pelajari cara membuahkan anggur secara terjadwal dan memproduksi sayuran daun bebas pestisida menggunakan sistem hidroponik modern.',
-                'materi' => [
-                    'Pemilihan bibit anggur impor & media tanam poros',
-                    'Teknik pruning (pemangkasan) pembuahan bertingkat',
-                    'Instalasi hidroponik sayur bebas pestisida',
-                    'Penanganan pascapanen dan pengemasan ritel',
-                ],
-            ],
-        ];
-    }
-
-    public function index(Request $request)
-    {
-        $kategori =$request->query('kategori');
-        $daftarKelas =$this->getDaftarKelas();
-
-        $kelas = collect($daftarKelas)->when($kategori, function ($collection,$kategori) {
-            return $collection->where('kategori',$kategori);
-        });
+        $classes = TrainingClass::query()
+            ->where('status', '!=', 'Nonaktif')
+            ->when($request->filled('kategori'), fn ($query) => $query->where('category', $request->string('kategori')))
+            ->orderBy('sort_order')
+            ->orderBy('title')
+            ->get();
 
         return view('pelatihan.index', [
-            'kelasList' => $kelas,
-            'kategoriAktif' => $kategori,
+            'kelasList' => $classes->map(fn (TrainingClass $class): array => $class->toPublicArray()),
+            'kategoriAktif' => $request->query('kategori'),
         ]);
     }
 
-    public function show(string $slug)
+    public function show(string $slug): View
     {
-        $daftarKelas =$this->getDaftarKelas();
-        abort_unless(isset($daftarKelas[$slug]), 404);
+        $class = TrainingClass::query()->where('slug', $slug)->where('status', '!=', 'Nonaktif')->firstOrFail();
 
         return view('pelatihan.show', [
-            'kelas' => $daftarKelas[$slug],
+            'kelas' => $class->toPublicArray(),
         ]);
     }
 
-    public function register(Request $request, string$slug)
+    public function register(Request $request, string $slug): RedirectResponse
     {
-        $daftarKelas =$this->getDaftarKelas();
-        abort_unless(isset($daftarKelas[$slug]), 404);
+        $class = TrainingClass::query()->where('slug', $slug)->firstOrFail();
+        abort_unless($class->is_available, 422, 'Pendaftaran kelas ini sedang ditutup.');
 
-        $validated =$request->validate([
-            'nama' => 'required|string|max:120',
-            'whatsapp' => 'required|string|max:30',
-            'email' => 'required|email|max:120',
-            'instansi' => 'nullable|string|max:120',
-            'jumlah_peserta' => 'required|integer|min:1|max:50',
-            'catatan' => 'nullable|string|max:500',
+        $validated = $request->validate([
+            'nama' => ['required', 'string', 'max:120'],
+            'whatsapp' => ['required', 'string', 'max:30'],
+            'email' => ['required', 'email', 'max:120'],
+            'instansi' => ['nullable', 'string', 'max:120'],
+            'jumlah_peserta' => ['required', 'integer', 'min:1', 'max:50'],
+            'catatan' => ['nullable', 'string', 'max:500'],
+        ]);
+
+        TrainingRegistration::query()->create([
+            'training_class_id' => $class->id,
+            'class_title' => $class->title,
+            'name' => $validated['nama'],
+            'whatsapp' => $validated['whatsapp'],
+            'email' => $validated['email'],
+            'institution' => $validated['instansi'] ?? null,
+            'participants' => $validated['jumlah_peserta'],
+            'notes' => $validated['catatan'] ?? null,
         ]);
 
         return back()->with(
             'success_pelatihan',
-            "Pendaftaran atas nama {$validated['nama']} untuk kelas {$daftarKelas[$slug]['judul']} berhasil dikirim! Admin kami akan menghubungi via WhatsApp."
+            "Pendaftaran atas nama {$validated['nama']} untuk kelas {$class->title} berhasil dikirim! Admin kami akan menghubungi via WhatsApp."
         );
     }
 }

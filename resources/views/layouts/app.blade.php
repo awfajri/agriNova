@@ -3,8 +3,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>@yield('title', 'Agrinova Farm')</title>
-    <meta name="description" content="@yield('meta_description', 'Agrinova Farm: kebun melon, sayur segar, pelatihan budidaya, dan eduwisata.')">
+    @php
+        $defaultSiteName = \App\Models\SiteSetting::get('site_name', 'Agrinova Farm');
+        $defaultSeoDescription = \App\Models\SiteSetting::get('seo_description', 'Agrinova Farm: kebun melon, sayur segar, pelatihan budidaya, dan eduwisata.');
+    @endphp
+    <title>@yield('title', $defaultSiteName)</title>
+    <meta name="description" content="@yield('meta_description', $defaultSeoDescription)">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="@yield('body_class')">

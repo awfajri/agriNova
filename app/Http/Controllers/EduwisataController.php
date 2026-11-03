@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\EduwisataReservation;
 use Illuminate\Http\Request;
 
 class EduwisataController extends Controller
@@ -22,6 +23,17 @@ class EduwisataController extends Controller
             'sesi_waktu' => 'required|string',
             'jumlah_peserta' => 'required|integer|min:5|max:200',
             'catatan' => 'nullable|string|max:500',
+        ]);
+
+        EduwisataReservation::query()->create([
+            'contact_name' => $validated['nama_pic'],
+            'group_name' => $validated['asal_rombongan'],
+            'package_name' => $validated['kategori_kunjungan'],
+            'whatsapp' => $validated['whatsapp'],
+            'visit_date' => $validated['tanggal_kunjungan'],
+            'session' => $validated['sesi_waktu'],
+            'participants' => $validated['jumlah_peserta'],
+            'notes' => $validated['catatan'] ?? null,
         ]);
 
         return redirect()->to(route('eduwisata.index') . '#form-reservasi')

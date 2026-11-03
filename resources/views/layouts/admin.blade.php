@@ -16,10 +16,15 @@
                 <a href="{{ route('admin.products.index') }}" class="{{ request()->routeIs('admin.products.*') ? 'is-active' : '' }}">Produk</a>
                 <a href="{{ route('admin.orders.index') }}" class="{{ request()->routeIs('admin.orders.*') ? 'is-active' : '' }}">Order</a>
                 <a href="{{ route('admin.preorders.index') }}" class="{{ request()->routeIs('admin.preorders.*') ? 'is-active' : '' }}">Pre-order</a>
+                <a href="{{ route('admin.trainings.index') }}" class="{{ request()->routeIs('admin.trainings.*') ? 'is-active' : '' }}">Pelatihan</a>
+                <a href="{{ route('admin.training-registrations.index') }}" class="{{ request()->routeIs('admin.training-registrations.*') ? 'is-active' : '' }}">Pendaftar</a>
+                <a href="{{ route('admin.eduwisata.index') }}" class="{{ request()->routeIs('admin.eduwisata.*') ? 'is-active' : '' }}">Eduwisata</a>
+                <a href="{{ route('admin.gallery.index') }}" class="{{ request()->routeIs('admin.gallery.*') ? 'is-active' : '' }}">Galeri</a>
                 <a href="{{ route('admin.reviews.index') }}" class="{{ request()->routeIs('admin.reviews.*') ? 'is-active' : '' }}">Rating & komentar</a>
             </nav>
             <div class="admin-sidebar-footer">
                 <a href="{{ route('home') }}">Lihat website</a>
+                <a href="{{ route('admin.settings.edit') }}" class="{{ request()->routeIs('admin.settings.*') ? 'is-active' : '' }}">Pengaturan</a>
                 <form method="POST" action="{{ route('admin.logout') }}">
                     @csrf
                     <button type="submit">Keluar</button>

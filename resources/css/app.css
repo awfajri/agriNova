@@ -2214,6 +2214,21 @@ body:not(.has-hero) .context-nav + main {
     min-width: 14rem;
 }
 
+.admin-filter-form select,
+.admin-inline-form select {
+    min-width: 9rem;
+    padding: 0.62rem 2rem 0.62rem 0.75rem;
+    border: 1px solid rgba(18, 84, 79, 0.16);
+    border-radius: 0.65rem;
+    background: var(--c-paper);
+    color: var(--c-ink);
+    font: inherit;
+}
+
+.admin-inline-form {
+    display: inline-flex;
+}
+
 .admin-button {
     display: inline-flex;
     align-items: center;
