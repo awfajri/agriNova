@@ -25,21 +25,17 @@ class EduwisataController extends Controller
             'catatan' => 'nullable|string|max:500',
         ]);
 
-        EduwisataReservation::query()->create([
+        $reservation = EduwisataReservation::query()->create([
             'contact_name' => $validated['nama_pic'],
             'group_name' => $validated['asal_rombongan'],
             'package_name' => $validated['kategori_kunjungan'],
-            'whatsapp' => $validated['whatsapp'],
+            'whatsapp' => preg_replace('/\D+/', '', $validated['whatsapp']) ?: $validated['whatsapp'],
             'visit_date' => $validated['tanggal_kunjungan'],
             'session' => $validated['sesi_waktu'],
             'participants' => $validated['jumlah_peserta'],
             'notes' => $validated['catatan'] ?? null,
         ]);
 
-        return redirect()->to(route('eduwisata.index') . '#form-reservasi')
-            ->with(
-                'success_eduwisata',
-                "Permohonan reservasi kunjungan dari {$validated['asal_rombongan']} ({$validated['jumlah_peserta']} orang) pada tanggal {$validated['tanggal_kunjungan']} berhasil tercatat! Admin akan segera mengonfirmasi ketersediaan kuota kebun."
-            );
+        return redirect()->route('registrations.show', ['eduwisata', $reservation->reference_number]);
     }
 }

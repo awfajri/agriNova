@@ -48,20 +48,17 @@ class PelatihanController extends Controller
             'catatan' => ['nullable', 'string', 'max:500'],
         ]);
 
-        TrainingRegistration::query()->create([
+        $registration = TrainingRegistration::query()->create([
             'training_class_id' => $class->id,
             'class_title' => $class->title,
             'name' => $validated['nama'],
-            'whatsapp' => $validated['whatsapp'],
+            'whatsapp' => preg_replace('/\D+/', '', $validated['whatsapp']) ?: $validated['whatsapp'],
             'email' => $validated['email'],
             'institution' => $validated['instansi'] ?? null,
             'participants' => $validated['jumlah_peserta'],
             'notes' => $validated['catatan'] ?? null,
         ]);
 
-        return back()->with(
-            'success_pelatihan',
-            "Pendaftaran atas nama {$validated['nama']} untuk kelas {$class->title} berhasil dikirim! Admin kami akan menghubungi via WhatsApp."
-        );
+        return redirect()->route('registrations.show', ['pelatihan', $registration->reference_number]);
     }
 }

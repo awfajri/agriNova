@@ -23,6 +23,7 @@
                 <a href="{{ route('catalog') }}">Produk</a>
                 <a href="{{ route('pelatihan.index') }}">Pelatihan</a>
                 <a href="{{ route('eduwisata.index') }}">Eduwisata</a>
+                <a href="{{ route('registrations.track') }}">Lacak pendaftaran</a>
             </div>
 
             <div class="footer-column footer-contact">

@@ -11,6 +11,7 @@
             <option value="">Semua status</option>
             <option value="pending" @selected(request('status') === 'pending')>Menunggu</option>
             <option value="confirmed" @selected(request('status') === 'confirmed')>Dikonfirmasi</option>
+            <option value="completed" @selected(request('status') === 'completed')>Selesai</option>
             <option value="rejected" @selected(request('status') === 'rejected')>Ditolak</option>
         </select>
     </form>
@@ -26,13 +27,14 @@
                     <td>{{ $registration->class_title }}</td>
                     <td>{{ $registration->whatsapp }}<small>{{ $registration->email }}</small></td>
                     <td>{{ $registration->participants }}</td>
-                    <td><span class="admin-status admin-status--{{ $registration->status === 'confirmed' ? 'success' : ($registration->status === 'rejected' ? 'danger' : 'info') }}">{{ $registration->statusLabel() }}</span></td>
+                    <td><span class="admin-status admin-status--{{ in_array($registration->status, ['confirmed', 'completed'], true) ? 'success' : ($registration->status === 'rejected' ? 'danger' : 'info') }}">{{ $registration->statusLabel() }}</span></td>
                     <td>
                         <form method="POST" action="{{ route('admin.training-registrations.update', $registration) }}" class="admin-inline-form">
                             @csrf @method('PATCH')
                             <select name="status" aria-label="Status {{ $registration->name }}" onchange="this.form.submit()">
                                 <option value="pending" @selected($registration->status === 'pending')>Menunggu</option>
                                 <option value="confirmed" @selected($registration->status === 'confirmed')>Konfirmasi</option>
+                                <option value="completed" @selected($registration->status === 'completed')>Selesai</option>
                                 <option value="rejected" @selected($registration->status === 'rejected')>Tolak</option>
                             </select>
                         </form>

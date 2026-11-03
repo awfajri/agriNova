@@ -26,7 +26,7 @@ class AdminEduwisataReservationController extends Controller
     public function update(Request $request, EduwisataReservation $reservation): RedirectResponse
     {
         $validated = $request->validate([
-            'status' => ['required', Rule::in(['pending', 'confirmed', 'rejected'])],
+            'status' => ['required', Rule::in(['pending', 'confirmed', 'completed', 'rejected'])],
         ]);
         $reservation->update($validated);
 

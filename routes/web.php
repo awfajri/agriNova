@@ -8,6 +8,7 @@ use App\Http\Controllers\MidtransNotificationController;
 use App\Http\Controllers\OrderTrackingController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductReviewController;
+use App\Http\Controllers\RegistrationTrackingController;
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminEduwisataReservationController;
@@ -69,6 +70,9 @@ Route::post('/pelatihan/{slug}/daftar', [PelatihanController::class, 'register']
 
 Route::get('/eduwisata', [EduwisataController::class, 'index'])->name('eduwisata.index');
 Route::post('/eduwisata/reservasi', [EduwisataController::class, 'reserve'])->name('eduwisata.reserve');
+Route::get('/lacak-pendaftaran', [RegistrationTrackingController::class, 'index'])->name('registrations.track');
+Route::post('/lacak-pendaftaran', [RegistrationTrackingController::class, 'lookup'])->name('registrations.lookup');
+Route::get('/pendaftaran/{type}/{reference}', [RegistrationTrackingController::class, 'show'])->name('registrations.show');
 
 Route::get('/admin/login', [AdminAuthController::class, 'create'])->name('admin.login');
 Route::post('/admin/login', [AdminAuthController::class, 'store'])

@@ -11,6 +11,7 @@
             <option value="">Semua status</option>
             <option value="pending" @selected(request('status') === 'pending')>Menunggu</option>
             <option value="confirmed" @selected(request('status') === 'confirmed')>Dikonfirmasi</option>
+            <option value="completed" @selected(request('status') === 'completed')>Selesai</option>
             <option value="rejected" @selected(request('status') === 'rejected')>Ditolak</option>
         </select>
     </form>
@@ -26,13 +27,14 @@
                     <td>{{ $reservation->package_name }}</td>
                     <td>{{ $reservation->visit_date->format('d M Y') }}<small>{{ $reservation->session }}</small></td>
                     <td>{{ $reservation->whatsapp }}</td>
-                    <td><span class="admin-status admin-status--{{ $reservation->status === 'confirmed' ? 'success' : ($reservation->status === 'rejected' ? 'danger' : 'info') }}">{{ $reservation->statusLabel() }}</span></td>
+                    <td><span class="admin-status admin-status--{{ in_array($reservation->status, ['confirmed', 'completed'], true) ? 'success' : ($reservation->status === 'rejected' ? 'danger' : 'info') }}">{{ $reservation->statusLabel() }}</span></td>
                     <td>
                         <form method="POST" action="{{ route('admin.eduwisata.update', $reservation) }}" class="admin-inline-form">
                             @csrf @method('PATCH')
                             <select name="status" aria-label="Status {{ $reservation->group_name }}" onchange="this.form.submit()">
                                 <option value="pending" @selected($reservation->status === 'pending')>Menunggu</option>
                                 <option value="confirmed" @selected($reservation->status === 'confirmed')>Konfirmasi</option>
+                                <option value="completed" @selected($reservation->status === 'completed')>Selesai</option>
                                 <option value="rejected" @selected($reservation->status === 'rejected')>Tolak</option>
                             </select>
                         </form>

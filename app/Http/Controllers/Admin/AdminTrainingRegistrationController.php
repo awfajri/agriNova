@@ -25,7 +25,7 @@ class AdminTrainingRegistrationController extends Controller
     public function update(Request $request, TrainingRegistration $registration): RedirectResponse
     {
         $validated = $request->validate([
-            'status' => ['required', Rule::in(['pending', 'confirmed', 'rejected'])],
+            'status' => ['required', Rule::in(['pending', 'confirmed', 'completed', 'rejected'])],
         ]);
         $registration->update($validated);
 
