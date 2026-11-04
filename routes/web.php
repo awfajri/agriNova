@@ -24,8 +24,10 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EduwisataController;
 use App\Http\Controllers\PelatihanController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RegistrationCompletionController;
 use App\Http\Middleware\EnsureAdminAuthentication;
 use App\Http\Middleware\EnsureCheckoutAuthentication;
+use App\Http\Middleware\EnsureRegistrationCompleted;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -40,13 +42,19 @@ Route::post('/products/{product:slug}/reviews', [ProductReviewController::class,
     ->middleware('auth')
     ->name('products.reviews.store');
 Route::get('/orders/{orderNumber}/tracking', [OrderTrackingController::class, 'show'])
-    ->middleware('auth')
+    ->middleware(['auth', EnsureRegistrationCompleted::class])
     ->name('orders.tracking');
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', EnsureRegistrationCompleted::class])->group(function () {
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+});
+
+// Alur setelah login: lengkapi pendaftaran -> privasi & ketentuan.
+Route::middleware('auth')->group(function () {
+    Route::get('/lengkapi-pendaftaran', [RegistrationCompletionController::class, 'show'])->name('registration.complete');
+    Route::post('/lengkapi-pendaftaran', [RegistrationCompletionController::class, 'store'])->name('registration.complete.store');
 });
 
 Route::view('/terms', 'terms')->name('terms');
@@ -56,7 +64,7 @@ Route::post('/cart/items', [CartController::class, 'store'])->name('cart.store')
 Route::patch('/cart/items', [CartController::class, 'update'])->name('cart.update');
 Route::delete('/cart/items/{product}', [CartController::class, 'destroy'])->name('cart.destroy');
 
-Route::middleware(EnsureCheckoutAuthentication::class)->group(function () {
+Route::middleware([EnsureCheckoutAuthentication::class, EnsureRegistrationCompleted::class])->group(function () {
     Route::get('/checkout', [CheckoutController::class, 'create'])->name('checkout.create');
     Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
 });

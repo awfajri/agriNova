@@ -69,9 +69,17 @@ class AuthController extends Controller
         $user->save();
 
         Auth::login($user, remember: true);
-        $intended = session()->pull('auth.intended', route('checkout.create'));
 
-        return redirect()->to($this->safeIntended($intended));
+        $intended = $this->safeIntended(session()->pull('auth.intended', route('checkout.create')));
+
+        // Pengguna baru atau yang datanya belum lengkap mampir dulu ke halaman pendaftaran.
+        if (! $user->hasCompletedRegistration()) {
+            session()->put('url.intended', $intended);
+
+            return redirect()->route('registration.complete');
+        }
+
+        return redirect()->to($intended);
     }
 
     public function logout(Request $request): RedirectResponse

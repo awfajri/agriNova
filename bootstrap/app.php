@@ -4,6 +4,7 @@ use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use App\Http\Middleware\EnsureRegistrationCompleted;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -18,6 +19,13 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->validateCsrfTokens(except: [
             'payments/midtrans/notification',
         ]);
+
+        $middleware->alias([
+            'registration.completed' => EnsureRegistrationCompleted::class,
+        ]);
+
+        // Tamu diarahkan ke halaman login Google, bukan respons 401.
+        $middleware->redirectGuestsTo(fn () => route('auth.login'));
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

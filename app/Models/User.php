@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['name', 'email', 'password', 'google_id', 'avatar_url', 'email_verified_at', 'phone', 'address', 'is_admin'])]
+#[Fillable(['name', 'email', 'password', 'google_id', 'avatar_url', 'email_verified_at', 'phone', 'address', 'is_admin', 'promo_opt_in', 'terms_accepted_at', 'profile_completed_at'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -28,7 +28,18 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'is_admin' => 'boolean',
+            'promo_opt_in' => 'boolean',
+            'terms_accepted_at' => 'datetime',
+            'profile_completed_at' => 'datetime',
         ];
+    }
+
+    /**
+     * Apakah pengguna sudah menyelesaikan alur pendaftaran dan menyetujui ketentuan?
+     */
+    public function hasCompletedRegistration(): bool
+    {
+        return $this->profile_completed_at !== null;
     }
 
     public function orders()
