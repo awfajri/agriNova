@@ -24,6 +24,18 @@ class AdminProductController extends Controller
                         ->orWhere('sku', 'like', "%{$search}%");
                 });
             })
+            ->when($request->filled('category'), function ($query) use ($request): void {
+                $query->whereHas('category', fn ($categoryQuery) => $categoryQuery->where('slug', $request->input('category')));
+            })
+            ->when($request->input('type') === 'preorder', fn ($query) => $query->where('is_preorder', true))
+            ->when($request->input('type') === 'ready', fn ($query) => $query->where('is_preorder', false))
+            ->when($request->input('type') === 'hydroponic', function ($query): void {
+                $query->where(function ($q): void {
+                    $q->where('name', 'like', '%hidroponik%')
+                        ->orWhere('short_description', 'like', '%hidroponik%')
+                        ->orWhere('description', 'like', '%hidroponik%');
+                });
+            })
             ->when($request->input('status') === 'inactive', fn ($query) => $query->where('is_active', false))
             ->when($request->input('status') === 'active', fn ($query) => $query->where('is_active', true))
             ->orderByDesc('is_featured')
@@ -31,7 +43,9 @@ class AdminProductController extends Controller
             ->paginate(15)
             ->withQueryString();
 
-        return view('admin.products.index', compact('products'));
+        $categories = Category::query()->orderBy('name')->get();
+
+        return view('admin.products.index', compact('products', 'categories'));
     }
 
     public function create(): View

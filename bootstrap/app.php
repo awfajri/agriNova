@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\EnsureAdminAuthentication;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -15,6 +16,9 @@ return Application::configure(basePath: dirname(__DIR__))
         $schedule->command('orders:release-expired-stock')->hourly();
     })
     ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->alias([
+            'admin' => EnsureAdminAuthentication::class,
+        ]);
         $middleware->validateCsrfTokens(except: [
             'payments/midtrans/notification',
         ]);

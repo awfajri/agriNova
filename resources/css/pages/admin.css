@@ -1,0 +1,139 @@
+/* ==========================================================================
+   Admin Sidebar Tree Dropdown & Helper Layouts
+   ========================================================================== */
+
+.agr-admin-dropdown {
+    display: block;
+    margin: 2px 0;
+}
+
+.agr-admin-dropdown-btn {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0.72rem 0.95rem;
+    border-radius: 14px;
+    color: rgba(255, 255, 255, 0.84);
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    user-select: none;
+    transition:
+        background-color 0.18s ease,
+        color 0.18s ease;
+}
+
+/* Hilangkan marker panah bawaan browser di Chrome, Edge, Safari, Firefox */
+.agr-admin-dropdown-btn::marker,
+.agr-admin-dropdown-btn::-webkit-details-marker {
+    display: none !important;
+    content: "" !important;
+}
+
+.agr-admin-dropdown-btn:hover,
+.agr-admin-dropdown-btn.is-active {
+    background-color: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+}
+
+.agr-admin-dropdown-btn svg {
+    transition: transform 0.2s ease;
+    opacity: 0.85;
+}
+
+.agr-admin-dropdown[open] .agr-admin-dropdown-btn svg {
+    transform: rotate(180deg);
+}
+
+/* Tree Submenu */
+.agr-admin-tree {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin: 6px 0 8px 18px;
+    padding-left: 12px;
+    border-left: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.agr-admin-tree a {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 0.52rem 0.75rem !important;
+    border-radius: 10px;
+    font-size: 0.88rem !important;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.72) !important;
+    background: transparent !important;
+    text-decoration: none;
+}
+
+.agr-admin-tree a::before {
+    content: "";
+    position: absolute;
+    left: -12px;
+    top: 50%;
+    width: 8px;
+    height: 1px;
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.agr-admin-tree a:hover {
+    color: #ffffff !important;
+    background-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.agr-admin-tree a.is-active {
+    color: #ffffff !important;
+    background-color: rgba(255, 255, 255, 0.14) !important;
+    font-weight: 700;
+}
+
+/* Helper Grid untuk Halaman Kategori */
+.admin-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+
+@media (min-width: 992px) {
+    .admin-grid-2 {
+        grid-template-columns: 340px 1fr;
+        align-items: start;
+    }
+}
+
+.admin-card {
+    background: #ffffff;
+    border: 1px solid rgba(17, 51, 43, 0.1);
+    border-radius: 18px;
+    padding: 20px;
+}
+
+.admin-card h2 {
+    margin-top: 0;
+    margin-bottom: 14px;
+    font-size: 17px;
+}
+
+.admin-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 12px;
+}
+
+.admin-field label {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.admin-field input,
+.admin-field textarea {
+    padding: 9px 12px;
+    border: 1px solid #cbd5d1;
+    border-radius: 10px;
+    font-size: 14px;
+}

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\PreOrder;
 use App\Models\Product;
+use App\Models\SiteSetting;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -21,7 +22,53 @@ class AdminPreOrderController extends Controller
             ->latest()
             ->paginate(15);
 
-        return view('admin.preorders.index', compact('preorders'));
+        $activePreOrder = PreOrder::query()->where('is_active', true)->latest()->first();
+
+        $bannerSettings = [
+            'image' => SiteSetting::get('catalog_banner_image', 'images/banner-1.jpg'),
+            'cta_text' => SiteSetting::get('catalog_banner_cta', 'Booking Melon Sekarang'),
+            'cta_url' => SiteSetting::get('catalog_banner_url', ''),
+        ];
+
+        return view('admin.preorders.index', compact('preorders', 'activePreOrder', 'bannerSettings'));
+    }
+
+    public function updateBanner(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'banner_image_file' => ['nullable', 'image', 'max:4096'],
+            'banner_image_path' => ['nullable', 'string', 'max:500'],
+            'cta_text' => ['required', 'string', 'max:80'],
+            'cta_url' => ['nullable', 'string', 'max:500'],
+            'active_preorder_id' => ['nullable', 'integer', 'exists:preorders,id'],
+            'batch_title' => ['nullable', 'string', 'max:180'],
+            'harvest_date' => ['nullable', 'date'],
+            'booking_close_at' => ['nullable', 'date'],
+        ]);
+
+        if ($request->hasFile('banner_image_file')) {
+            $path = $request->file('banner_image_file')->store('banners', 'public');
+            $this->saveSetting('catalog_banner_image', 'storage/' . $path);
+        } elseif (filled($validated['banner_image_path'] ?? null)) {
+            $this->saveSetting('catalog_banner_image', $validated['banner_image_path']);
+        }
+
+        $this->saveSetting('catalog_banner_cta', $validated['cta_text']);
+        $this->saveSetting('catalog_banner_url', $validated['cta_url'] ?? '');
+
+        if (! empty($validated['active_preorder_id'])) {
+            $preorder = PreOrder::query()->find($validated['active_preorder_id']);
+            if ($preorder) {
+                $preorder->update([
+                    'title' => $validated['batch_title'] ?: $preorder->title,
+                    'harvest_date' => $validated['harvest_date'] ?: $preorder->harvest_date,
+                    'booking_close_at' => $validated['booking_close_at'] ?: $preorder->booking_close_at,
+                    'is_active' => true,
+                ]);
+            }
+        }
+
+        return back()->with('success', 'Banner katalog dan jadwal countdown pre-order berhasil diperbarui.');
     }
 
     public function create(): View
@@ -67,6 +114,14 @@ class AdminPreOrderController extends Controller
         Product::query()->whereKey($productId)->update(['is_preorder' => false]);
 
         return back()->with('success', 'Pre-order dinonaktifkan.');
+    }
+
+    private function saveSetting(string $key, ?string $value): void
+    {
+        SiteSetting::query()->updateOrCreate(
+            ['key' => $key],
+            ['value' => $value ?? '']
+        );
     }
 
     private function validated(Request $request, ?PreOrder $preorder = null): array

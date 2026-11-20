@@ -10,12 +10,19 @@
     $waGeneralUrl = "https://wa.me/{$waNumber}?text=" . urlencode('Halo Admin Agrinova, saya ingin bertanya seputar produk & jadwal panen.');
     $mapsUrl = config('agrinova.maps_url', 'https://maps.google.com/?q=Agrinova+Farm');
 
+    $bannerImage = \App\Models\SiteSetting::get('catalog_banner_image', 'images/banner-1.jpg');
+    $bannerCtaText = \App\Models\SiteSetting::get('catalog_banner_cta', 'Booking Melon Sekarang');
+    $bannerCtaUrl = \App\Models\SiteSetting::get('catalog_banner_url', '');
+    $heroActionUrl = filled($bannerCtaUrl)
+        ? url($bannerCtaUrl)
+        : route('catalog', ['availability' => 'preorder']) . '#hasil-katalog';
+
     $batchTitle = $activePreOrder?->title ?? 'Pre-Order Panen Batch #12';
     $harvestFormatted = $activePreOrder?->harvest_date
         ? \Carbon\Carbon::parse($activePreOrder->harvest_date)->translatedFormat('d M')
         : '14 Des';
-    $deadlineTimestamp = $activePreOrder?->order_deadline
-        ? \Carbon\Carbon::parse($activePreOrder->order_deadline)->timestamp * 1000
+    $deadlineTimestamp = $activePreOrder?->booking_close_at
+        ? \Carbon\Carbon::parse($activePreOrder->booking_close_at)->timestamp * 1000
         : now()->addDays(2)->addHours(8)->addMinutes(30)->timestamp * 1000;
 @endphp
 
@@ -30,16 +37,16 @@
             <span class="agr-pickup-card-arrow" aria-hidden="true">&rarr;</span>
         </a>
 
-        {{-- 2. Hero Pre-Order Card --}}
-        <div class="agr-hero-banner" style="--hero-bg: url('{{ asset('images/banner-1.jpg') }}');">
+       {{-- 2. Hero Pre-Order Card --}}
+        <div class="agr-hero-banner" style="--hero-bg: url('{{ asset($bannerImage) }}');">
             <div class="agr-hero-overlay">
                 <span class="agr-hero-eyebrow">{{ $batchTitle }}</span>
                 <h1>Booking sekarang, panen segar {{ $harvestFormatted }}.</h1>
                 <p class="agr-hero-countdown" id="catalog-preorder-countdown" data-deadline="{{ $deadlineTimestamp }}">
-                    Tutup dalam 02 hari : 08 jam : 30 mnt
+                    Menghitung waktu...
                 </p>
-                <a href="{{ route('catalog', ['availability' => 'preorder']) }}#hasil-katalog" class="agr-hero-cta">
-                    <span>Booking Melon Sekarang</span>
+                <a href="{{ $heroActionUrl }}" class="agr-hero-cta">
+                    <span>{{ $bannerCtaText }}</span>
                     <span aria-hidden="true">&rarr;</span>
                 </a>
             </div>

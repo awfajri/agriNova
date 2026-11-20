@@ -90,6 +90,9 @@ class CatalogController extends Controller
         $activePreOrder = class_exists(PreOrder::class)
             ? PreOrder::query()->where('is_active', true)->latest()->first()
             : null;
+        $deadlineTimestamp = $activePreOrder?->booking_close_at
+            ? \Carbon\Carbon::parse($activePreOrder->booking_close_at)->timestamp * 1000
+            : now()->addDays(2)->addHours(8)->addMinutes(30)->timestamp * 1000;
 
         return view('catalog', [
             'isFiltering' => $isFiltering,
@@ -98,6 +101,7 @@ class CatalogController extends Controller
             'preorderProducts' => $preorderProducts,
             'hydroponicProducts' => $hydroponicProducts,
             'activePreOrder' => $activePreOrder,
+            'deadlineTimestamp' => $deadlineTimestamp,
             'categories' => $categories,
             'selectedCategory' => $request->input('category'),
             'search' => $request->input('q', ''),

@@ -17,6 +17,37 @@
     <a href="{{ route('admin.products.create') }}" class="admin-button">Tambah produk</a>
 </div>
 
+<div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px;">
+    <a href="{{ route('admin.products.index') }}"
+       class="admin-button {{ !request('type') && !request('category') ? '' : 'admin-button--secondary' }}"
+       style="padding: 6px 14px; font-size: 13px; border-radius: 9999px;">
+        Semua Produk
+    </a>
+    <a href="{{ route('admin.products.index', ['type' => 'ready']) }}"
+       class="admin-button {{ request('type') === 'ready' ? '' : 'admin-button--secondary' }}"
+       style="padding: 6px 14px; font-size: 13px; border-radius: 9999px;">
+        Siap Panen
+    </a>
+    <a href="{{ route('admin.products.index', ['type' => 'preorder']) }}"
+       class="admin-button {{ request('type') === 'preorder' ? '' : 'admin-button--secondary' }}"
+       style="padding: 6px 14px; font-size: 13px; border-radius: 9999px;">
+        Pre-Order
+    </a>
+    <a href="{{ route('admin.products.index', ['type' => 'hydroponic']) }}"
+       class="admin-button {{ request('type') === 'hydroponic' ? '' : 'admin-button--secondary' }}"
+       style="padding: 6px 14px; font-size: 13px; border-radius: 9999px;">
+        Hidroponik
+    </a>
+
+    @foreach ($categories as $cat)
+        <a href="{{ route('admin.products.index', ['category' => $cat->slug]) }}"
+           class="admin-button {{ request('category') === $cat->slug ? '' : 'admin-button--secondary' }}"
+           style="padding: 6px 14px; font-size: 13px; border-radius: 9999px;">
+            {{ $cat->name }}
+        </a>
+    @endforeach
+</div>
+
 <section class="admin-panel admin-table-panel">
     <div class="admin-table-wrap">
         <table class="admin-table">
