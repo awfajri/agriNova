@@ -1,52 +1,51 @@
 @extends('layouts.app')
 
 @section('title', 'Belanja Produk Agrinova | Kebun Melon & Sayur Segar')
-@section('meta_description', 'Belanja melon, sayur segar, perlengkapan kebun, dan pupuk dari Agrinova. Cari produk, pilih kategori, dan pesan langsung secara online.')
-@section('body_class', 'has-catalog')
+@section('meta_description', 'Belanja melon, sayur segar, perlengkapan kebun, dan pupuk dari Agrinova. Booking panen dan ambil langsung di kebun.')
+@section('body_class', 'has-catalog agr-store-body')
 
 @section('content')
-<section class="catalog-page">
-    <div class="container">
-        <div id="catalogSlider" class="carousel slide catalog-slider" data-bs-ride="carousel">
-            <div class="carousel-indicators">
-                <button type="button" data-bs-target="#catalogSlider" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                <button type="button" data-bs-target="#catalogSlider" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                <button type="button" data-bs-target="#catalogSlider" data-bs-slide-to="2" aria-label="Slide 3"></button>
+@php
+    $waNumber = preg_replace('/[^0-9]/', '', config('agrinova.whatsapp_number', '6285156287360'));
+    $waGeneralUrl = "https://wa.me/{$waNumber}?text=" . urlencode('Halo Admin Agrinova, saya ingin bertanya seputar produk & jadwal panen.');
+    $mapsUrl = config('agrinova.maps_url', 'https://maps.google.com/?q=Agrinova+Farm');
+
+    $batchTitle = $activePreOrder?->title ?? 'Pre-Order Panen Batch #12';
+    $harvestFormatted = $activePreOrder?->harvest_date
+        ? \Carbon\Carbon::parse($activePreOrder->harvest_date)->translatedFormat('d M')
+        : '14 Des';
+    $deadlineTimestamp = $activePreOrder?->order_deadline
+        ? \Carbon\Carbon::parse($activePreOrder->order_deadline)->timestamp * 1000
+        : now()->addDays(2)->addHours(8)->addMinutes(30)->timestamp * 1000;
+@endphp
+
+<section class="agr-catalog-page">
+    <div class="container agr-catalog-container">
+        {{-- 1. Fulfillment Banner --}}
+        <a href="{{ $mapsUrl }}" target="_blank" rel="noopener" class="agr-pickup-card">
+            <div class="agr-pickup-card-copy">
+                <strong>Khusus Ambil di Kebun Agrinova</strong>
+                <span>Lihat Lokasi di Maps</span>
             </div>
-            <div class="carousel-inner">
-                <div class="carousel-item active catalog-slide catalog-slide--garden" style="--catalog-slide-image: url('{{ asset('images/banner-1.jpg') }}');">
-                    <div class="catalog-slide-copy">
-                        <span class="eyebrow eyebrow--light">Agrinova Farm</span>
-                        <h1>Segar langsung dari kebun.</h1>
-                        <p>Hasil panen pilihan untuk kebutuhan rumah dan usaha kamu.</p>
-                        <a href="#daftar-produk" class="catalog-action">Lihat panen</a>
-                    </div>
-                </div>
-                <div class="carousel-item catalog-slide catalog-slide--harvest" style="--catalog-slide-image: url('{{ asset('images/banner-2.jpg') }}');">
-                    <div class="catalog-slide-copy">
-                        <span class="eyebrow eyebrow--light">Panen Agrinova</span>
-                        <h1>Pilih hasil panenmu.</h1>
-                        <p>Pesan produk segar tanpa perlu berpindah ke marketplace.</p>
-                        <a href="#daftar-produk" class="catalog-action">Beli sekarang</a>
-                    </div>
-                </div>
-                <div class="carousel-item catalog-slide catalog-slide--fresh" style="--catalog-slide-image: url('{{ asset('images/banner-3.jpg') }}');">
-                    <div class="catalog-slide-copy">
-                        <span class="eyebrow eyebrow--light">Belanja langsung</span>
-                        <h1>Dari kebun untuk kebutuhan.</h1>
-                        <p>Temukan buah, sayur, perlengkapan kebun, dan pupuk di satu tempat.</p>
-                        <a href="#daftar-produk" class="catalog-action">Lihat produk</a>
-                    </div>
-                </div>
+            <span class="agr-pickup-card-arrow" aria-hidden="true">&rarr;</span>
+        </a>
+
+        {{-- 2. Hero Pre-Order Card --}}
+        <div class="agr-hero-banner" style="--hero-bg: url('{{ asset('images/banner-1.jpg') }}');">
+            <div class="agr-hero-overlay">
+                <span class="agr-hero-eyebrow">{{ $batchTitle }}</span>
+                <h1>Booking sekarang, panen segar {{ $harvestFormatted }}.</h1>
+                <p class="agr-hero-countdown" id="catalog-preorder-countdown" data-deadline="{{ $deadlineTimestamp }}">
+                    Tutup dalam 02 hari : 08 jam : 30 mnt
+                </p>
+                <a href="{{ route('catalog', ['availability' => 'preorder']) }}#hasil-katalog" class="agr-hero-cta">
+                    <span>Booking Melon Sekarang</span>
+                    <span aria-hidden="true">&rarr;</span>
+                </a>
             </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#catalogSlider" data-bs-slide="prev" aria-label="Slide sebelumnya">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#catalogSlider" data-bs-slide="next" aria-label="Slide berikutnya">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            </button>
         </div>
 
+        {{-- Alerts --}}
         @if (session('success'))
             <div class="catalog-alert catalog-alert--success" role="status">{{ session('success') }}</div>
         @endif
@@ -57,87 +56,228 @@
             <div class="catalog-alert catalog-alert--error" role="alert">{{ $errors->first('cart') }}</div>
         @endif
 
-        <div class="catalog-toolbar">
-            <button type="button" class="catalog-filter-trigger" data-bs-toggle="modal" data-bs-target="#filterModal" aria-label="Buka filter produk">
-                <svg aria-hidden="true" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16M7 12h10M10 19h4"/></svg>
-                <span>Filter produk</span>
-            </button>
-        </div>
+        {{-- 3. Horizontal Category Pills --}}
+        <nav class="agr-cat-pills" aria-label="Kategori produk">
+            <a href="{{ route('catalog') }}" class="agr-cat-pill {{ ! $isFiltering ? 'is-active' : '' }}">
+                Semua
+            </a>
+            @foreach ($categories as $category)
+                <a href="{{ route('catalog', ['category' => $category->slug]) }}#hasil-katalog"
+                   class="agr-cat-pill {{ $selectedCategory === $category->slug ? 'is-active' : '' }}">
+                    {{ $category->name }}
+                </a>
+            @endforeach
+        </nav>
 
-        <div class="catalog-layout" id="daftar-produk">
-            <div class="catalog-results">
-                <div class="catalog-results-head">
-                    <div>
-                        <span class="eyebrow">Katalog Agrinova</span>
-                        <h2>{{ $products->total() }} produk</h2>
-                    </div>
+        {{-- 4. Konten Produk (Mode Terkurasi vs Mode Filter/Search) --}}
+        <div id="hasil-katalog">
+            @if ($isFiltering)
+                {{-- Mode Filter / Search Aktif --}}
+                <div class="agr-section-head">
+                    <h2>Hasil Pencarian ({{ $products->total() }})</h2>
+                    <a href="{{ route('catalog') }}">Reset</a>
                 </div>
 
-                <div class="catalog-product-grid">
-                    @forelse ($products as $product)
-                        @php
-                            $categoryName = strtolower($product->category->name ?? '');
-                            $productImage = $product->image_url ?: asset(
-                                str_contains($categoryName, 'pupuk')
-                                    ? 'images/mln.webp'
-                                    : (str_contains($categoryName, 'perlengkapan') ? 'images/mix.webp' : 'images/sayursegar.webp')
-                            );
-                        @endphp
-                        <article class="catalog-product-card">
-                            <a href="{{ route('products.show', $product) }}" class="catalog-product-link">
-                                <div class="catalog-product-media">
-                                    <img src="{{ $productImage }}" alt="{{ $product->name }}" loading="lazy">
-                                    @if ($product->is_preorder)
-                                        <span class="product-badge product-badge--preorder">Pre-order</span>
-                                    @endif
-                                </div>
-                                <div class="catalog-product-body">
-                                    <span class="product-category">{{ $product->category->name ?? 'Kategori' }}</span>
-                                    <h3>{{ $product->name }}</h3>
-                                    <p>{{ $product->short_description ?: 'Informasi produk akan diperbarui oleh admin.' }}</p>
-                                    <div class="catalog-product-price">
-                                        <strong>Rp {{ number_format((float) $product->price, 0, ',', '.') }}</strong>
-                                        <span>{{ $product->stock > 0 ? 'Tersedia' : 'Stok habis' }}</span>
+                @if ($products->isEmpty())
+                    <div class="catalog-empty">
+                        <h2>Produk tidak ditemukan</h2>
+                        <p>Coba gunakan kata kunci lain atau lihat semua produk.</p>
+                        <a href="{{ route('catalog') }}" class="catalog-action">Reset filter</a>
+                    </div>
+                @else
+                    <div class="agr-grid-2col">
+                        @foreach ($products as $product)
+                            @php
+                                $img = $product->image_url ?: asset('images/sayursegar.webp');
+                                $avail = $product->stock >= max(1, $product->min_order_quantity);
+                            @endphp
+                            <article class="agr-vcard">
+                                <a href="{{ route('products.show', $product) }}" class="agr-vcard-link">
+                                    <div class="agr-vcard-media">
+                                        <img src="{{ $img }}" alt="{{ $product->name }}" loading="lazy">
                                     </div>
-                                </div>
-                            </a>
-                            <div class="catalog-card-actions">
-                                <form method="POST" action="{{ route('cart.store') }}" class="catalog-add-form">
-                                @csrf
-                                <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                <input type="hidden" name="quantity" value="{{ max(1, $product->min_order_quantity) }}">
-                                    <button type="submit" class="catalog-add-button catalog-add-button--icon" aria-label="Tambah {{ $product->name }} ke keranjang" {{ $product->stock < $product->min_order_quantity ? 'disabled' : '' }}>
-                                        <svg aria-hidden="true" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-                                    </button>
-                                </form>
-                                <form method="POST" action="{{ route('cart.store') }}" class="catalog-buy-form">
+                                    <span class="agr-vcard-tag">{{ $product->is_preorder ? 'Pre-order' : 'Siap panen' }}</span>
+                                    <h3>{{ $product->name }}</h3>
+                                    <div class="agr-vcard-price">
+                                        <strong>Rp{{ number_format((float) $product->price, 0, ',', '.') }}</strong>
+                                        <span>/{{ $product->unit ?? 'kg' }}</span>
+                                    </div>
+                                </a>
+                                <form method="POST" action="{{ route('cart.store') }}">
                                     @csrf
                                     <input type="hidden" name="product_id" value="{{ $product->id }}">
                                     <input type="hidden" name="quantity" value="{{ max(1, $product->min_order_quantity) }}">
-                                    <input type="hidden" name="buy_now" value="1">
-                                    <button type="submit" class="catalog-buy-button" {{ $product->stock < $product->min_order_quantity ? 'disabled' : '' }}>
-                                        {{ $product->stock < $product->min_order_quantity ? 'Stok habis' : 'Beli sekarang' }}
+                                    <button type="submit" class="agr-mint-pill-btn" {{ ! $avail ? 'disabled' : '' }}>
+                                        {{ $avail ? '+ Keranjang' : 'Stok habis' }}
                                     </button>
                                 </form>
-                            </div>
-                        </article>
-                    @empty
-                        <div class="catalog-empty">
-                            <h2>Produk tidak ditemukan</h2>
-                            <p>Coba gunakan kata kunci lain atau reset filter untuk melihat semua produk.</p>
-                            <a href="{{ route('catalog') }}" class="catalog-action">Reset pencarian</a>
-                        </div>
-                    @endforelse
-                </div>
+                            </article>
+                        @endforeach
+                    </div>
 
-                @if ($products->hasPages())
-                    <div class="catalog-pagination">{{ $products->links() }}</div>
+                    @if ($products->hasPages())
+                        <div class="catalog-pagination">{{ $products->links() }}</div>
+                    @endif
                 @endif
-            </div>
+            @else
+                {{-- Section A: Siap Panen (2-Column Vertical Cards) --}}
+                <section class="agr-catalog-section">
+                    <div class="agr-section-head">
+                        <h2>Siap panen</h2>
+                        <a href="{{ route('catalog', ['availability' => 'in_stock']) }}#hasil-katalog">Lihat semua</a>
+                    </div>
+
+                    <div class="agr-grid-2col">
+                        @foreach ($readyProducts as $product)
+                            @php
+                                $img = $product->image_url ?: asset('images/sayursegar.webp');
+                            @endphp
+                            <article class="agr-vcard">
+                                <a href="{{ route('products.show', $product) }}" class="agr-vcard-link">
+                                    <div class="agr-vcard-media">
+                                        <img src="{{ $img }}" alt="{{ $product->name }}" loading="lazy">
+                                    </div>
+                                    <span class="agr-vcard-tag">Siap panen</span>
+                                    <h3>{{ $product->name }}</h3>
+                                    <div class="agr-vcard-price">
+                                        <strong>Rp{{ number_format((float) $product->price, 0, ',', '.') }}</strong>
+                                        <span>/{{ $product->unit ?? 'kg' }}</span>
+                                    </div>
+                                </a>
+                                <form method="POST" action="{{ route('cart.store') }}">
+                                    @csrf
+                                    <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                    <input type="hidden" name="quantity" value="{{ max(1, $product->min_order_quantity) }}">
+                                    <button type="submit" class="agr-mint-pill-btn">+ Keranjang</button>
+                                </form>
+                            </article>
+                        @endforeach
+                    </div>
+                </section>
+
+                {{-- Section B: Pre-order Panen (Horizontal Cards) --}}
+                @if ($preorderProducts->isNotEmpty())
+                    <section class="agr-catalog-section">
+                        <div class="agr-section-head">
+                            <h2>Pre-order panen</h2>
+                            <a href="{{ route('catalog', ['availability' => 'preorder']) }}#hasil-katalog">Lihat semua</a>
+                        </div>
+
+                        <div class="agr-hcard-list">
+                            @foreach ($preorderProducts as $product)
+                                @php
+                                    $img = $product->image_url ?: asset('images/mln.webp');
+                                    $harvestDate = $product->harvest_estimate
+                                        ? \Carbon\Carbon::parse($product->harvest_estimate)->translatedFormat('d M Y')
+                                        : '14 Des 2026';
+                                @endphp
+                                <article class="agr-hcard">
+                                    <a href="{{ route('products.show', $product) }}" class="agr-hcard-media">
+                                        <img src="{{ $img }}" alt="{{ $product->name }}" loading="lazy">
+                                    </a>
+                                    <div class="agr-hcard-body">
+                                        <span class="agr-hcard-tag">Panen {{ $harvestDate }}</span>
+                                        <h3>{{ $product->name }}</h3>
+                                        <p class="agr-hcard-price">
+                                            <strong>Rp{{ number_format((float) $product->price, 0, ',', '.') }}</strong> / {{ $product->unit ?? 'kg' }}
+                                        </p>
+                                        <a href="{{ route('products.show', $product) }}" class="agr-mint-pill-btn">
+                                            Lihat produk &rarr;
+                                        </a>
+                                    </div>
+                                </article>
+                            @endforeach
+                        </div>
+                    </section>
+                @endif
+
+                {{-- Section C: Pilihan Hidroponik (Horizontal Cards + Quick Add) --}}
+                @if ($hydroponicProducts->isNotEmpty())
+                    <section class="agr-catalog-section">
+                        <div class="agr-section-head">
+                            <h2>Pilihan hidroponik</h2>
+                            <a href="{{ route('catalog', ['q' => 'hidroponik']) }}#hasil-katalog">Lihat semua</a>
+                        </div>
+
+                        <div class="agr-hcard-list">
+                            @foreach ($hydroponicProducts as $product)
+                                @php
+                                    $img = $product->image_url ?: asset('images/sayursegar.webp');
+                                @endphp
+                                <article class="agr-hcard">
+                                    <a href="{{ route('products.show', $product) }}" class="agr-hcard-media">
+                                        <img src="{{ $img }}" alt="{{ $product->name }}" loading="lazy">
+                                    </a>
+                                    <div class="agr-hcard-body">
+                                        <span class="agr-hcard-tag">{{ $product->is_preorder ? 'Pre-order' : 'Siap panen' }}</span>
+                                        <h3>{{ $product->name }}</h3>
+                                        <p class="agr-hcard-price">
+                                            <strong>Rp{{ number_format((float) $product->price, 0, ',', '.') }}</strong> / {{ $product->unit ?? '250 g' }}
+                                        </p>
+                                        <form method="POST" action="{{ route('cart.store') }}">
+                                            @csrf
+                                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                            <input type="hidden" name="quantity" value="{{ max(1, $product->min_order_quantity) }}">
+                                            <button type="submit" class="agr-mint-pill-btn">Keranjang +</button>
+                                        </form>
+                                    </div>
+                                </article>
+                            @endforeach
+                        </div>
+                    </section>
+                @endif
+            @endif
         </div>
+
+        {{-- 5. Section: Bukan Cuma Belanja --}}
+        <section class="agr-explore-section" aria-labelledby="explore-programs-title">
+            <div class="agr-explore-head">
+                <h2 id="explore-programs-title">Bukan cuma belanja</h2>
+                <p>Belajar dan jelajahi kebun bersama Agrinova.</p>
+            </div>
+
+            <div class="agr-explore-stack">
+                <a href="{{ route('eduwisata.index') }}" class="agr-explore-card">
+                    <div class="agr-explore-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/>
+                            <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>
+                        </svg>
+                    </div>
+                    <div class="agr-explore-copy">
+                        <h3>Eduwisata</h3>
+                        <p>Untuk sekolah, keluarga &amp; komunitas</p>
+                        <span>Rencanakan kunjungan &rarr;</span>
+                    </div>
+                </a>
+
+                <a href="{{ route('pelatihan.index') }}" class="agr-explore-card">
+                    <div class="agr-explore-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                        </svg>
+                    </div>
+                    <div class="agr-explore-copy">
+                        <h3>Pelatihan budidaya</h3>
+                        <p>Pembekalan pensiun &amp; belajar berkebun</p>
+                        <span>Kenali program pelatihan &rarr;</span>
+                    </div>
+                </a>
+            </div>
+        </section>
     </div>
 </section>
 
+{{-- Floating WhatsApp Button --}}
+<a href="{{ $waGeneralUrl }}" target="_blank" rel="noopener" class="agr-floating-wa" aria-label="Chat WhatsApp Admin Agrinova">
+    <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18" aria-hidden="true">
+        <path d="M12.04 2a9.96 9.96 0 0 0-8.58 15.08L2 22l5.08-1.42A9.96 9.96 0 1 0 12.04 2Zm0 18.18a8.2 8.2 0 0 1-4.18-1.14l-.3-.18-3.02.84.85-2.94-.2-.3a8.2 8.2 0 1 1 6.85 3.72Zm4.5-6.15c-.25-.13-1.48-.73-1.71-.82-.23-.08-.4-.13-.57.13-.17.25-.65.82-.8.99-.15.17-.3.19-.55.06-.25-.13-1.04-.38-1.98-1.21-.73-.65-1.22-1.45-1.36-1.7-.14-.25-.01-.39.11-.52.11-.11.25-.3.38-.44.13-.15.17-.25.25-.42.08-.17.04-.32-.02-.44-.06-.13-.57-1.36-.78-1.86-.21-.49-.42-.42-.57-.43h-.49c-.17 0-.44.06-.67.32-.23.25-.88.86-.88 2.09s.9 2.42 1.03 2.59c.13.17 1.77 2.71 4.29 3.8.6.26 1.07.41 1.43.53.6.19 1.14.16 1.57.1.48-.07 1.48-.61 1.69-1.2.21-.59.21-1.1.15-1.2-.06-.1-.23-.16-.48-.29Z"/>
+    </svg>
+    <span>WhatsApp</span>
+</a>
+
+{{-- Modal Filter --}}
 <div class="modal fade filter-modal" id="filterModal" tabindex="-1" aria-labelledby="filterModalTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-bottom">
         <div class="modal-content">
@@ -161,7 +301,7 @@
                     <div class="modal-filter-section">
                         <h3>Ketersediaan</h3>
                         <label><input type="radio" name="availability" value="" {{ empty($availability) ? 'checked' : '' }}> Semua</label>
-                        <label><input type="radio" name="availability" value="in_stock" {{ $availability === 'in_stock' ? 'checked' : '' }}> Tersedia</label>
+                        <label><input type="radio" name="availability" value="in_stock" {{ $availability === 'in_stock' ? 'checked' : '' }}> Siap panen / Tersedia</label>
                         <label><input type="radio" name="availability" value="preorder" {{ $availability === 'preorder' ? 'checked' : '' }}> Pre-order</label>
                     </div>
                     <div class="modal-filter-section">

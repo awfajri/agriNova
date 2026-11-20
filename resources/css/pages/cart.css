@@ -1,0 +1,339 @@
+/* ==========================================================================
+   Cart Page & Mobile Subpage Header Fix
+   ========================================================================== */
+
+body.page-mobile-subpage > footer,
+body.page-mobile-subpage .site-footer {
+    display: none !important;
+}
+
+@media (max-width: 767px) {
+    body.page-mobile-subpage > header,
+    body.page-mobile-subpage .minimal-enclosed-header {
+        display: none !important;
+    }
+
+    .agr-cart-mobile-topbar {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 22px;
+    }
+}
+
+@media (min-width: 768px) {
+    .agr-cart-mobile-topbar {
+        display: none !important;
+    }
+
+    .agr-cart-container {
+        padding-top: 32px;
+    }
+}
+
+.agr-cart-page {
+    min-height: 100vh;
+    background-color: #faf9f6;
+    color: #11332b;
+    padding-bottom: 205px;
+}
+
+.agr-cart-page *,
+.agr-cart-page *::before,
+.agr-cart-page *::after {
+    box-sizing: border-box;
+}
+
+.agr-cart-container {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 18px 16px 0;
+}
+
+.agr-cart-back {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    margin-left: -8px;
+    border-radius: 9999px;
+    color: #11332b;
+    text-decoration: none;
+    flex-shrink: 0;
+}
+
+.agr-cart-back:hover {
+    background-color: #e6f2ee;
+    color: #11332b;
+}
+
+.agr-cart-back svg {
+    width: 20px;
+    height: 20px;
+    display: block;
+}
+
+.agr-cart-mobile-title {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: #11332b;
+}
+
+.agr-cart-section-title {
+    margin: 0 0 14px;
+    font-size: 19px;
+    font-weight: 800;
+    color: #11332b;
+}
+
+/* Item Cards */
+.agr-cart-items {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.agr-cart-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 14px;
+    border: 1px solid #dce5e1;
+    border-radius: 18px;
+    background-color: #ffffff;
+}
+
+.agr-cart-card.is-unavailable {
+    border-color: #fca5a5;
+}
+
+.agr-cart-thumb {
+    width: 92px;
+    height: 92px;
+    border-radius: 14px;
+    overflow: hidden;
+    flex-shrink: 0;
+    background-color: #f3f6f4;
+}
+
+.agr-cart-thumb img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.agr-cart-card-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.agr-cart-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.agr-cart-tag {
+    font-size: 12px;
+    font-weight: 500;
+    color: #3b5e54;
+}
+
+.agr-cart-remove-btn {
+    border: 0;
+    padding: 0;
+    background: transparent;
+    color: #b91c1c;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.agr-cart-card-body h3 {
+    margin: 0 0 6px;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.25;
+}
+
+.agr-cart-card-body h3 a {
+    color: #11332b;
+    text-decoration: none;
+}
+
+.agr-cart-unit-price {
+    margin: 0 0 6px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #11332b;
+}
+
+.agr-cart-qty-line {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    font-size: 13px;
+    color: #2d5248;
+}
+
+.agr-cart-qty-box input {
+    width: 58px;
+    height: 30px;
+    padding: 0 6px;
+    border: 1px solid #cbd5d1;
+    border-radius: 8px;
+    background-color: #faf9f6;
+    color: #11332b;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.agr-cart-warning {
+    margin: 6px 0 0;
+    font-size: 12px;
+    font-weight: 600;
+    color: #b91c1c;
+}
+
+/* Info Box */
+.agr-cart-info-box {
+    background-color: #e6f2ee;
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 24px;
+}
+
+.agr-cart-info-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+    font-size: 14px;
+    color: #11332b;
+}
+
+.agr-cart-info-head svg {
+    width: 18px;
+    height: 18px;
+    color: #1b4332;
+    flex-shrink: 0;
+}
+
+.agr-cart-info-box p {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #2d5248;
+}
+
+/* Summary */
+.agr-cart-summary {
+    margin-bottom: 16px;
+}
+
+.agr-cart-summary-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #2d5248;
+}
+
+.agr-cart-summary-row strong {
+    font-weight: 700;
+    color: #11332b;
+}
+
+/* Sticky Bottom Bar */
+.agr-cart-bottom-bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 40;
+    background-color: rgba(230, 242, 238, 0.96);
+    backdrop-filter: blur(6px);
+    border-top: 1px solid #d2e6df;
+    padding: 14px 16px 18px;
+}
+
+.agr-cart-bottom-inner {
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+.agr-cart-bottom-total {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.agr-cart-bottom-total span {
+    font-size: 14px;
+    font-weight: 600;
+    color: #11332b;
+}
+
+.agr-cart-bottom-total strong {
+    font-size: 20px;
+    font-weight: 800;
+    color: #11332b;
+}
+
+.agr-cart-bottom-hint {
+    margin: 0 0 12px;
+    font-size: 12px;
+    line-height: 1.45;
+    color: #2d5248;
+}
+
+.agr-cart-primary-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 46px;
+    border-radius: 9999px;
+    background-color: #1b4332;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+}
+
+.agr-cart-primary-btn:hover {
+    background-color: #143326;
+    color: #ffffff;
+}
+
+.agr-cart-secondary-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 44px;
+    margin-top: 8px;
+    border-radius: 9999px;
+    background-color: #cbe4dc;
+    color: #11332b;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+}
+
+.agr-cart-secondary-btn:hover {
+    background-color: #bbd9cf;
+    color: #11332b;
+}

@@ -1,0 +1,663 @@
+/* ==========================================================================
+   Eduwisata & Budidaya (3-Step Flow: List -> Detail -> Reserve)
+   ========================================================================== */
+
+.agr-edu-page {
+    min-height: 100vh;
+    background-color: #faf9f6;
+    color: #11332b;
+    padding-bottom: 48px;
+}
+
+.agr-edu-page.has-sticky-bottom {
+    padding-bottom: 136px;
+}
+
+.agr-edu-container {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 20px 16px 0;
+}
+
+@media (min-width: 768px) {
+    .agr-edu-container {
+        padding-top: 32px;
+    }
+    .agr-edu-topbar {
+        display: none !important;
+    }
+}
+
+@media (max-width: 767px) {
+    .agr-edu-topbar {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 18px;
+    }
+}
+
+.agr-edu-back {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    margin-left: -8px;
+    border-radius: 9999px;
+    color: #11332b;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+}
+
+.agr-edu-back:hover {
+    background-color: #e6f2ee;
+}
+
+.agr-edu-back svg {
+    width: 20px;
+    height: 20px;
+}
+
+.agr-edu-topbar-title {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: #11332b;
+}
+
+/* Segmented Tabs */
+.agr-segmented-tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 4px;
+    border-radius: 14px;
+    background-color: #e6f2ee;
+    margin-bottom: 20px;
+}
+
+.agr-segmented-tab {
+    text-align: center;
+    padding: 10px 12px;
+    border-radius: 11px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #2d5248;
+    text-decoration: none;
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease;
+}
+
+.agr-segmented-tab:hover {
+    color: #11332b;
+}
+
+.agr-segmented-tab.is-active {
+    background-color: #ffffff;
+    color: #11332b;
+    box-shadow: 0 2px 8px rgba(17, 51, 43, 0.08);
+}
+
+/* Package Cards */
+.agr-edu-card-list {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.agr-edu-card {
+    background-color: #ffffff;
+    border: 1px solid #e2e8e5;
+    border-radius: 22px;
+    overflow: hidden;
+}
+
+.agr-edu-card-media {
+    position: relative;
+    height: 170px;
+}
+
+.agr-edu-card-media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.agr-edu-card-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 9999px;
+    background-color: #ddf0e9;
+    color: #11332b;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.agr-edu-card-body {
+    padding: 16px 18px 18px;
+}
+
+.agr-edu-card-body h2 {
+    margin: 0 0 6px;
+    font-size: 18px;
+    font-weight: 800;
+    color: #11332b;
+}
+
+.agr-edu-card-body p {
+    margin: 0 0 14px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #4a635d;
+}
+
+.agr-edu-card-meta {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+
+.agr-edu-card-meta strong {
+    font-size: 16px;
+    font-weight: 800;
+    color: #11332b;
+}
+
+.agr-edu-card-meta span,
+.agr-edu-card-meta small {
+    font-size: 12px;
+    color: #4a635d;
+}
+
+.agr-edu-primary-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 46px;
+    border-radius: 9999px;
+    background-color: #1b4332;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+}
+
+.agr-edu-primary-btn:hover {
+    background-color: #143326;
+    color: #ffffff;
+}
+
+/* Custom Pagination */
+.agr-edu-pagination-wrap {
+    margin-top: 24px;
+    text-align: center;
+}
+
+.agr-edu-pagination-info {
+    margin: 0 0 12px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #4a635d;
+}
+
+.agr-edu-pagination {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.agr-page-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 36px;
+    height: 36px;
+    padding: 0 10px;
+    border: 1px solid #dce5e1;
+    border-radius: 10px;
+    background-color: #ffffff;
+    color: #11332b;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+    transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease,
+        color 0.15s ease;
+}
+
+.agr-page-btn:hover:not(.is-active):not(.is-disabled) {
+    background-color: #e6f2ee;
+    border-color: #b9d4ca;
+    color: #11332b;
+}
+
+.agr-page-btn.is-active {
+    background-color: #1b4332;
+    border-color: #1b4332;
+    color: #ffffff;
+}
+
+.agr-page-btn.is-disabled {
+    opacity: 0.38;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* Detail Page (Page 2) */
+.agr-edu-detail-hero {
+    border-radius: 20px;
+    overflow: hidden;
+    height: 210px;
+    margin-bottom: 18px;
+}
+
+.agr-edu-detail-hero img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.agr-edu-detail-head h2 {
+    margin: 0 0 6px;
+    font-size: 20px;
+    font-weight: 800;
+    color: #11332b;
+}
+
+.agr-edu-detail-head p {
+    margin: 0 0 20px;
+    font-size: 14px;
+    color: #4a635d;
+}
+
+.agr-edu-highlights-section h3 {
+    margin: 0 0 12px;
+    font-size: 17px;
+    font-weight: 700;
+    color: #11332b;
+}
+
+.agr-edu-highlights-box {
+    background-color: #e6f2ee;
+    border-radius: 18px;
+    padding: 18px;
+}
+
+.agr-edu-highlights-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.agr-edu-highlights-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #11332b;
+}
+
+.agr-edu-bullet-icon {
+    display: inline-grid;
+    place-items: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 6px;
+    background-color: #1b4332;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+.agr-edu-bottom-bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 40;
+    background-color: rgba(230, 242, 238, 0.96);
+    backdrop-filter: blur(6px);
+    border-top: 1px solid #d2e6df;
+    padding: 14px 16px;
+}
+
+.agr-edu-bottom-inner {
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+/* Session Cards (Page 3) */
+.agr-session-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.agr-session-card {
+    position: relative;
+    display: flex !important;
+    flex-direction: column;
+    gap: 4px;
+    padding: 12px 14px;
+    border: 1.5px solid #cfd8d4;
+    border-radius: 14px;
+    background-color: #ffffff;
+    color: #11332b;
+    cursor: pointer;
+    margin: 0 !important;
+}
+
+.agr-session-card input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.agr-session-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.agr-session-check {
+    display: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 5px;
+    border: 1.5px solid #ffffff;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+}
+
+.agr-session-card span {
+    font-size: 12px;
+    color: #4a635d;
+}
+
+.agr-session-card:has(input:checked) {
+    background-color: #1b4332;
+    border-color: #1b4332;
+    color: #ffffff;
+}
+
+.agr-session-card:has(input:checked) span {
+    color: rgba(255, 255, 255, 0.88);
+}
+
+.agr-session-card:has(input:checked) .agr-session-check {
+    display: inline-flex;
+}
+
+/* ==========================================================================
+   Stepper & Form Reservasi (Self-Contained, Tanpa Ketergantungan File Lain)
+   ========================================================================== */
+
+.agr-flow-stepper {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 0 14px;
+    margin-bottom: 24px;
+}
+
+.agr-flow-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 72px;
+}
+
+.agr-flow-step-circle {
+    width: 32px;
+    height: 32px;
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.agr-flow-step-circle.is-done {
+    background-color: #1b4332;
+    color: #ffffff;
+}
+
+.agr-flow-step-circle.is-done svg {
+    width: 16px;
+    height: 16px;
+}
+
+.agr-flow-step-circle.is-active {
+    background-color: #1b4332;
+    color: #ffffff;
+    box-shadow: 0 0 0 4px #d8ece4;
+}
+
+.agr-flow-step-circle.is-pending {
+    background-color: #ffffff;
+    border: 1.5px solid #cbd5d1;
+    color: #6b7f79;
+}
+
+.agr-flow-step-label {
+    margin-top: 8px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #11332b;
+}
+
+.agr-flow-step-label.is-active {
+    font-weight: 700;
+}
+
+.agr-flow-step-label.is-pending {
+    color: #6b7f79;
+}
+
+.agr-flow-step-line {
+    flex: 1;
+    height: 2px;
+    margin-top: 15px;
+    background-color: #d6dfdc;
+}
+
+.agr-flow-step-line.is-done {
+    background-color: #1b4332;
+}
+
+.agr-flow-items-card {
+    background-color: #e6f2ee;
+    border-radius: 18px;
+    padding: 14px;
+    margin-bottom: 22px;
+}
+
+.agr-flow-product-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.agr-flow-product-thumb {
+    width: 68px;
+    height: 68px;
+    border-radius: 12px;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.agr-flow-product-info h2 {
+    margin: 0 0 2px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #11332b;
+}
+
+.agr-flow-product-info p {
+    margin: 0 0 4px;
+    font-size: 12px;
+    color: #3b5e54;
+}
+
+.agr-flow-product-info strong {
+    font-size: 15px;
+    font-weight: 800;
+    color: #11332b;
+}
+
+.agr-flow-section-heading {
+    margin: 0 0 14px;
+    font-size: 17px;
+    font-weight: 700;
+    color: #11332b;
+}
+
+.agr-flow-field {
+    margin-bottom: 16px;
+}
+
+.agr-flow-field label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #11332b;
+}
+
+.agr-flow-field label .is-required {
+    color: #dc2626;
+}
+
+.agr-flow-field label span:not(.is-required) {
+    font-weight: 500;
+    color: #3b5e54;
+}
+
+.agr-flow-field input,
+.agr-flow-field textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #cfd8d4;
+    border-radius: 14px;
+    background-color: #ffffff;
+    color: #11332b;
+    font: inherit;
+    font-size: 14px;
+}
+
+.agr-flow-field input:focus,
+.agr-flow-field textarea:focus {
+    outline: none;
+    border-color: #1b4332;
+    box-shadow: 0 0 0 3px #d8ece4;
+}
+
+.agr-flow-field small {
+    display: block;
+    margin-top: 5px;
+    font-size: 12px;
+    color: #3b5e54;
+}
+
+.agr-flow-alert {
+    padding: 12px 14px;
+    margin-bottom: 16px;
+    border-radius: 14px;
+    background-color: #fee2e2;
+    color: #991b1b;
+    font-size: 13px;
+}
+
+.agr-flow-bottom-bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 40;
+    background-color: rgba(230, 242, 238, 0.96);
+    backdrop-filter: blur(6px);
+    border-top: 1px solid #d2e6df;
+    padding: 14px 16px;
+}
+
+.agr-flow-bottom-inner {
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+.agr-flow-bottom-total {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 13px;
+    color: #2d5248;
+}
+
+.agr-flow-bottom-total strong {
+    font-size: 18px;
+    font-weight: 800;
+    color: #11332b;
+}
+
+.agr-flow-primary-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    height: 48px;
+    border: 0;
+    border-radius: 9999px;
+    background-color: #1b4332 !important;
+    color: #ffffff !important;
+    font: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.agr-flow-primary-btn:hover {
+    background-color: #143326 !important;
+    color: #ffffff !important;
+}
+
+.agr-flow-secondary-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 42px;
+    margin-top: 8px;
+    border: 1.5px solid #1b4332;
+    border-radius: 9999px;
+    background-color: transparent;
+    color: #1b4332;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+}

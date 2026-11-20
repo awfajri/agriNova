@@ -1,0 +1,492 @@
+/* ==========================================================================
+   Product Detail Page (Mobile-First + Reviews)
+   ========================================================================== */
+
+@media (max-width: 767px) {
+    .agr-pdp-mobile-topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 18px;
+    }
+}
+
+@media (min-width: 768px) {
+    .agr-pdp-mobile-topbar {
+        display: none !important;
+    }
+
+    .agr-pdp-container {
+        padding-top: 32px;
+    }
+}
+
+.agr-pdp-page {
+    min-height: 100vh;
+    background-color: #faf9f6;
+    color: #11332b;
+    padding-bottom: 145px;
+}
+
+.agr-pdp-container {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 18px 16px 0;
+}
+
+.agr-pdp-icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    margin-left: -8px;
+    border-radius: 9999px;
+    color: #11332b;
+    text-decoration: none;
+}
+
+.agr-pdp-icon-btn svg {
+    width: 20px;
+    height: 20px;
+}
+
+.agr-pdp-mobile-title {
+    flex: 1;
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: #11332b;
+}
+
+.agr-pdp-cart-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 9999px;
+    background-color: #e6f2ee;
+    color: #11332b;
+    text-decoration: none;
+}
+
+.agr-pdp-cart-btn svg {
+    width: 19px;
+    height: 19px;
+}
+
+.agr-pdp-cart-badge {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 4px;
+    border-radius: 9999px;
+    background-color: #1b4332;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 700;
+    display: grid;
+    place-items: center;
+}
+
+/* Hero Photo Card */
+.agr-pdp-hero-card {
+    position: relative;
+    border-radius: 22px;
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+    background-color: #f3f6f4;
+    margin-bottom: 18px;
+}
+
+.agr-pdp-hero-card img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.agr-pdp-badge {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 9999px;
+    background-color: #ddf0e9;
+    color: #11332b;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+/* Title & Price */
+.agr-pdp-head h2 {
+    margin: 0 0 6px;
+    font-size: 24px;
+    font-weight: 800;
+    color: #11332b;
+}
+
+.agr-pdp-price {
+    margin-bottom: 10px;
+    color: #11332b;
+}
+
+.agr-pdp-price strong {
+    font-size: 22px;
+    font-weight: 800;
+}
+
+.agr-pdp-price span {
+    font-size: 14px;
+    color: #4a635d;
+}
+
+.agr-pdp-desc {
+    margin: 0 0 18px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #3b5e54;
+}
+
+/* Info Box */
+.agr-pdp-info-box {
+    background-color: #e6f2ee;
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 22px;
+}
+
+.agr-pdp-info-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+    font-size: 14px;
+    color: #11332b;
+}
+
+.agr-pdp-info-head svg {
+    width: 18px;
+    height: 18px;
+    color: #1b4332;
+    flex-shrink: 0;
+}
+
+.agr-pdp-info-box p {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #2d5248;
+}
+
+/* Quantity Stepper Row */
+.agr-pdp-qty-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.agr-pdp-qty-label {
+    display: block;
+    font-size: 15px;
+    font-weight: 700;
+    color: #11332b;
+}
+
+.agr-pdp-qty-sub {
+    display: block;
+    margin-top: 2px;
+    font-size: 12px;
+    color: #4a635d;
+}
+
+.agr-pdp-stepper {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid #dce5e1;
+    border-radius: 14px;
+    background-color: #ffffff;
+    height: 44px;
+    padding: 0 6px;
+}
+
+.agr-pdp-stepper button {
+    width: 34px;
+    height: 34px;
+    border: 0;
+    border-radius: 10px;
+    background: transparent;
+    color: #11332b;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.agr-pdp-stepper button:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+}
+
+.agr-pdp-stepper span {
+    min-width: 58px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 700;
+    color: #11332b;
+}
+
+.agr-pdp-payment-note {
+    margin: 0 0 28px;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #3b5e54;
+}
+
+/* Reviews Section */
+.agr-pdp-reviews {
+    padding-top: 22px;
+    border-top: 1px solid #e2e8e5;
+}
+
+.agr-pdp-reviews-head h3 {
+    margin: 0 0 4px;
+    font-size: 18px;
+    font-weight: 800;
+    color: #11332b;
+}
+
+.agr-pdp-reviews-head p {
+    margin: 0 0 14px;
+    font-size: 13px;
+    color: #4a635d;
+}
+
+.agr-pdp-review-form {
+    background-color: #ffffff;
+    border: 1px solid #dce5e1;
+    border-radius: 16px;
+    padding: 14px;
+    margin-bottom: 14px;
+}
+
+.agr-pdp-review-form > strong {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.agr-pdp-rating-select {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 10px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.agr-pdp-rating-select select {
+    padding: 6px 10px;
+    border: 1px solid #cbd5d1;
+    border-radius: 10px;
+    background-color: #faf9f6;
+    color: #11332b;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.agr-pdp-comment-field textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #cbd5d1;
+    border-radius: 12px;
+    background-color: #faf9f6;
+    color: #11332b;
+    font-size: 13px;
+    resize: vertical;
+    margin-bottom: 10px;
+}
+
+.agr-pdp-review-submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 40px;
+    border: 0;
+    border-radius: 9999px;
+    background-color: #e6f2ee;
+    color: #11332b;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.agr-pdp-review-empty {
+    padding: 16px;
+    border-radius: 14px;
+    background-color: #ffffff;
+    border: 1px dashed #cbd5d1;
+    font-size: 13px;
+    color: #4a635d;
+    text-align: center;
+}
+
+.agr-pdp-review-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.agr-pdp-review-card {
+    background-color: #ffffff;
+    border: 1px solid #e2e8e5;
+    border-radius: 16px;
+    padding: 14px;
+}
+
+.agr-pdp-review-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.agr-pdp-reviewer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.agr-pdp-reviewer img,
+.agr-pdp-reviewer-initial {
+    width: 34px;
+    height: 34px;
+    border-radius: 9999px;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.agr-pdp-reviewer-initial {
+    display: grid;
+    place-items: center;
+    background-color: #e6f2ee;
+    color: #11332b;
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.agr-pdp-reviewer strong {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    color: #11332b;
+}
+
+.agr-pdp-reviewer span {
+    display: block;
+    font-size: 11px;
+    color: #4a635d;
+}
+
+.agr-pdp-stars {
+    font-size: 13px;
+    color: #d97706;
+    letter-spacing: 1px;
+}
+
+.agr-pdp-review-comment {
+    margin: 10px 0 0;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #2d5248;
+}
+
+/* Sticky Bottom Bar */
+.agr-pdp-bottom-bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 40;
+    background-color: rgba(230, 242, 238, 0.96);
+    backdrop-filter: blur(6px);
+    border-top: 1px solid #d2e6df;
+    padding: 12px 16px 16px;
+}
+
+.agr-pdp-bottom-inner {
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+.agr-pdp-bottom-total {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.agr-pdp-bottom-total span {
+    font-size: 13px;
+    font-weight: 600;
+    color: #2d5248;
+}
+
+.agr-pdp-bottom-total strong {
+    font-size: 20px;
+    font-weight: 800;
+    color: #11332b;
+}
+
+.agr-pdp-bottom-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.agr-pdp-cart-add-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    border: 1.5px solid #1b4332;
+    border-radius: 9999px;
+    background-color: #ffffff;
+    color: #1b4332;
+    flex-shrink: 0;
+    cursor: pointer;
+}
+
+.agr-pdp-primary-btn {
+    flex: 1;
+    height: 46px;
+    border: 0;
+    border-radius: 9999px;
+    background-color: #1b4332;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.agr-pdp-primary-btn:hover:not(:disabled) {
+    background-color: #143326;
+}
+
+.agr-pdp-primary-btn:disabled,
+.agr-pdp-cart-add-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}

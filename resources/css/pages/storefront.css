@@ -1,0 +1,752 @@
+/* ==========================================================================
+   Storefront, Mobile Topbar & Full-Screen Drawer
+   ========================================================================== */
+
+.agr-mob-topbar {
+    display: none;
+}
+
+.agr-drawer {
+    position: fixed;
+    inset: 0;
+    z-index: 1050;
+    background-color: #faf9f6;
+    overflow-y: auto;
+}
+
+.agr-drawer[hidden] {
+    display: none !important;
+}
+
+@media (max-width: 767.98px) {
+    .agr-desktop-nav-wrap {
+        display: none !important;
+    }
+
+    body.page-mobile-subpage .agr-mob-topbar {
+        display: none !important;
+    }
+
+    .agr-mob-topbar {
+        display: block;
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        background-color: #faf9f6;
+        padding: 12px 16px;
+    }
+}
+
+@media (min-width: 768px) {
+    .agr-mob-topbar,
+    .agr-drawer {
+        display: none !important;
+    }
+}
+
+/* Mobile Topbar Search Pill */
+.agr-mob-topbar-inner {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.agr-mob-search-pill {
+    flex: 1;
+    min-width: 0;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 12px 0 14px;
+    border-radius: 9999px;
+    background-color: #e6f2ee;
+    color: #2d5248;
+}
+
+.agr-mob-search-pill svg {
+    width: 17px;
+    height: 17px;
+    flex-shrink: 0;
+}
+
+.agr-mob-search-pill input {
+    flex: 1;
+    min-width: 0;
+    border: 0;
+    background: transparent;
+    color: #11332b;
+    font-size: 14px;
+    outline: none;
+}
+
+.agr-mob-search-pill input::placeholder {
+    color: #4a635d;
+}
+
+.agr-mob-filter-inside {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 0 4px 10px;
+    border: 0;
+    border-left: 1px solid rgba(17, 51, 43, 0.16);
+    background: transparent;
+    color: #11332b;
+    cursor: pointer;
+}
+
+.agr-mob-circle-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border: 0;
+    border-radius: 9999px;
+    background-color: #e6f2ee;
+    color: #11332b;
+    text-decoration: none;
+    flex-shrink: 0;
+    cursor: pointer;
+}
+
+.agr-mob-circle-btn svg {
+    width: 19px;
+    height: 19px;
+}
+
+.agr-mob-cart-badge {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 4px;
+    border-radius: 9999px;
+    background-color: #1b4332;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 700;
+    display: grid;
+    place-items: center;
+}
+
+/* Full-Screen Mobile Drawer Content */
+.agr-drawer-inner {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 18px 20px 32px;
+}
+
+.agr-drawer-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.agr-drawer-brand {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: #11332b;
+    text-decoration: none;
+}
+
+.agr-drawer-close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: 0;
+    border-radius: 9999px;
+    background: transparent;
+    color: #11332b;
+    cursor: pointer;
+}
+
+.agr-drawer-close svg {
+    width: 22px;
+    height: 22px;
+}
+
+/* Drawer Account Card (Logged In) */
+.agr-drawer-account-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px;
+    border-radius: 18px;
+    background-color: #e6f2ee;
+    color: #11332b;
+    text-decoration: none;
+    margin-bottom: 22px;
+}
+
+.agr-drawer-account-icon {
+    width: 36px;
+    height: 36px;
+    display: grid;
+    place-items: center;
+    color: #11332b;
+    flex-shrink: 0;
+}
+
+.agr-drawer-account-icon svg {
+    width: 22px;
+    height: 22px;
+}
+
+.agr-drawer-account-copy {
+    flex: 1;
+}
+
+.agr-drawer-account-copy strong {
+    display: block;
+    font-size: 16px;
+    font-weight: 700;
+    color: #11332b;
+}
+
+.agr-drawer-account-copy span {
+    font-size: 12px;
+    color: #4a635d;
+}
+
+/* Drawer Welcome Card (Guest) */
+.agr-drawer-welcome-card {
+    padding: 18px;
+    border-radius: 18px;
+    background-color: #e6f2ee;
+    margin-bottom: 22px;
+}
+
+.agr-drawer-welcome-card h2 {
+    margin: 0 0 4px;
+    font-size: 18px;
+    font-weight: 800;
+    color: #11332b;
+}
+
+.agr-drawer-welcome-card p {
+    margin: 0 0 14px;
+    font-size: 13px;
+    color: #3b5e54;
+}
+
+.agr-drawer-login-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 44px;
+    border-radius: 9999px;
+    background-color: #1b4332;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+/* Drawer Groups & Items */
+.agr-drawer-group {
+    margin-bottom: 20px;
+}
+
+.agr-drawer-group-title {
+    margin: 0 0 10px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #2d5248;
+}
+
+.agr-drawer-group--info {
+    padding-top: 14px;
+    border-top: 1px solid #e2e8e5;
+}
+
+.agr-drawer-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 14px;
+    border-radius: 14px;
+    color: #11332b;
+    text-decoration: none;
+    margin-bottom: 4px;
+}
+
+.agr-drawer-item.is-active {
+    background-color: #e6f2ee;
+}
+
+.agr-drawer-item-icon {
+    width: 22px;
+    height: 22px;
+    display: grid;
+    place-items: center;
+    color: #11332b;
+    flex-shrink: 0;
+}
+
+.agr-drawer-item-icon svg {
+    width: 19px;
+    height: 19px;
+}
+
+.agr-drawer-item-text {
+    flex: 1;
+}
+
+.agr-drawer-item-text strong {
+    display: block;
+    font-size: 15px;
+    font-weight: 700;
+    color: #11332b;
+}
+
+.agr-drawer-item-text small {
+    display: block;
+    margin-top: 2px;
+    font-size: 12px;
+    color: #4a635d;
+}
+
+.agr-drawer-chevron {
+    font-size: 18px;
+    font-weight: 600;
+    color: #3b5e54;
+}
+
+.agr-drawer-logout-form {
+    margin-top: auto;
+    padding-top: 16px;
+}
+
+.agr-drawer-logout-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 12px 14px;
+    border: 0;
+    background: transparent;
+    color: #d93829;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.agr-drawer-logout-left {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* ==========================================================================
+   Curated Catalog Page
+   ========================================================================== */
+
+.agr-catalog-page {
+    background-color: #faf9f6;
+    color: #11332b;
+    padding: 8px 0 110px;
+}
+
+.agr-catalog-container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 16px;
+}
+
+@media (min-width: 768px) {
+    .agr-catalog-page {
+        padding-top: 28px;
+    }
+}
+
+/* 1. Fulfillment Card */
+.agr-pickup-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    border-radius: 16px;
+    background-color: #e6f2ee;
+    color: #11332b;
+    text-decoration: none;
+    margin-bottom: 16px;
+}
+
+.agr-pickup-card-copy strong {
+    display: block;
+    font-size: 14px;
+    font-weight: 700;
+    color: #11332b;
+}
+
+.agr-pickup-card-copy span {
+    display: block;
+    margin-top: 2px;
+    font-size: 13px;
+    color: #3b5e54;
+}
+
+.agr-pickup-card-arrow {
+    font-size: 18px;
+    font-weight: 700;
+    color: #11332b;
+}
+
+/* 2. Hero Banner Pre-Order */
+.agr-hero-banner {
+    position: relative;
+    border-radius: 22px;
+    overflow: hidden;
+    background: #1b4332 var(--hero-bg) center / cover no-repeat;
+    margin-bottom: 18px;
+}
+
+.agr-hero-overlay {
+    padding: 24px 20px 20px;
+    background: linear-gradient(
+        110deg,
+        rgba(17, 51, 43, 0.92) 0%,
+        rgba(17, 51, 43, 0.65) 65%,
+        rgba(17, 51, 43, 0.35) 100%
+    );
+    color: #ffffff;
+}
+
+.agr-hero-eyebrow {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.85);
+    margin-bottom: 6px;
+}
+
+.agr-hero-overlay h1 {
+    margin: 0 0 8px;
+    max-width: 280px;
+    font-size: 24px;
+    font-weight: 800;
+    line-height: 1.2;
+    color: #ffffff;
+}
+
+.agr-hero-countdown {
+    margin: 0 0 16px;
+    font-size: 12px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.88);
+    font-variant-numeric: tabular-nums;
+}
+
+.agr-hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 18px;
+    border-radius: 9999px;
+    background-color: #faf9f6;
+    color: #11332b;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+/* 3. Category Pills */
+.agr-cat-pills {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    margin-bottom: 24px;
+}
+
+.agr-cat-pills::-webkit-scrollbar {
+    display: none;
+}
+
+.agr-cat-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 16px;
+    border-radius: 9999px;
+    background-color: #e6f2ee;
+    color: #11332b;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.agr-cat-pill.is-active {
+    background-color: #1b4332;
+    color: #ffffff;
+}
+
+/* 4. Curated Sections */
+.agr-catalog-section {
+    margin-bottom: 28px;
+}
+
+.agr-section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 14px;
+}
+
+.agr-section-head h2 {
+    margin: 0;
+    font-size: 19px;
+    font-weight: 800;
+    color: #11332b;
+}
+
+.agr-section-head a {
+    font-size: 13px;
+    font-weight: 600;
+    color: #3b5e54;
+    text-decoration: none;
+}
+
+/* 2-Column Vertical Product Card */
+.agr-grid-2col {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.agr-vcard {
+    background-color: #ffffff;
+    border: 1px solid #e2e8e5;
+    border-radius: 18px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.agr-vcard-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.agr-vcard-media {
+    border-radius: 12px;
+    overflow: hidden;
+    aspect-ratio: 1 / 1;
+    background-color: #f3f6f4;
+    margin-bottom: 10px;
+}
+
+.agr-vcard-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.agr-vcard-tag {
+    display: block;
+    font-size: 11px;
+    font-weight: 500;
+    color: #4a635d;
+    margin-bottom: 2px;
+}
+
+.agr-vcard h3 {
+    margin: 0 0 6px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #11332b;
+}
+
+.agr-vcard-price {
+    margin-bottom: 10px;
+    color: #11332b;
+}
+
+.agr-vcard-price strong {
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.agr-vcard-price span {
+    font-size: 12px;
+    color: #4a635d;
+}
+
+.agr-mint-pill-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 38px;
+    border: 0;
+    border-radius: 9999px;
+    background-color: #e6f2ee;
+    color: #11332b;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.agr-mint-pill-btn:hover {
+    background-color: #d5e8e1;
+    color: #11332b;
+}
+
+/* Horizontal Product Card */
+.agr-hcard-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.agr-hcard {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px;
+    border-radius: 18px;
+    background-color: #ffffff;
+    border: 1px solid #e2e8e5;
+}
+
+.agr-hcard-media {
+    width: 96px;
+    height: 96px;
+    border-radius: 14px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.agr-hcard-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.agr-hcard-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.agr-hcard-tag {
+    display: block;
+    font-size: 11px;
+    font-weight: 500;
+    color: #4a635d;
+    margin-bottom: 2px;
+}
+
+.agr-hcard-body h3 {
+    margin: 0 0 4px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #11332b;
+}
+
+.agr-hcard-price {
+    margin: 0 0 10px;
+    font-size: 14px;
+    color: #11332b;
+}
+
+/* 5. Explore Programs Stack */
+.agr-explore-section {
+    margin-top: 32px;
+}
+
+.agr-explore-head h2 {
+    margin: 0;
+    font-size: 19px;
+    font-weight: 800;
+    color: #11332b;
+}
+
+.agr-explore-head p {
+    margin: 4px 0 14px;
+    font-size: 13px;
+    color: #4a635d;
+}
+
+.agr-explore-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.agr-explore-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 16px;
+    border-radius: 18px;
+    background-color: #e6f2ee;
+    color: #11332b;
+    text-decoration: none;
+}
+
+.agr-explore-icon {
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    color: #11332b;
+    flex-shrink: 0;
+}
+
+.agr-explore-icon svg {
+    width: 20px;
+    height: 20px;
+}
+
+.agr-explore-copy h3 {
+    margin: 0 0 3px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #11332b;
+}
+
+.agr-explore-copy p {
+    margin: 0 0 8px;
+    font-size: 13px;
+    color: #3b5e54;
+}
+
+.agr-explore-copy span {
+    font-size: 13px;
+    font-weight: 700;
+    color: #11332b;
+}
+
+/* Floating WhatsApp */
+.agr-floating-wa {
+    position: fixed;
+    right: 16px;
+    bottom: 20px;
+    z-index: 45;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 18px;
+    border-radius: 9999px;
+    background-color: #e6f2ee;
+    border: 1px solid #c6dfd6;
+    color: #11332b;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+    box-shadow: 0 8px 20px rgba(17, 51, 43, 0.14);
+}

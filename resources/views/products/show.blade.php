@@ -1,162 +1,243 @@
 @extends('layouts.app')
 
 @section('title', $product->name . ' | Agrinova')
-@section('meta_description', $product->short_description ?: 'Detail produk ' . $product->name . ' dari Agrinova.')
-@section('body_class', 'has-product-detail')
+@section('meta_description', $product->short_description ?: 'Pesan ' . $product->name . ' segar langsung dari kebun Agrinova.')
+@section('body_class', 'has-product-detail page-mobile-subpage')
 
 @section('content')
 @php
+    $cartCount = array_sum(session('cart', []));
     $productImage = $product->image_url ?: asset('images/sayursegar.webp');
-@endphp
-<section class="product-detail-page">
-    <div class="container">
-        <nav class="breadcrumb-nav" aria-label="Breadcrumb">
-            <a href="{{ route('catalog') }}">Katalog</a>
-            <span>/</span>
-            <span>{{ $product->name }}</span>
-        </nav>
+    $unitLabel = $product->unit ?? 'kg';
+    $minQty = max(1, (int) $product->min_order_quantity);
+    $maxQty = max($minQty, (int) $product->stock);
+    $isAvailable = (int) $product->stock >= $minQty;
+    $initialTotal = (float) $product->price * $minQty;
 
+    $harvestEstimate = ! empty($product->harvest_estimate)
+        ? \Carbon\Carbon::parse($product->harvest_estimate)->translatedFormat('d M Y')
+        : null;
+@endphp
+
+<section class="agr-pdp-page">
+    <div class="agr-pdp-container">
+        {{-- Mobile Top Bar (< 768px) --}}
+        <header class="agr-pdp-mobile-topbar">
+            <a href="{{ route('catalog') }}" class="agr-pdp-icon-btn" aria-label="Kembali ke katalog">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 12H5M11 6l-6 6 6 6"/>
+                </svg>
+            </a>
+            <h1 class="agr-pdp-mobile-title">Detail produk</h1>
+            <a href="{{ route('cart') }}" class="agr-pdp-cart-btn" aria-label="Buka keranjang">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true">
+                    <path d="M3 4h2l2.2 11.1a2 2 0 0 0 2 1.6h7.9a2 2 0 0 0 1.9-1.5L21 8H6"/>
+                    <circle cx="10" cy="20" r="1.25"/><circle cx="18" cy="20" r="1.25"/>
+                </svg>
+                @if ($cartCount > 0)
+                    <span class="agr-pdp-cart-badge">{{ $cartCount }}</span>
+                @endif
+            </a>
+        </header>
+
+        {{-- Alerts --}}
         @if (session('success'))
             <div class="catalog-alert catalog-alert--success" role="status">{{ session('success') }}</div>
         @endif
-        @if ($errors->has('cart'))
-            <div class="catalog-alert catalog-alert--error" role="alert">{{ $errors->first('cart') }}</div>
+        @if ($errors->any())
+            <div class="catalog-alert catalog-alert--error" role="alert">{{ $errors->first() }}</div>
         @endif
 
-        <div class="product-detail-grid">
-            <div class="product-detail-media">
-                <img src="{{ $productImage }}" alt="{{ $product->name }}">
+        {{-- Hero Product Photo Card --}}
+        <div class="agr-pdp-hero-card">
+            <img src="{{ $productImage }}" alt="{{ $product->name }}">
+            <span class="agr-pdp-badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" aria-hidden="true">
+                    <rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>
+                </svg>
                 @if ($product->is_preorder)
-                    <span class="product-badge product-badge--preorder">Pre-order</span>
-                @endif
-            </div>
-
-            <div class="product-detail-copy">
-                <span class="product-category">{{ $product->category->name ?? 'Produk' }}</span>
-                <h1>{{ $product->name }}</h1>
-                <div class="product-detail-price">Rp {{ number_format((float) $product->price, 0, ',', '.') }}</div>
-                <p class="product-detail-description">{{ $product->description ?: $product->short_description ?: 'Deskripsi produk akan diperbarui oleh admin.' }}</p>
-
-                <div class="product-detail-status">
-                    <span class="{{ $product->stock >= $product->min_order_quantity ? 'is-available' : 'is-unavailable' }}">
-                        {{ $product->stock >= $product->min_order_quantity ? 'Tersedia untuk dipesan' : 'Stok sedang habis' }}
-                    </span>
-                    @if ($product->is_preorder)
-                        <span>Pre-order panen</span>
-                    @endif
-                </div>
-
-                @if ($product->stock >= $product->min_order_quantity)
-                    <form method="POST" action="{{ route('cart.store') }}" class="product-buy-form">
-                        @csrf
-                        <input type="hidden" name="product_id" value="{{ $product->id }}">
-                        <label for="product-quantity">Jumlah</label>
-                        <div class="product-buy-controls">
-                            <input id="product-quantity" name="quantity" type="number" min="{{ $product->min_order_quantity }}" max="{{ $product->stock }}" value="{{ $product->min_order_quantity }}" required>
-                            <button type="submit" class="catalog-add-button">Tambah ke keranjang</button>
-                        </div>
-                        <small>Maksimal {{ $product->stock }} unit tersedia saat ini.</small>
-                    </form>
+                    Pre-order{{ $product->preorder_lead_days ? ' · H-' . $product->preorder_lead_days : '' }}
                 @else
-                    <p class="product-unavailable-note">Produk ini belum bisa dipesan. Silakan cek kembali nanti.</p>
+                    {{ $isAvailable ? 'Siap panen' : 'Stok habis' }}
                 @endif
-            </div>
+            </span>
         </div>
 
-        <section class="product-reviews" aria-labelledby="reviews-title">
-            <div class="product-reviews-head">
+        {{-- Title, Price & Description --}}
+        <div class="agr-pdp-head">
+            <h2>{{ $product->name }}</h2>
+            <div class="agr-pdp-price">
+                <strong>Rp{{ number_format((float) $product->price, 0, ',', '.') }}</strong>
+                <span>/ {{ $unitLabel }}</span>
+            </div>
+            <p class="agr-pdp-desc">
+                {{ $product->description ?: ($product->short_description ?: 'Hasil budidaya segar dari rumah tanam Agrinova, dipanen sesuai jadwal.') }}
+            </p>
+        </div>
+
+        {{-- Info Box: Estimasi Panen & Pengambilan di Kebun --}}
+        <div class="agr-pdp-info-box">
+            <div class="agr-pdp-info-head">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>
+                </svg>
+                <strong>
+                    @if ($harvestEstimate)
+                        Estimasi panen: {{ $harvestEstimate }}
+                    @elseif ($product->is_preorder)
+                        Pre-order panen berikutnya
+                    @else
+                        Siap panen &middot; Stok {{ $product->stock }} {{ $unitLabel }}
+                    @endif
+                </strong>
+            </div>
+            <p>
+                Khusus ambil di kebun (Senin&ndash;Minggu, 08.00&ndash;16.00 WIB). Jadwal pasti dikonfirmasi admin via WhatsApp.
+            </p>
+        </div>
+
+        {{-- Form Order & Stepper Jumlah --}}
+        <form id="pdp-order-form" method="POST" action="{{ route('cart.store') }}">
+            @csrf
+            <input type="hidden" name="product_id" value="{{ $product->id }}">
+            <input type="hidden" id="pdp-qty-input" name="quantity" value="{{ $minQty }}">
+            <input type="hidden" id="pdp-buy-now-input" name="buy_now" value="1">
+
+            <div class="agr-pdp-qty-row">
                 <div>
-                    <span class="eyebrow">Pengalaman pembeli</span>
-                    <h2 id="reviews-title">Rating dan komentar</h2>
+                    <strong class="agr-pdp-qty-label">Jumlah pesanan</strong>
+                    <span class="agr-pdp-qty-sub">Minimum {{ $minQty }} {{ $unitLabel }}</span>
                 </div>
-                <div class="product-rating-summary">
-                    <strong>{{ $reviewCount > 0 ? number_format($averageRating, 1) : '—' }}</strong>
-                    <span aria-label="{{ $reviewCount > 0 ? number_format($averageRating, 1) . ' dari 5' : 'Belum ada rating' }}">★</span>
-                    <small>{{ $reviewCount }} ulasan</small>
+
+                <div class="agr-pdp-stepper"
+                     data-min="{{ $minQty }}"
+                     data-max="{{ $maxQty }}"
+                     data-unit="{{ $unitLabel }}"
+                     data-price="{{ (float) $product->price }}">
+                    <button type="button" id="pdp-qty-minus" aria-label="Kurangi jumlah">&minus;</button>
+                    <span id="pdp-qty-display">{{ $minQty }} {{ $unitLabel }}</span>
+                    <button type="button" id="pdp-qty-plus" aria-label="Tambah jumlah">+</button>
                 </div>
             </div>
 
-            @if ($errors->has('review'))
-                <div class="catalog-alert catalog-alert--error" role="alert">{{ $errors->first('review') }}</div>
-            @endif
+            <p class="agr-pdp-payment-note">
+                Pembayaran via QRIS &bull; Wajib masuk akun Google saat checkout.
+            </p>
 
-            @auth
-                @if ($reviewableOrder)
-                    <form method="POST" action="{{ route('products.reviews.store', $product) }}" class="product-review-form">
-                        @csrf
-                        <div>
-                            <label for="review-rating">Rating kamu</label>
-                            <select id="review-rating" name="rating" required>
-                                @for ($rating = 5; $rating >= 1; $rating--)
-                                    <option value="{{ $rating }}" @selected((int) old('rating', $existingReview?->rating ?? 5) === $rating)>{{ $rating }} dari 5</option>
-                                @endfor
-                            </select>
-                        </div>
-                        <div class="product-review-comment">
-                            <label for="review-comment">Komentar <span>(opsional)</span></label>
-                            <textarea id="review-comment" name="comment" rows="3" maxlength="1000" placeholder="Bagaimana pengalamanmu dengan produk ini?">{{ old('comment', $existingReview?->comment) }}</textarea>
-                        </div>
-                        <button type="submit" class="catalog-action">{{ $existingReview ? 'Perbarui ulasan' : 'Kirim ulasan' }}</button>
-                    </form>
-                @else
-                    <p class="product-review-note">Beli dan selesaikan pembayaran produk ini untuk memberikan rating dan komentar.</p>
-                @endif
-            @else
-                <p class="product-review-note">Login dengan Google setelah membeli produk ini untuk memberikan rating dan komentar.</p>
-            @endauth
-
-            @if ($reviews->isNotEmpty())
-                <div class="product-review-list">
-                    @foreach ($reviews as $review)
-                        <article class="product-review">
-                            <div class="product-review-meta">
-                                <strong>{{ $review->user->name }}</strong>
-                                <span>{{ str_repeat('★', $review->rating) }}{{ str_repeat('☆', 5 - $review->rating) }}</span>
-                            </div>
-                            @if ($review->comment)
-                                <p>{{ $review->comment }}</p>
-                            @endif
-                            <small>{{ $review->created_at->translatedFormat('d F Y') }}</small>
-                        </article>
-                    @endforeach
-                </div>
-            @else
-                <p class="product-review-note">Belum ada ulasan untuk produk ini.</p>
-            @endif
-        </section>
-
-        @if ($relatedProducts->isNotEmpty())
-            <div class="related-products">
-                <div class="catalog-results-head">
-                    <div>
-                        <span class="eyebrow">Masih satu kategori</span>
-                        <h2>Produk lainnya</h2>
+            {{-- Sticky Bottom Bar --}}
+            <div class="agr-pdp-bottom-bar">
+                <div class="agr-pdp-bottom-inner">
+                    <div class="agr-pdp-bottom-total">
+                        <span id="pdp-bottom-summary">Total &middot; {{ $minQty }} {{ $unitLabel }}</span>
+                        <strong id="pdp-bottom-price">Rp{{ number_format($initialTotal, 0, ',', '.') }}</strong>
                     </div>
-                    <a href="{{ route('catalog', ['category' => $product->category?->slug]) }}" class="related-products-label">Lihat semua produk kategori</a>
+
+                    <div class="agr-pdp-bottom-actions">
+                        <button type="button"
+                                id="pdp-add-cart-btn"
+                                class="agr-pdp-cart-add-btn"
+                                aria-label="Tambah ke keranjang"
+                                {{ ! $isAvailable ? 'disabled' : '' }}>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20" aria-hidden="true">
+                                <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+                                <path d="M3 6h18"/>
+                                <path d="M16 10a4 4 0 0 1-8 0"/>
+                            </svg>
+                        </button>
+
+                        <button type="submit"
+                                id="pdp-buy-now-btn"
+                                class="agr-pdp-primary-btn"
+                                {{ ! $isAvailable ? 'disabled' : '' }}>
+                            {{ $isAvailable ? 'Pesan sekarang' : 'Stok habis' }}
+                        </button>
+                    </div>
                 </div>
-                <div class="catalog-product-grid">
-                    @foreach ($relatedProducts as $related)
-                        @php
-                            $relatedImage = $related->image_url ?: asset('images/sayursegar.webp');
-                        @endphp
-                        <article class="catalog-product-card">
-                            <a href="{{ route('products.show', $related) }}" class="catalog-product-link">
-                                <div class="catalog-product-media">
-                                    <img src="{{ $relatedImage }}" alt="{{ $related->name }}" loading="lazy">
-                                </div>
-                                <div class="catalog-product-body">
-                                    <span class="product-category">{{ $related->category->name ?? 'Produk' }}</span>
-                                    <h3>{{ $related->name }}</h3>
-                                    <div class="catalog-product-price">
-                                        <strong>Rp {{ number_format((float) $related->price, 0, ',', '.') }}</strong>
+            </div>
+        </form>
+
+        {{-- Section: Ulasan & Komentar Pembeli --}}
+        <section class="agr-pdp-reviews" aria-labelledby="pdp-reviews-heading">
+            <div class="agr-pdp-reviews-head">
+                <div>
+                    <h3 id="pdp-reviews-heading">Ulasan pembeli</h3>
+                    <p>
+                        @if ($reviewCount > 0)
+                            <strong>&#9733; {{ number_format($averageRating, 1) }}</strong> / 5.0 ({{ $reviewCount }} ulasan)
+                        @else
+                            Belum ada ulasan untuk produk ini
+                        @endif
+                    </p>
+                </div>
+            </div>
+
+            {{-- Form Tulis Ulasan (Hanya untuk pembeli terverifikasi) --}}
+            @if ($reviewableOrder)
+                <form method="POST" action="{{ route('products.reviews.store', $product) }}" class="agr-pdp-review-form">
+                    @csrf
+                    <strong>{{ $existingReview ? 'Perbarui ulasanmu' : 'Bagikan pengalamanmu' }}</strong>
+
+                    <div class="agr-pdp-rating-select">
+                        <label for="review-rating">Rating</label>
+                        <select id="review-rating" name="rating" required>
+                            @for ($star = 5; $star >= 1; $star--)
+                                <option value="{{ $star }}" @selected((int) old('rating', $existingReview->rating ?? 5) === $star)>
+                                    {{ $star }} Bintang {{ str_repeat('★', $star) }}
+                                </option>
+                            @endfor
+                        </select>
+                    </div>
+
+                    <div class="agr-pdp-comment-field">
+                        <label for="review-comment" class="visually-hidden">Komentar ulasan</label>
+                        <textarea id="review-comment"
+                                  name="comment"
+                                  rows="3"
+                                  placeholder="Ceritakan kesegaran produk atau pengalaman ambil di kebun...">{{ old('comment', $existingReview->comment ?? '') }}</textarea>
+                    </div>
+
+                    <button type="submit" class="agr-pdp-review-submit">
+                        {{ $existingReview ? 'Simpan perubahan' : 'Kirim ulasan' }}
+                    </button>
+                </form>
+            @endif
+
+            {{-- Daftar Ulasan --}}
+            @if ($reviews->isEmpty())
+                <div class="agr-pdp-review-empty">
+                    Ulasan akan muncul setelah pembeli menyelesaikan pesanan produk ini.
+                </div>
+            @else
+                <div class="agr-pdp-review-list">
+                    @foreach ($reviews as $review)
+                        <article class="agr-pdp-review-card">
+                            <div class="agr-pdp-review-top">
+                                <div class="agr-pdp-reviewer">
+                                    @if ($review->user?->avatar_url)
+                                        <img src="{{ $review->user->avatar_url }}" alt="" referrerpolicy="no-referrer">
+                                    @else
+                                        <span class="agr-pdp-reviewer-initial">
+                                            {{ mb_strtoupper(mb_substr($review->user->name ?? 'P', 0, 1)) }}
+                                        </span>
+                                    @endif
+                                    <div>
+                                        <strong>{{ $review->user->name ?? 'Pelanggan Agrinova' }}</strong>
+                                        <span>{{ $review->created_at?->diffForHumans() }}</span>
                                     </div>
                                 </div>
-                            </a>
+                                <span class="agr-pdp-stars" aria-label="{{ $review->rating }} dari 5 bintang">
+                                    {{ str_repeat('★', (int) $review->rating) }}
+                                </span>
+                            </div>
+
+                            @if (filled($review->comment))
+                                <p class="agr-pdp-review-comment">{{ $review->comment }}</p>
+                            @endif
                         </article>
                     @endforeach
                 </div>
-            </div>
-        @endif
+            @endif
+        </section>
     </div>
 </section>
 @endsection

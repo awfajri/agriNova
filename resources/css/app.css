@@ -1,4 +1,10 @@
 @import "bootstrap/dist/css/bootstrap.min.css";
+@import "./pages/checkout-payment.css";
+@import "./pages/checkout-flow.css";
+@import "./pages/storefront.css";
+@import "./pages/eduwisata.css";
+@import "./pages/cart.css";
+@import "./pages/product-detail.css";
 
 /* ---------- Font ---------- */
 @font-face {
@@ -205,7 +211,11 @@ body:not(.has-hero) main {
     border: 1px solid rgba(255, 255, 255, 0.25);
     border-radius: 999px;
     color: rgba(255, 255, 255, 0.75);
-    transition: width 0.22s ease, border-color 0.22s ease, border-width 0.22s ease, box-shadow 0.22s ease;
+    transition:
+        width 0.22s ease,
+        border-color 0.22s ease,
+        border-width 0.22s ease,
+        box-shadow 0.22s ease;
 }
 
 .nav-search input {
@@ -307,8 +317,6 @@ body:not(.has-hero) main {
         gap: 0.25rem 0.6rem;
         text-align: center;
     }
-
-
 }
 
 .minimal-enclosed-header {
@@ -345,7 +353,10 @@ body:not(.has-hero) main {
 }
 
 .minimal-enclosed-back {
-    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease,
+        color 0.15s ease;
 }
 
 .minimal-enclosed-back:hover {
@@ -504,7 +515,11 @@ body:not(.has-hero) main {
 .product-media {
     position: relative;
     height: 16rem;
-    background: linear-gradient(135deg, rgba(138, 187, 146, 0.24), rgba(42, 131, 95, 0.1));
+    background: linear-gradient(
+        135deg,
+        rgba(138, 187, 146, 0.24),
+        rgba(42, 131, 95, 0.1)
+    );
     display: flex;
     align-items: center;
     justify-content: center;
@@ -519,7 +534,11 @@ body:not(.has-hero) main {
 }
 
 .product-media--placeholder {
-    background: linear-gradient(135deg, rgba(18, 84, 79, 0.8), rgba(42, 131, 95, 0.65));
+    background: linear-gradient(
+        135deg,
+        rgba(18, 84, 79, 0.8),
+        rgba(42, 131, 95, 0.65)
+    );
     color: var(--c-white);
     font-weight: 600;
     letter-spacing: 0.02em;
@@ -1205,14 +1224,14 @@ body:not(.has-hero) main {
     background: var(--c-white);
     border: 1px solid var(--line, rgba(18, 84, 79, 0.15));
     border-radius: 28px;
-    box-shadow: 0 24px 48px -28px rgba(18, 84, 79, .35);
+    box-shadow: 0 24px 48px -28px rgba(18, 84, 79, 0.35);
 }
 
 .profile-card h1 {
     margin: 0;
     font-size: 32px;
     font-weight: 800;
-    letter-spacing: -.025em;
+    letter-spacing: -0.025em;
     line-height: 1.15;
 }
 
@@ -1286,9 +1305,13 @@ body:not(.has-hero) main {
     overflow-wrap: anywhere;
 }
 
-.profile-form { margin-top: 32px; }
+.profile-form {
+    margin-top: 32px;
+}
 
-.profile-form .field + .field { margin-top: 22px; }
+.profile-form .field + .field {
+    margin-top: 22px;
+}
 
 .profile-form label {
     display: block;
@@ -1297,7 +1320,9 @@ body:not(.has-hero) main {
     font-weight: 600;
 }
 
-.profile-form .control { position: relative; }
+.profile-form .control {
+    position: relative;
+}
 
 .profile-form .control svg {
     position: absolute;
@@ -1305,10 +1330,12 @@ body:not(.has-hero) main {
     top: 15px;
     color: var(--muted, #5e7a74);
     pointer-events: none;
-    transition: color .15s ease;
+    transition: color 0.15s ease;
 }
 
-.profile-form .control:focus-within svg { color: var(--leaf, #4c9a64); }
+.profile-form .control:focus-within svg {
+    color: var(--leaf, #4c9a64);
+}
 
 .profile-form input,
 .profile-form textarea {
@@ -1321,10 +1348,15 @@ body:not(.has-hero) main {
     border-radius: 14px;
     font: inherit;
     font-size: 16px;
-    transition: border-color .15s ease, box-shadow .15s ease, background-color .15s ease;
+    transition:
+        border-color 0.15s ease,
+        box-shadow 0.15s ease,
+        background-color 0.15s ease;
 }
 
-.profile-form input { height: 52px; }
+.profile-form input {
+    height: 52px;
+}
 
 .profile-form textarea {
     min-height: 124px;
@@ -1335,17 +1367,21 @@ body:not(.has-hero) main {
 }
 
 .profile-form input::placeholder,
-.profile-form textarea::placeholder { color: #8da6a0; }
+.profile-form textarea::placeholder {
+    color: #8da6a0;
+}
 
 .profile-form input:hover,
-.profile-form textarea:hover { border-color: #b6cec5; }
+.profile-form textarea:hover {
+    border-color: #b6cec5;
+}
 
 .profile-form input:focus,
 .profile-form textarea:focus {
     outline: none;
     background: var(--c-white);
     border-color: var(--leaf, #4c9a64);
-    box-shadow: 0 0 0 4px rgba(76, 154, 100, .18);
+    box-shadow: 0 0 0 4px rgba(76, 154, 100, 0.18);
 }
 
 .profile-form .hint {
@@ -1374,11 +1410,17 @@ body:not(.has-hero) main {
     font-size: 16px;
     font-weight: 700;
     cursor: pointer;
-    transition: background-color .15s ease, transform .1s ease;
+    transition:
+        background-color 0.15s ease,
+        transform 0.1s ease;
 }
 
-.btn-save:hover { background: #0d3f3b; }
-.btn-save:active { transform: translateY(1px); }
+.btn-save:hover {
+    background: #0d3f3b;
+}
+.btn-save:active {
+    transform: translateY(1px);
+}
 .btn-save:focus-visible {
     outline: 3px solid var(--leaf, #4c9a64);
     outline-offset: 3px;
@@ -1396,17 +1438,34 @@ body:not(.has-hero) main {
     text-decoration: none;
 }
 
-.profile-card .back:hover { text-decoration: underline; text-underline-offset: 4px; }
-.profile-card .back:focus-visible { outline: 3px solid var(--leaf, #4c9a64); outline-offset: 4px; border-radius: 6px; }
+.profile-card .back:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+.profile-card .back:focus-visible {
+    outline: 3px solid var(--leaf, #4c9a64);
+    outline-offset: 4px;
+    border-radius: 6px;
+}
 
 @media (max-width: 600px) {
-    .profile-main { padding: 2.5rem 12px 48px; }
-    .profile-card { padding: 28px 20px; border-radius: 24px; }
-    .profile-card h1 { font-size: 28px; }
+    .profile-main {
+        padding: 2.5rem 12px 48px;
+    }
+    .profile-card {
+        padding: 28px 20px;
+        border-radius: 24px;
+    }
+    .profile-card h1 {
+        font-size: 28px;
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .btn-save, .profile-form .control svg { transition: none !important; }
+    .btn-save,
+    .profile-form .control svg {
+        transition: none !important;
+    }
 }
 
 .profile-dashboard {
@@ -1472,7 +1531,9 @@ body:not(.has-hero) main {
     font-size: 0.86rem;
     font-weight: 700;
     text-decoration: none;
-    transition: transform 0.15s ease, background-color 0.15s ease;
+    transition:
+        transform 0.15s ease,
+        background-color 0.15s ease;
 }
 
 .profile-button:hover {
@@ -1847,7 +1908,9 @@ body:not(.has-hero) .context-nav + main {
     border-radius: 0.75rem;
     color: var(--c-deep);
     text-decoration: none;
-    transition: background-color 0.15s ease, border-color 0.15s ease;
+    transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease;
 }
 
 .context-back span {
@@ -1992,7 +2055,9 @@ body:not(.has-hero) .context-nav + main {
     font: inherit;
     text-align: left;
     text-decoration: none;
-    transition: background-color 0.2s ease, color 0.2s ease;
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease;
 }
 
 .admin-nav a:hover,
@@ -3036,7 +3101,9 @@ body:not(.has-hero) .context-nav + main {
     border-radius: 1.2rem;
     background: var(--c-white);
     box-shadow: 0 0.7rem 1.7rem rgba(9, 35, 40, 0.04);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
 .catalog-product-card:hover {
@@ -3142,7 +3209,9 @@ body:not(.has-hero) .context-nav + main {
     color: var(--c-white);
     font-weight: 600;
     text-decoration: none;
-    transition: background 0.2s ease, transform 0.2s ease;
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
 }
 
 .catalog-add-button:hover,
@@ -3359,7 +3428,9 @@ body:not(.has-hero) .context-nav + main {
     color: var(--c-ink);
     font-weight: 600;
     text-decoration: none;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
 .google-login-button:hover {
@@ -4000,7 +4071,9 @@ body:not(.has-hero) .context-nav + main {
     font-size: 0.86rem;
     font-weight: 700;
     text-decoration: none;
-    transition: background-color 0.15s ease, transform 0.15s ease;
+    transition:
+        background-color 0.15s ease,
+        transform 0.15s ease;
 }
 
 .order-whatsapp-button:hover {
@@ -5363,7 +5436,10 @@ html {
 
 .footer-grid {
     display: grid;
-    grid-template-columns: minmax(0, 1.4fr) minmax(8rem, 0.6fr) minmax(12rem, 0.9fr);
+    grid-template-columns: minmax(0, 1.4fr) minmax(8rem, 0.6fr) minmax(
+            12rem,
+            0.9fr
+        );
     gap: 3rem;
     padding: 2.75rem 0 0;
 }

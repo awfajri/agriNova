@@ -1,12 +1,7 @@
 <?php
 
-$wa = env('AGRINOVA_WHATSAPP');
-
 return [
-    // format nomor: 628123456789 (tanpa +, spasi, atau tanda hubung)
-    'whatsapp' => $wa,
-    'whatsapp_url' => $wa
-        ? 'https://wa.me/' . $wa . '?text=' . rawurlencode('Halo Agrinova, saya ingin bertanya.')
-        : '#',
-    'address' => env('AGRINOVA_ADDRESS'),
+    'whatsapp_number' => env('AGRINOVA_WHATSAPP_NUMBER', '6285156287360'),
+    'whatsapp' => env('AGRINOVA_WHATSAPP_NUMBER', '6285156287360'), // Kompatibilitas key lama
+    'maps_url' => env('AGRINOVA_MAPS_URL', 'https://maps.google.com/?q=Agrinova+Farm'),
 ];

@@ -1,0 +1,385 @@
+/* ==========================================================================
+   Checkout Payment (QRIS) - Mobile-First & Responsive Desktop Header
+   ========================================================================== */
+
+/* Sembunyikan footer global agar tidak bertabrakan dengan bottom sticky bar */
+body.page-checkout-payment > footer,
+body.page-checkout-payment .site-footer {
+    display: none !important;
+}
+
+.agr-pay-page {
+    --agr-bg: #faf9f6;
+    --agr-surface: #ffffff;
+    --agr-mint: #e6f2ee;
+    --agr-mint-hover: #d5e8e1;
+    --agr-mint-ring: #d8ece4;
+    --agr-primary: #1b4332;
+    --agr-primary-hover: #143326;
+    --agr-text: #11332b;
+    --agr-text-muted: #3b5e54;
+    --agr-border: #e2e8e5;
+
+    min-height: 100vh;
+    background-color: var(--agr-bg);
+    color: var(--agr-text);
+    padding-bottom: 136px;
+}
+
+.agr-pay-page *,
+.agr-pay-page *::before,
+.agr-pay-page *::after {
+    box-sizing: border-box;
+}
+
+.agr-pay-container {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 20px 16px 0;
+}
+
+/* Responsive Top Bar Behavior:
+   - Mobile (< 768px): Sembunyikan topbar global, tampilkan mobile topbar chevron
+   - Desktop (>= 768px): Pertahankan topbar global, sembunyikan mobile topbar */
+@media (max-width: 767px) {
+    body.page-checkout-payment > header {
+        display: none !important;
+    }
+
+    .agr-pay-mobile-topbar {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 24px;
+    }
+}
+
+@media (min-width: 768px) {
+    .agr-pay-mobile-topbar {
+        display: none !important;
+    }
+
+    .agr-pay-container {
+        padding-top: 32px;
+    }
+}
+
+.agr-pay-back {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    margin-left: -8px;
+    border-radius: 9999px;
+    color: var(--agr-text);
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+}
+
+.agr-pay-back:hover {
+    background-color: var(--agr-mint);
+}
+
+.agr-pay-back svg {
+    width: 20px;
+    height: 20px;
+}
+
+.agr-pay-title {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--agr-text);
+}
+
+/* Stepper */
+.agr-pay-stepper {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 0 14px;
+    margin-bottom: 28px;
+}
+
+.agr-pay-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 72px;
+}
+
+.agr-pay-step-circle {
+    width: 32px;
+    height: 32px;
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.agr-pay-step-circle.is-done {
+    background-color: var(--agr-primary);
+    color: #ffffff;
+}
+
+.agr-pay-step-circle.is-done svg {
+    width: 16px;
+    height: 16px;
+}
+
+.agr-pay-step-circle.is-active {
+    background-color: var(--agr-primary);
+    color: #ffffff;
+    box-shadow: 0 0 0 4px var(--agr-mint-ring);
+}
+
+.agr-pay-step-circle.is-pending {
+    background-color: var(--agr-surface);
+    border: 1.5px solid #cbd5d1;
+    color: #6b7f79;
+}
+
+.agr-pay-step-label {
+    margin-top: 8px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--agr-text);
+}
+
+.agr-pay-step-label.is-active {
+    font-weight: 700;
+}
+
+.agr-pay-step-label.is-pending {
+    color: #6b7f79;
+}
+
+.agr-pay-step-line {
+    flex: 1;
+    height: 2px;
+    margin-top: 15px;
+    background-color: #d6dfdc;
+}
+
+.agr-pay-step-line.is-done {
+    background-color: var(--agr-primary);
+}
+
+/* Total Pembayaran */
+.agr-pay-total-box {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.agr-pay-total-caption {
+    margin: 0 0 4px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--agr-text-muted);
+}
+
+.agr-pay-total-amount {
+    margin: 0;
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--agr-text);
+    line-height: 1.15;
+}
+
+.agr-pay-order-id {
+    margin: 6px 0 0;
+    font-size: 13px;
+    color: var(--agr-text-muted);
+}
+
+.agr-pay-order-id strong {
+    color: var(--agr-text);
+    font-weight: 700;
+}
+
+/* Countdown Card */
+.agr-pay-timer-card {
+    background-color: var(--agr-mint);
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 20px;
+}
+
+.agr-pay-timer-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 6px;
+}
+
+.agr-pay-timer-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--agr-text);
+}
+
+.agr-pay-timer-label svg {
+    width: 18px;
+    height: 18px;
+    color: var(--agr-primary);
+}
+
+.agr-pay-timer-value {
+    font-size: 18px;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    color: var(--agr-text);
+}
+
+.agr-pay-timer-value.is-expired {
+    color: #dc2626;
+}
+
+.agr-pay-timer-desc {
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #2d5248;
+}
+
+/* QRIS Card */
+.agr-pay-qris-card {
+    background-color: var(--agr-surface);
+    border: 1px solid var(--agr-border);
+    border-radius: 24px;
+    padding: 24px 20px;
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.agr-pay-qris-title {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--agr-text);
+}
+
+.agr-pay-qris-subtitle {
+    margin: 4px 0 18px;
+    font-size: 13px;
+    color: var(--agr-text-muted);
+}
+
+.agr-pay-qris-frame {
+    display: inline-block;
+    padding: 12px;
+    background-color: var(--agr-bg);
+    border: 1px solid var(--agr-border);
+    border-radius: 16px;
+    margin-bottom: 16px;
+}
+
+.agr-pay-qris-img {
+    display: block;
+    width: 210px;
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    object-fit: contain;
+}
+
+.agr-pay-download-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: 9999px;
+    background-color: var(--agr-mint);
+    color: var(--agr-text);
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+}
+
+.agr-pay-download-btn:hover {
+    background-color: var(--agr-mint-hover);
+}
+
+.agr-pay-download-btn svg {
+    width: 16px;
+    height: 16px;
+}
+
+.agr-pay-qris-note {
+    margin: 14px 0 0;
+    font-size: 12px;
+    color: var(--agr-text-muted);
+}
+
+/* How to Pay */
+.agr-pay-guide-title {
+    margin: 0 0 10px;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--agr-text);
+}
+
+.agr-pay-guide-list {
+    margin: 0;
+    padding-left: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 13px;
+    line-height: 1.55;
+    color: #2d5248;
+}
+
+/* Bottom Sticky Bar */
+.agr-pay-bottom-bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 40;
+    background-color: rgba(230, 242, 238, 0.96);
+    backdrop-filter: blur(6px);
+    border-top: 1px solid #d2e6df;
+    padding: 14px 16px;
+}
+
+.agr-pay-bottom-inner {
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+.agr-pay-bottom-hint {
+    margin: 0 0 10px;
+    text-align: center;
+    font-size: 12px;
+    color: #2d5248;
+}
+
+.agr-pay-submit-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 48px;
+    border-radius: 9999px;
+    background-color: var(--agr-primary);
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+}
+
+.agr-pay-submit-btn:hover {
+    background-color: var(--agr-primary-hover);
+}

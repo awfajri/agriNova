@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\Product;
+use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class ProductController extends Controller
 {
-    public function show(Product $product)
+    public function show(Request $request, Product $product): View
     {
         abort_unless($product->is_active, 404);
 
@@ -29,22 +31,25 @@ class ProductController extends Controller
             ->latest()
             ->limit(8)
             ->get();
+
         $reviewCount = $product->reviews()->approved()->count();
         $averageRating = (float) ($product->reviews()->approved()->avg('rating') ?? 0);
         $reviewableOrder = null;
         $existingReview = null;
 
-        if (auth()->check()) {
+        $user = $request->user();
+
+        if ($user !== null) {
             $reviewableOrder = Order::query()
-                ->where('user_id', auth()->id())
+                ->where('user_id', $user->id)
                 ->where('payment_status', 'paid')
                 ->whereHas('items', fn ($query) => $query->where('product_id', $product->id))
                 ->latest('id')
                 ->first();
 
-            if ($reviewableOrder) {
+            if ($reviewableOrder !== null) {
                 $existingReview = $product->reviews()
-                    ->where('user_id', auth()->id())
+                    ->where('user_id', $user->id)
                     ->where('order_id', $reviewableOrder->id)
                     ->first();
             }

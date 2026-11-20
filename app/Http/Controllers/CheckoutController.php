@@ -5,26 +5,24 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\Product;
 use App\Services\CartService;
-use App\Services\MidtransPaymentService;
-use App\Services\OrderStockService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
-use Throwable;
 
 class CheckoutController extends Controller
 {
     public function __construct(
         private readonly CartService $cart,
-        private readonly MidtransPaymentService $midtrans,
-        private readonly OrderStockService $stock,
-    )
-    {
+    ) {
     }
 
+    /**
+     * Step 1: Form Detail Pemesanan
+     */
     public function create(): View|RedirectResponse
     {
         if ($this->cart->count() === 0) {
@@ -36,17 +34,19 @@ class CheckoutController extends Controller
         return view('checkout.create', [
             'items' => $this->cart->items(),
             'subtotal' => $this->cart->subtotal(),
-            'user' => auth()->user(),
+            'user' => Auth::user(),
         ]);
     }
 
+    /**
+     * Simpan pesanan & reservasi stok selama 15 menit
+     */
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
             'customer_name' => ['required', 'string', 'max:120'],
-            'customer_whatsapp' => ['required', 'string', 'max:24', 'regex:/^[0-9+()\\s-]{8,24}$/'],
+            'customer_whatsapp' => ['required', 'string', 'max:24', 'regex:/^[0-9+()\s-]{8,24}$/'],
             'notes' => ['nullable', 'string', 'max:1000'],
-            'payment_method' => ['required', 'in:manual_transfer,midtrans_snap'],
         ]);
 
         $order = DB::transaction(function () use ($validated): Order {
@@ -88,12 +88,14 @@ class CheckoutController extends Controller
 
             $order = Order::query()->create([
                 'order_number' => $this->makeOrderNumber(),
-                'user_id' => auth()->id(),
+                'user_id' => Auth::id(),
                 'customer_name' => $validated['customer_name'],
                 'customer_whatsapp' => $validated['customer_whatsapp'],
                 'status' => 'pending',
                 'payment_status' => 'pending',
-                'payment_method' => $validated['payment_method'],
+                'payment_method' => 'manual_transfer',
+                'payment_provider' => 'qris_static',
+                'payment_expires_at' => now()->addMinutes(15),
                 'subtotal' => $subtotal,
                 'shipping_cost' => 0,
                 'total' => $subtotal,
@@ -108,56 +110,63 @@ class CheckoutController extends Controller
             return $order;
         });
 
-        $paymentToken = null;
-
-        if ($order->payment_method === 'midtrans_snap') {
-            try {
-                $paymentToken = $this->midtrans->createSnapToken($order);
-                $order->forceFill([
-                    'payment_provider' => 'midtrans',
-                    'payment_token' => $paymentToken,
-                    'payment_expires_at' => now()->addHours(24),
-                ])->save();
-            } catch (Throwable $exception) {
-                report($exception);
-
-                DB::transaction(function () use ($order): void {
-                    $lockedOrder = Order::query()
-                        ->with('items')
-                        ->whereKey($order->id)
-                        ->lockForUpdate()
-                        ->firstOrFail();
-
-                    $lockedOrder->forceFill([
-                        'status' => 'canceled',
-                        'payment_status' => 'failed',
-                    ])->save();
-                    $this->stock->releaseReservedStock($lockedOrder);
-                });
-
-                throw ValidationException::withMessages([
-                    'payment_method' => 'Pembayaran belum bisa disiapkan. Silakan coba lagi beberapa saat.',
-                ]);
-            }
-        }
-
         $this->cart->clear();
-        session()->put('last_order_number', $order->order_number);
-        session()->put('last_payment_token', $paymentToken);
 
-        return redirect()->route('order.success', $order->order_number);
+        return redirect()->route('checkout.payment', $order->order_number);
     }
 
-    public function success(string $orderNumber): View
+    /**
+     * Step 2: Halaman Pembayaran QRIS (Countdown 15 Menit + Unduh QRIS)
+     */
+    public function payment(string $orderNumber): View|RedirectResponse
     {
-        abort_unless(session('last_order_number') === $orderNumber, 404);
-
         $order = Order::query()
             ->with('items')
             ->where('order_number', $orderNumber)
+            ->where('user_id', Auth::id())
             ->firstOrFail();
 
-        return view('checkout.success', compact('order'));
+        if ($order->status === 'canceled' || $order->payment_status === 'paid') {
+            return redirect()->route('order.success', $order->order_number);
+        }
+
+        return view('checkout.payment', compact('order'));
+    }
+
+    /**
+     * Step 3: Halaman Detail Konfirmasi & Redirect WhatsApp
+     */
+    public function success(string $orderNumber): View
+    {
+        $order = Order::query()
+            ->with('items')
+            ->where('order_number', $orderNumber)
+            ->where('user_id', Auth::id())
+            ->firstOrFail();
+
+        $whatsappUrl = $this->buildWhatsAppConfirmationUrl($order);
+
+        return view('checkout.success', compact('order', 'whatsappUrl'));
+    }
+
+    private function buildWhatsAppConfirmationUrl(Order $order): string
+    {
+        $adminPhone = config('agrinova.whatsapp_number', '6285156287360');
+        $itemsText = $order->items
+            ->map(fn ($item) => "- {$item->product_name} ({$item->quantity}x)")
+            ->implode("\n");
+
+        $totalFormatted = 'Rp' . number_format((float) $order->total, 0, ',', '.');
+
+        $message = "Halo Admin Agrinova, saya ingin konfirmasi pembayaran pesanan:\n\n"
+            . "ID Pesanan: *#{$order->order_number}*\n"
+            . "Nama: {$order->customer_name}\n"
+            . "Rincian:\n{$itemsText}\n"
+            . "Total Bayar: *{$totalFormatted}*\n"
+            . "Metode: Ambil di Kebun\n\n"
+            . "Berikut saya lampirkan bukti transfer QRIS-nya:";
+
+        return 'https://wa.me/' . preg_replace('/[^0-9]/', '', $adminPhone) . '?text=' . urlencode($message);
     }
 
     private function makeOrderNumber(): string

@@ -13,9 +13,17 @@
 </head>
 <body class="@yield('body_class')">
     @php
-        $funnelContext = request()->routeIs('cart') || request()->routeIs('checkout.*') || request()->routeIs('auth.login');
-        $accountContext = request()->routeIs('profile.*') || request()->routeIs('terms') || request()->routeIs('orders.tracking');
+        $funnelContext = request()->routeIs('cart')
+            || request()->routeIs('checkout.*')
+            || request()->routeIs('auth.login')
+            || request()->routeIs('registrations.show');
+        $accountContext = request()->routeIs('profile.*')
+            || request()->routeIs('terms')
+            || request()->routeIs('orders.tracking');
+        $programContext = request()->routeIs('eduwisata.*')
+            || request()->routeIs('pelatihan.*');
     @endphp
+
     @if ($accountContext)
         @php
             $contextTitle = request()->routeIs('orders.tracking')
@@ -43,11 +51,11 @@
         @yield('content')
     </main>
 
-    @if (! request()->routeIs('profile.*') && ! request()->routeIs('orders.tracking'))
+    @if (! request()->routeIs('profile.*') && ! request()->routeIs('orders.tracking') && ! $programContext)
         @include('partials.footer')
     @endif
 
-    @if (!request()->routeIs('home') && ! $funnelContext && ! $accountContext)
+    @if (! request()->routeIs('home') && ! request()->routeIs('catalog') && ! $funnelContext && ! $accountContext && ! $programContext)
         <a href="{{ route('home') }}#hero" class="floating-home" aria-label="Kembali ke beranda">
             <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1z"/><path d="M9 21v-6h6v6"/></svg>
             <span>Beranda</span>

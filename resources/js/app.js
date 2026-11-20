@@ -1,4 +1,9 @@
 import "./bootstrap";
+import "./copy-clipboard";
+import "./product-qty";
+import "./eduwisata";
+import "./mobile-nav";
+import "./product-detail";
 import * as bootstrap from "bootstrap";
 import { initReveal } from "./reveal";
 import { initProducts } from "./product";
