@@ -59,13 +59,18 @@ Route::middleware('auth')->group(function () {
 // 6. Layanan Eduwisata & Pelatihan Budidaya
 Route::get('/eduwisata', [EduwisataController::class, 'index'])->name('eduwisata.index');
 Route::get('/eduwisata/paket/{slug}', [EduwisataController::class, 'show'])->name('eduwisata.show');
-Route::get('/eduwisata/reservasi/{slug}', [EduwisataController::class, 'create'])->name('eduwisata.create');
-Route::post('/eduwisata/reservasi', [EduwisataController::class, 'reserve'])->name('eduwisata.reserve');
 
 Route::get('/pelatihan', [PelatihanController::class, 'index'])->name('pelatihan.index');
 Route::get('/pelatihan/{slug}', [PelatihanController::class, 'show'])->name('pelatihan.show');
-Route::get('/pelatihan/{slug}/daftar', [PelatihanController::class, 'create'])->name('pelatihan.create');
-Route::post('/pelatihan/{slug}/daftar', [PelatihanController::class, 'register'])->name('pelatihan.register');
+
+// Wajib Login untuk Reservasi Eduwisata & Pendaftaran Pelatihan
+Route::middleware('auth')->group(function () {
+    Route::get('/eduwisata/reservasi/{slug}', [EduwisataController::class, 'create'])->name('eduwisata.create');
+    Route::post('/eduwisata/reservasi', [EduwisataController::class, 'reserve'])->name('eduwisata.reserve');
+
+    Route::get('/pelatihan/{slug}/daftar', [PelatihanController::class, 'create'])->name('pelatihan.create');
+    Route::post('/pelatihan/{slug}/daftar', [PelatihanController::class, 'register'])->name('pelatihan.register');
+});
 
 Route::get('/lacak-pendaftaran', [RegistrationTrackingController::class, 'index'])->name('registrations.track');
 Route::post('/lacak-pendaftaran', [RegistrationTrackingController::class, 'lookup'])->name('registrations.lookup');
