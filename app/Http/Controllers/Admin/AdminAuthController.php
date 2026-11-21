@@ -15,7 +15,7 @@ class AdminAuthController extends Controller
 {
     public function create(): View|RedirectResponse
     {
-        if (auth()->check() && auth()->user()->is_admin) {
+        if (Auth::check() && Auth::user()?->is_admin) {
             return redirect()->route('admin.dashboard');
         }
 

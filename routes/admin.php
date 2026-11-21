@@ -17,12 +17,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::middleware('guest')->group(function () {
-        Route::get('/login', [AdminAuthController::class, 'showLogin'])->name('login');
-        Route::post('/login', [AdminAuthController::class, 'login'])->name('login.submit');
+        Route::get('/login', [AdminAuthController::class, 'create'])->name('login');
+        Route::post('/login', [AdminAuthController::class, 'store'])->name('login.store');
     });
 
     Route::middleware(['auth', 'admin'])->group(function () {
-        Route::post('/logout', [AdminAuthController::class, 'logout'])->name('logout');
+        Route::post('/logout', [AdminAuthController::class, 'destroy'])->name('logout');
         Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
 
         // Master Produk & Layanan (Dropdown Produk)
@@ -32,6 +32,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('trainings', AdminTrainingController::class)->except(['show']);
 
         // Banner Katalog & Countdown Pre-order
+        Route::get('/preorders/banner-settings', fn () => redirect()->route('admin.preorders.index'));
         Route::resource('preorders', AdminPreOrderController::class)->except(['show']);
         Route::post('/preorders/banner-settings', [AdminPreOrderController::class, 'updateBanner'])->name('preorders.banner');
 
