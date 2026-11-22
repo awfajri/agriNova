@@ -36,6 +36,13 @@
             <span>Total</span>
             <strong>Rp {{ number_format((float) $order->total, 0, ',', '.') }}</strong>
         </div>
+
+        @if ($order->pickupScheduleLabel())
+            <div class="admin-total-row">
+                <span>Rencana waktu ambil</span>
+                <strong>{{ $order->pickupScheduleLabel() }}</strong>
+            </div>
+        @endif
     </section>
 
     <form method="POST" action="{{ route('admin.orders.update', $order) }}" class="admin-form-panel">

@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
@@ -46,6 +47,8 @@ class CheckoutController extends Controller
         $validated = $request->validate([
             'customer_name' => ['required', 'string', 'max:120'],
             'customer_whatsapp' => ['required', 'string', 'max:24', 'regex:/^[0-9+()\s-]{8,24}$/'],
+            'pickup_date' => ['required', 'date', 'after_or_equal:today', 'before_or_equal:' . now()->addDays(Order::pickupDateMaxDays())->toDateString()],
+            'pickup_time' => ['required', 'string', Rule::in(array_keys(Order::pickupTimeOptions()))],
             'notes' => ['nullable', 'string', 'max:1000'],
         ]);
 
@@ -100,6 +103,8 @@ class CheckoutController extends Controller
                 'shipping_cost' => 0,
                 'total' => $subtotal,
                 'notes' => $validated['notes'] ?? null,
+                'pickup_time' => $validated['pickup_time'],
+                'pickup_date' => $validated['pickup_date'],
             ]);
 
             foreach ($orderItems as $item) {
@@ -158,13 +163,16 @@ class CheckoutController extends Controller
 
         $totalFormatted = 'Rp' . number_format((float) $order->total, 0, ',', '.');
 
+        $pickupLabel = $order->pickupScheduleLabel();
+
         $message = "Halo Admin Agrinova, saya ingin konfirmasi pembayaran pesanan:\n\n"
             . "ID Pesanan: *#{$order->order_number}*\n"
             . "Nama: {$order->customer_name}\n"
             . "Rincian:\n{$itemsText}\n"
             . "Total Bayar: *{$totalFormatted}*\n"
-            . "Metode: Ambil di Kebun\n\n"
-            . "Berikut saya lampirkan bukti transfer QRIS-nya:";
+            . "Metode: Ambil di Kebun\n"
+            . ($pickupLabel ? "Rencana Ambil: {$pickupLabel}\n" : '')
+            . "\nBerikut saya lampirkan bukti transfer QRIS-nya:";
 
         return 'https://wa.me/' . preg_replace('/[^0-9]/', '', $adminPhone) . '?text=' . urlencode($message);
     }

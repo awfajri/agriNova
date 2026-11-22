@@ -99,6 +99,13 @@
                     <strong>Ambil di kebun</strong>
                 </div>
 
+                @if ($order->pickupScheduleLabel())
+                    <div class="agr-confirm-row">
+                        <span>Rencana waktu ambil</span>
+                        <strong>{{ $order->pickupScheduleLabel() }}</strong>
+                    </div>
+                @endif
+
                 <div class="agr-confirm-row is-total">
                     <span>Total pembayaran</span>
                     <strong>{{ $formattedTotal }}</strong>

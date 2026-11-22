@@ -261,7 +261,7 @@ body.page-checkout-flow .site-footer {
     color: #dc2626;
 }
 
-.agr-flow-field label span:not(.is-required) {
+.agr-flow-field label:not(.agr-pickup-slot) span:not(.is-required) {
     font-weight: 500;
     color: var(--agr-text-muted);
 }
@@ -293,6 +293,659 @@ body.page-checkout-flow .site-footer {
     margin-top: 5px;
     font-size: 12px;
     color: var(--agr-text-muted);
+}
+
+/* Slot jam pengambilan (checkout) */
+.agr-pickup-hint {
+    margin: 6px 0 0;
+    font-size: 12px;
+    line-height: 1.55;
+    color: var(--agr-text-muted);
+}
+
+.agr-pickup-cols {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 118px;
+    gap: 10px;
+    align-items: stretch;
+}
+
+.agr-pickup-calendar-col {
+    min-width: 0;
+}
+
+/* ---------- Kalender ---------- */
+.agr-cal {
+    padding: 8px 6px 6px;
+    border: 1.5px solid #cfd8d4;
+    border-radius: 14px;
+    background-color: var(--agr-surface);
+}
+
+.agr-cal-head {
+    display: flex;
+    align-items: center;
+    margin-bottom: 4px;
+}
+
+.agr-cal-title {
+    flex: 1 1 auto;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--agr-text);
+}
+
+.agr-cal-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--agr-text);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.agr-cal-nav svg {
+    width: 16px;
+    height: 16px;
+}
+
+.agr-cal-nav:hover:not(:disabled) {
+    background-color: var(--agr-mint);
+}
+
+.agr-cal-nav:disabled {
+    opacity: 0.3;
+    cursor: default;
+}
+
+.agr-cal-weekdays,
+.agr-cal-days {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+.agr-cal-weekdays span {
+    padding: 3px 0;
+    text-align: center;
+    font-size: 11px;
+    color: var(--agr-text-muted);
+}
+
+.agr-cal-days {
+    row-gap: 1px;
+}
+
+.agr-cal-day {
+    position: relative;
+    justify-self: center;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: 0;
+    border-radius: 9999px;
+    background: transparent;
+    font-size: 13px;
+    color: var(--agr-text);
+    cursor: pointer;
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease;
+}
+
+.agr-cal-day:hover:not(:disabled):not([aria-pressed="true"]) {
+    background-color: var(--agr-mint);
+}
+
+.agr-cal-day:disabled {
+    opacity: 0.35;
+    cursor: default;
+}
+
+.agr-cal-day[aria-pressed="true"] {
+    background-color: var(--agr-primary);
+    color: #fff;
+    font-weight: 700;
+}
+
+.agr-cal-day.is-today::after {
+    content: "";
+    position: absolute;
+    bottom: 3px;
+    left: 50%;
+    width: 3px;
+    height: 3px;
+    margin-left: -1.5px;
+    border-radius: 9999px;
+    background-color: var(--agr-primary);
+}
+
+.agr-cal-day.is-today[aria-pressed="true"]::after {
+    background-color: #fff;
+}
+
+.agr-cal-today {
+    height: 26px;
+    margin: 6px 0 0 4px;
+    padding: 0 10px;
+    border: 1.5px solid #cfd8d4;
+    border-radius: 8px;
+    background-color: var(--agr-surface);
+    font-size: 12px;
+    color: var(--agr-text);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.agr-cal-today:hover {
+    background-color: var(--agr-mint);
+}
+
+.agr-cal-day:focus-visible,
+.agr-cal-nav:focus-visible,
+.agr-cal-today:focus-visible {
+    outline: 3px solid var(--agr-mint-ring);
+    outline-offset: 1px;
+}
+/* ---------- Daftar jam ---------- */
+.agr-pickup-times {
+    position: relative;
+    min-height: 240px;
+    min-width: 0;
+}
+
+.agr-pickup-times-scroll {
+    position: absolute;
+    inset: 0;
+    overflow-y: auto;
+    padding-right: 2px;
+}
+
+.agr-pickup-group-head {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin: 10px 0 6px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--agr-text-muted);
+}
+
+.agr-pickup-group-head svg {
+    flex: 0 0 auto;
+    width: 14px;
+    height: 14px;
+}
+
+.agr-pickup-group-head:first-child {
+    margin-top: 0;
+}
+
+.agr-flow-field .agr-pickup-slot {
+    position: relative;
+    display: block;
+    margin: 0 0 6px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--agr-text);
+    cursor: pointer;
+}
+
+.agr-flow-field .agr-pickup-slot input[type="radio"] {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.agr-pickup-wib {
+    display: none;
+}
+
+.agr-pickup-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 36px;
+    padding: 0 8px;
+    border: 1.5px solid #cfd8d4;
+    border-radius: 9px;
+    background-color: var(--agr-surface);
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--agr-text);
+    transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease;
+}
+
+.agr-pickup-slot:hover .agr-pickup-row {
+    border-color: var(--agr-primary);
+}
+
+.agr-pickup-radio {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: 16px;
+    height: 16px;
+    border: 1.5px solid #b6c2bc;
+    border-radius: 9999px;
+    background-color: var(--agr-surface);
+}
+
+.agr-pickup-radio::after {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-radius: 9999px;
+    background-color: var(--agr-primary);
+    transform: scale(0);
+    transition: transform 0.15s ease;
+}
+
+.agr-pickup-slot:has(input:checked) .agr-pickup-row {
+    border-color: var(--agr-primary);
+    background-color: var(--agr-mint);
+    font-weight: 700;
+}
+
+.agr-pickup-slot:has(input:checked) .agr-pickup-radio {
+    border-color: var(--agr-primary);
+}
+
+.agr-pickup-slot:has(input:checked) .agr-pickup-radio::after {
+    transform: scale(1);
+}
+
+.agr-pickup-slot:has(input:focus-visible) .agr-pickup-row {
+    outline: 3px solid var(--agr-mint-ring);
+    outline-offset: 1px;
+}
+
+.agr-pickup-summary {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 14px 0 0;
+    padding: 11px 14px;
+    border-radius: 14px;
+    background-color: var(--agr-mint);
+    font-size: 12px;
+    color: var(--agr-text-muted);
+}
+
+.agr-pickup-summary svg {
+    flex: 0 0 auto;
+    width: 14px;
+    height: 14px;
+}
+
+.agr-pickup-summary-value {
+    font-weight: 700;
+    color: var(--agr-text);
+}
+
+/* ---------- Responsif berbasis lebar komponen ---------- */
+@container (min-width: 430px) {
+    .agr-pickup-cols {
+        grid-template-columns: minmax(0, 1fr) 190px;
+        gap: 14px;
+    }
+
+    .agr-cal {
+        padding: 10px 10px 8px;
+    }
+
+    .agr-cal-day {
+        width: 34px;
+        height: 34px;
+        font-size: 14px;
+    }
+
+    .agr-pickup-times {
+        min-height: 310px;
+    }
+
+    .agr-pickup-wib {
+        display: inline;
+    }
+
+    .agr-pickup-row {
+        font-size: 14px;
+    }
+}
+
+@container (max-width: 299px) {
+    .agr-pickup-cols {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .agr-pickup-times {
+        min-height: 0;
+    }
+
+    .agr-pickup-times-scroll {
+        position: static;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        column-gap: 6px;
+        max-height: none;
+    }
+
+    .agr-pickup-group-head {
+        grid-column: 1 / -1;
+    }
+
+    .agr-pickup-wib {
+        display: inline;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .agr-pickup-dialog[open] .agr-pickup-sheet,
+    .agr-pickup-dialog.is-closing .agr-pickup-sheet,
+    .agr-pickup-dialog[open]::backdrop,
+    .agr-pickup-dialog.is-closing::backdrop {
+        animation: none;
+    }
+
+    .agr-pickup-row,
+    .agr-pickup-radio::after,
+    .agr-pickup-trigger {
+        transition: none;
+    }
+}
+
+
+
+/* ---------- Pemicu (bar di halaman checkout) ---------- */
+.agr-pickup-label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--agr-text);
+}
+
+.agr-pickup-label .is-required {
+    color: #dc2626;
+}
+
+.agr-pickup-trigger {
+    width: 100%;
+    min-height: 52px;
+    padding: 0 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border: 1.5px solid #cfd8d4;
+    border-radius: 14px;
+    background-color: var(--agr-surface);
+    font: inherit;
+    font-size: 14px;
+    color: var(--agr-text-muted);
+    text-align: left;
+    cursor: pointer;
+    transition:
+        border-color 0.2s ease,
+        background-color 0.2s ease;
+}
+
+.agr-pickup-trigger:hover {
+    border-color: #b7c4bf;
+}
+
+.agr-pickup-trigger:focus-visible {
+    outline: 3px solid var(--agr-mint-ring);
+    outline-offset: 1px;
+}
+
+.agr-pickup-trigger-icon {
+    width: 32px;
+    height: 32px;
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background-color: var(--agr-mint);
+    color: var(--agr-primary);
+}
+
+.agr-pickup-trigger-icon svg {
+    width: 18px;
+    height: 18px;
+}
+
+.agr-pickup-trigger-text {
+    flex: 1;
+    min-width: 0;
+}
+
+.agr-pickup-trigger-chevron {
+    width: 18px;
+    height: 18px;
+    flex: 0 0 auto;
+    color: var(--agr-text-muted);
+}
+
+.agr-pickup-trigger.is-filled {
+    border-color: var(--agr-primary);
+    background-color: #f1f6f3;
+}
+
+.agr-pickup-trigger.is-filled .agr-pickup-trigger-text {
+    color: var(--agr-text);
+    font-weight: 600;
+}
+
+/* ---------- Popup ---------- */
+html.agr-lock {
+    overflow: hidden;
+}
+
+.agr-pickup-dialog {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    max-width: none;
+    max-height: none;
+    overflow: visible;
+    color: var(--agr-text);
+}
+
+.agr-pickup-dialog::backdrop {
+    background-color: rgba(17, 51, 43, 0.35);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+}
+
+.agr-pickup-dialog[open]::backdrop {
+    animation: agr-backdrop-in 0.25s ease-out both;
+}
+
+.agr-pickup-dialog.is-closing::backdrop {
+    animation: agr-backdrop-out 0.17s ease-in forwards;
+}
+
+.agr-pickup-sheet {
+    width: min(520px, calc(100vw - 24px));
+    max-height: calc(100dvh - 24px);
+    display: flex;
+    flex-direction: column;
+    border-radius: 18px;
+    background-color: var(--agr-bg);
+    box-shadow:
+        0 24px 60px rgba(17, 51, 43, 0.28),
+        0 2px 8px rgba(17, 51, 43, 0.12);
+    overflow: hidden;
+}
+
+.agr-pickup-dialog[open] .agr-pickup-sheet {
+    animation: agr-pop-in 0.3s cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
+}
+
+.agr-pickup-dialog.is-closing .agr-pickup-sheet {
+    animation: agr-pop-out 0.17s ease-in forwards;
+}
+
+@keyframes agr-pop-in {
+    from {
+        opacity: 0;
+        transform: translateY(14px) scale(0.92);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@keyframes agr-pop-out {
+    from {
+        opacity: 1;
+        transform: none;
+    }
+    to {
+        opacity: 0;
+        transform: translateY(8px) scale(0.96);
+    }
+}
+
+@keyframes agr-backdrop-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes agr-backdrop-out {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+.agr-pickup-sheet-head {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px 16px 8px;
+}
+
+.agr-pickup-sheet-grow {
+    flex: 1;
+    min-width: 0;
+}
+
+.agr-pickup-sheet-head h2 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--agr-text);
+}
+
+.agr-pickup-sheet-head p {
+    margin: 2px 0 0;
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--agr-text-muted);
+}
+
+.agr-pickup-close {
+    width: 32px;
+    height: 32px;
+    flex: 0 0 auto;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--agr-text);
+    cursor: pointer;
+}
+
+.agr-pickup-close:hover {
+    background-color: var(--agr-mint);
+}
+
+.agr-pickup-close svg {
+    width: 18px;
+    height: 18px;
+}
+
+.agr-pickup-sheet-body {
+    padding: 4px 14px 12px;
+    overflow-y: auto;
+}
+
+.agr-pickup-picker {
+    container-type: inline-size;
+}
+
+.agr-pickup-sheet-foot {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    padding: 12px 16px;
+    border-top: 1px solid var(--agr-border);
+    background-color: var(--agr-bg);
+}
+
+.agr-pickup-btn {
+    height: 40px;
+    padding: 0 18px;
+    border: 1.5px solid #cfd8d4;
+    border-radius: 10px;
+    background-color: var(--agr-surface);
+    font: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--agr-text);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.agr-pickup-btn:hover {
+    background-color: var(--agr-mint);
+}
+
+.agr-pickup-btn.is-primary {
+    border-color: var(--agr-primary);
+    background-color: var(--agr-primary);
+    color: #fff;
+    font-weight: 600;
+}
+
+.agr-pickup-btn.is-primary:hover {
+    background-color: var(--agr-primary-hover);
+}
+
+.agr-pickup-btn:focus-visible,
+.agr-pickup-close:focus-visible {
+    outline: 3px solid var(--agr-mint-ring);
+    outline-offset: 1px;
 }
 
 .agr-flow-summary-box {

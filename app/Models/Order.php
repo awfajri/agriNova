@@ -26,6 +26,8 @@ class Order extends Model
         'shipping_cost',
         'total',
         'notes',
+        'pickup_time',
+        'pickup_date',
     ];
 
     protected $casts = [
@@ -35,6 +37,7 @@ class Order extends Model
         'paid_at' => 'datetime',
         'payment_expires_at' => 'datetime',
         'stock_released_at' => 'datetime',
+        'pickup_date' => 'date',
     ];
 
     public function items(): HasMany
@@ -66,6 +69,97 @@ class Order extends Model
     public static function activeStatuses(): array
     {
         return ['pending', 'processing', 'ready_for_pickup'];
+    }
+
+    /**
+     * Slot jam pengambilan di kebun (jam operasional 08.00 - 16.00 WIB).
+     */
+    public static function pickupTimeOptions(): array
+    {
+        return [
+            '08.00' => '08.00 WIB',
+            '09.00' => '09.00 WIB',
+            '10.00' => '10.00 WIB',
+            '11.00' => '11.00 WIB',
+            '12.00' => '12.00 WIB',
+            '13.00' => '13.00 WIB',
+            '14.00' => '14.00 WIB',
+            '15.00' => '15.00 WIB',
+            '16.00' => '16.00 WIB',
+        ];
+    }
+
+    /**
+     * Label untuk nilai lama yang sudah tidak dipakai lagi (kompatibilitas data).
+     */
+    protected const LEGACY_PICKUP_LABELS = [
+        'fleksibel' => 'Fleksibel (konfirmasi via WhatsApp)',
+    ];
+
+    /**
+     * Pengelompokan slot jam pengambilan untuk tampilan checkout.
+     * Key slot harus sejalan dengan pickupTimeOptions().
+     */
+    public static function pickupTimeGroups(): array
+    {
+        return [
+            [
+                'label' => 'Pagi',
+                'icon' => 'sunrise',
+                'slots' => ['08.00', '09.00', '10.00'],
+            ],
+            [
+                'label' => 'Siang',
+                'icon' => 'sun',
+                'slots' => ['11.00', '12.00', '13.00', '14.00'],
+            ],
+            [
+                'label' => 'Sore',
+                'icon' => 'sunset',
+                'slots' => ['15.00', '16.00'],
+            ],
+        ];
+    }
+
+    /**
+     * Batas pemesanan tanggal ambil: hari ini s/d 30 hari ke depan.
+     */
+    public static function pickupDateMaxDays(): int
+    {
+        return 30;
+    }
+
+    public function pickupTimeLabel(): ?string
+    {
+        if (! $this->pickup_time) {
+            return null;
+        }
+
+        return self::pickupTimeOptions()[$this->pickup_time]
+            ?? self::LEGACY_PICKUP_LABELS[$this->pickup_time]
+            ?? $this->pickup_time;
+    }
+
+    /**
+     * Label tanggal ambil, contoh: "Sen, 23 Nov 2026".
+     */
+    public function pickupDateLabel(): ?string
+    {
+        if (! $this->pickup_date) {
+            return null;
+        }
+
+        return $this->pickup_date->locale('id')->isoFormat('ddd, D MMM Y');
+    }
+
+    /**
+     * Ringkasan jadwal ambil, contoh: "Sen, 23 Nov 2026 · 08.00 WIB".
+     */
+    public function pickupScheduleLabel(): ?string
+    {
+        $parts = array_filter([$this->pickupDateLabel(), $this->pickupTimeLabel()]);
+
+        return $parts === [] ? null : implode(' · ', $parts);
     }
 
     public static function completedStatuses(): array

@@ -5,6 +5,7 @@ use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Request;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -19,6 +20,17 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'admin' => EnsureAdminAuthentication::class,
         ]);
+
+        // Middleware 'auth' bawaan Laravel me-redirect ke route bernama 'login',
+        // padahal proyek ini memakai 'auth.login' (pelanggan) dan 'admin.login' (panel admin).
+        $middleware->redirectGuestsTo(function (Request $request): string {
+            if ($request->is('admin', 'admin/*')) {
+                return route('admin.login');
+            }
+
+            return route('auth.login');
+        });
+
         $middleware->validateCsrfTokens(except: [
             'payments/midtrans/notification',
         ]);

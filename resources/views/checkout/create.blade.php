@@ -109,13 +109,119 @@
                 <small>Wajib aktif WhatsApp untuk pengiriman jadwal panen &amp; bukti bayar.</small>
             </div>
 
+            <div class="agr-flow-field agr-pickup-field">
+                @php
+                    $pickupGroups = \App\Models\Order::pickupTimeGroups();
+                    $selectedPickup = old('pickup_time', '08.00');
+                    $selectedDate = old('pickup_date');
+                    $maxPickupDays = \App\Models\Order::pickupDateMaxDays();
+                    $groupIcons = [
+                        'sunrise' => '<path d="M3 18h18M5 18a7 7 0 0 1 14 0M12 4v3M4.6 9.6l1.4 1.4M19.4 9.6 18 11"/>',
+                        'sun' => '<circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6 7 7M17 17l1.4 1.4M5.6 18.4 7 17M17 7l1.4-1.4"/>',
+                        'sunset' => '<path d="M3 20h18M5 20a7 7 0 0 1 14 0M12 8V5M9 6l3 3 3-3"/>',
+                    ];
+                @endphp
+
+                <label class="agr-pickup-label" id="agr-pickup-label" for="agr-pickup-trigger">
+                    Tanggal dan jam ambil <span class="is-required">*</span>
+                </label>
+
+                <button type="button"
+                        class="agr-pickup-trigger"
+                        id="agr-pickup-trigger"
+                        aria-haspopup="dialog"
+                        aria-labelledby="agr-pickup-label agr-pickup-trigger-text">
+                    <span class="agr-pickup-trigger-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg>
+                    </span>
+                    <span class="agr-pickup-trigger-text" id="agr-pickup-trigger-text">Pilih tanggal dan jam pengambilan</span>
+                    <svg class="agr-pickup-trigger-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <p class="agr-pickup-hint">Jam operasional kebun 08.00 - 16.00 WIB.</p>
+
+                <input type="hidden" name="pickup_date" id="pickup-date-value" value="{{ $selectedDate }}">
+
+                <dialog class="agr-pickup-dialog" id="agr-pickup-dialog" aria-labelledby="agr-pickup-dialog-title">
+                    <div class="agr-pickup-sheet">
+                        <div class="agr-pickup-sheet-head">
+                            <div class="agr-pickup-sheet-grow">
+                                <h2 id="agr-pickup-dialog-title">Pilih tanggal dan jam ambil</h2>
+                                <p>Pilih tanggal dan perkiraan jam Anda datang ke kebun.</p>
+                            </div>
+                            <button type="button" class="agr-pickup-close" id="agr-pickup-close" aria-label="Tutup">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+                            </button>
+                        </div>
+
+                        <div class="agr-pickup-sheet-body">
+                            <div class="agr-pickup-picker">
+                                <div class="agr-pickup-cols">
+                                    <div class="agr-pickup-calendar-col">
+                                        <div class="agr-cal">
+                                            <div class="agr-cal-head">
+                                                <button type="button" class="agr-cal-nav" id="agr-cal-prev" aria-label="Bulan sebelumnya">
+                                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+                                                </button>
+                                                <span class="agr-cal-title" id="agr-cal-title" aria-live="polite"></span>
+                                                <button type="button" class="agr-cal-nav" id="agr-cal-next" aria-label="Bulan berikutnya">
+                                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+                                                </button>
+                                            </div>
+                                            <div class="agr-cal-weekdays">
+                                                <span>Sen</span><span>Sel</span><span>Rab</span><span>Kam</span><span>Jum</span><span>Sab</span><span>Min</span>
+                                            </div>
+                                            <div class="agr-cal-days" id="agr-cal-days"></div>
+                                        </div>
+                                        <button type="button" class="agr-cal-today" id="agr-cal-today">Hari ini</button>
+                                    </div>
+
+                                    <div class="agr-pickup-times">
+                                        <div class="agr-pickup-times-scroll" role="radiogroup" aria-label="Rencana waktu ambil">
+                                            @foreach ($pickupGroups as $group)
+                                                <p class="agr-pickup-group-head">
+                                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{!! $groupIcons[$group['icon']] ?? '' !!}</svg>
+                                                    <span>{{ $group['label'] }}</span>
+                                                </p>
+                                                @foreach ($group['slots'] as $value)
+                                                    <label class="agr-pickup-slot">
+                                                        <input type="radio"
+                                                               name="pickup_time"
+                                                               value="{{ $value }}"
+                                                               @checked($selectedPickup === $value)
+                                                               required>
+                                                        <span class="agr-pickup-row">
+                                                            <span class="agr-pickup-radio" aria-hidden="true"></span>
+                                                            <span>{{ substr($value, 0, 5) }}</span><span class="agr-pickup-wib">&nbsp;WIB</span>
+                                                        </span>
+                                                    </label>
+                                                @endforeach
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <p class="agr-pickup-summary" aria-live="polite">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg>
+                                    <span>Dipilih: <strong class="agr-pickup-summary-value" id="pickup-selected-value">&mdash;</strong></span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="agr-pickup-sheet-foot">
+                            <button type="button" class="agr-pickup-btn" id="agr-pickup-cancel">Batal</button>
+                            <button type="button" class="agr-pickup-btn is-primary" id="agr-pickup-apply">Terapkan</button>
+                        </div>
+                    </div>
+                </dialog>
+            </div>
+
             <div class="agr-flow-field">
-                <label for="order-notes">Rencana waktu ambil / catatan <span>(opsional)</span></label>
+                <label for="order-notes">Catatan tambahan <span>(opsional)</span></label>
                 <textarea id="order-notes"
                           name="notes"
                           rows="3"
                           maxlength="1000"
-                          placeholder="Misal: Rencana ambil pagi sekitar jam 09.00 WIB">{{ old('notes') }}</textarea>
+                          placeholder="Misal: ambil bersama rombongan, bawa kendaraan pikap">{{ old('notes') }}</textarea>
             </div>
 
             {{-- Ringkasan Pembayaran --}}
@@ -148,3 +254,201 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    (() => {
+        const dialog = document.getElementById('agr-pickup-dialog');
+        const daysEl = document.getElementById('agr-cal-days');
+        if (!dialog || !daysEl) return;
+
+        const MAX_DAYS = {{ $maxPickupDays }};
+        const DEFAULT_OFFSET = 1;
+
+        const BULAN = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+        const HARI = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
+
+        const trigger = document.getElementById('agr-pickup-trigger');
+        const triggerText = document.getElementById('agr-pickup-trigger-text');
+        const titleEl = document.getElementById('agr-cal-title');
+        const prevBtn = document.getElementById('agr-cal-prev');
+        const nextBtn = document.getElementById('agr-cal-next');
+        const todayBtn = document.getElementById('agr-cal-today');
+        const dateInput = document.getElementById('pickup-date-value');
+        const summaryEl = document.getElementById('pickup-selected-value');
+        const closeBtn = document.getElementById('agr-pickup-close');
+        const cancelBtn = document.getElementById('agr-pickup-cancel');
+        const applyBtn = document.getElementById('agr-pickup-apply');
+        const radios = Array.from(document.querySelectorAll('input[name="pickup_time"]'));
+
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        const now = new Date();
+        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        const max = new Date(today);
+        max.setDate(max.getDate() + MAX_DAYS);
+
+        const sameDay = (a, b) => a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+        const pad = (n) => (n < 10 ? '0' + n : '' + n);
+        const toValue = (d) => d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+        const formatDate = (d) => HARI[d.getDay()] + ', ' + d.getDate() + ' ' + BULAN[d.getMonth()].slice(0, 3) + ' ' + d.getFullYear();
+        const currentTime = () => {
+            const checked = radios.find((r) => r.checked);
+            return checked ? checked.value : '';
+        };
+        const setTime = (value) => {
+            radios.forEach((r) => { r.checked = (r.value === value); });
+        };
+
+        const defaultDate = () => {
+            const d = new Date(today);
+            d.setDate(d.getDate() + DEFAULT_OFFSET);
+            return d > max ? new Date(today) : d;
+        };
+
+        const parseInitial = () => {
+            const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec((dateInput && dateInput.value) || '');
+            if (match) {
+                const parsed = new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]));
+                if (parsed >= today && parsed <= max) return parsed;
+            }
+            return defaultDate();
+        };
+
+        let applied = null;
+        let selected = parseInitial();
+        let view = new Date(selected.getFullYear(), selected.getMonth(), 1);
+
+        const updateSummary = () => {
+            if (summaryEl) {
+                summaryEl.textContent = formatDate(selected) + (currentTime() ? ' \u00b7 ' + currentTime() : '');
+            }
+        };
+
+        const renderCalendar = () => {
+            titleEl.textContent = BULAN[view.getMonth()] + ' ' + view.getFullYear();
+            daysEl.innerHTML = '';
+
+            const lead = (view.getDay() + 6) % 7;
+            for (let i = 0; i < lead; i++) {
+                daysEl.appendChild(document.createElement('span'));
+            }
+
+            const total = new Date(view.getFullYear(), view.getMonth() + 1, 0).getDate();
+            for (let d = 1; d <= total; d++) {
+                const date = new Date(view.getFullYear(), view.getMonth(), d);
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = d;
+                btn.className = 'agr-cal-day' + (sameDay(date, today) ? ' is-today' : '');
+                btn.setAttribute('aria-pressed', sameDay(date, selected) ? 'true' : 'false');
+                btn.setAttribute('aria-label', d + ' ' + BULAN[date.getMonth()] + ' ' + date.getFullYear());
+
+                if (date < today || date > max) {
+                    btn.disabled = true;
+                } else {
+                    btn.addEventListener('click', () => {
+                        selected = date;
+                        renderCalendar();
+                        updateSummary();
+                    });
+                }
+
+                daysEl.appendChild(btn);
+            }
+
+            prevBtn.disabled = view <= new Date(today.getFullYear(), today.getMonth(), 1);
+            nextBtn.disabled = new Date(view.getFullYear(), view.getMonth() + 1, 1) > max;
+        };
+
+        prevBtn.addEventListener('click', () => {
+            view = new Date(view.getFullYear(), view.getMonth() - 1, 1);
+            renderCalendar();
+        });
+
+        nextBtn.addEventListener('click', () => {
+            view = new Date(view.getFullYear(), view.getMonth() + 1, 1);
+            renderCalendar();
+        });
+
+        todayBtn.addEventListener('click', () => {
+            selected = new Date(today);
+            view = new Date(today.getFullYear(), today.getMonth(), 1);
+            renderCalendar();
+            updateSummary();
+        });
+
+        radios.forEach((radio) => {
+            radio.addEventListener('change', updateSummary);
+        });
+
+        const syncFromApplied = () => {
+            if (applied) {
+                selected = new Date(applied.date);
+                setTime(applied.time);
+            } else {
+                selected = parseInitial();
+            }
+            view = new Date(selected.getFullYear(), selected.getMonth(), 1);
+            renderCalendar();
+            updateSummary();
+        };
+
+        const openPicker = () => {
+            syncFromApplied();
+            document.documentElement.classList.add('agr-lock');
+            dialog.showModal();
+        };
+
+        const closePicker = () => {
+            if (!dialog.open || dialog.classList.contains('is-closing')) return;
+
+            const finish = () => {
+                dialog.classList.remove('is-closing');
+                dialog.close();
+                document.documentElement.classList.remove('agr-lock');
+            };
+
+            if (reduceMotion) { finish(); return; }
+
+            dialog.classList.add('is-closing');
+            window.setTimeout(finish, 170);
+        };
+
+        const applyPicker = () => {
+            applied = { date: new Date(selected), time: currentTime() };
+
+            if (triggerText) {
+                triggerText.textContent = formatDate(applied.date) + (applied.time ? ' \u00b7 ' + applied.time : '');
+            }
+            if (trigger) trigger.classList.add('is-filled');
+            if (dateInput) dateInput.value = toValue(applied.date);
+
+            closePicker();
+        };
+
+        trigger.addEventListener('click', openPicker);
+        closeBtn.addEventListener('click', closePicker);
+        cancelBtn.addEventListener('click', closePicker);
+        applyBtn.addEventListener('click', applyPicker);
+
+        dialog.addEventListener('click', (event) => {
+            if (event.target === dialog) closePicker();
+        });
+
+        dialog.addEventListener('cancel', (event) => {
+            event.preventDefault();
+            closePicker();
+        });
+
+        // Tanggal default langsung diisi agar form tetap valid
+        // walau pengguna tidak membuka popup.
+        if (dateInput && !dateInput.value) {
+            dateInput.value = toValue(selected);
+        }
+
+        renderCalendar();
+        updateSummary();
+    })();
+</script>
+@endpush
