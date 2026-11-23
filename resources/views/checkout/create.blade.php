@@ -111,15 +111,13 @@
 
             <div class="agr-flow-field agr-pickup-field">
                 @php
-                    $pickupGroups = \App\Models\Order::pickupTimeGroups();
-                    $selectedPickup = old('pickup_time', '08.00');
+                    $pickupSlots = array_keys(\App\Models\Order::pickupTimeOptions());
+                    $pickupNow = \App\Models\Order::pickupNow();
+                    $defaultPickupDate = old('pickup_date', $pickupNow->copy()->addDay()->toDateString());
+                    $defaultPickupSlots = \App\Models\Order::availablePickupTimes($defaultPickupDate);
+                    $selectedPickup = old('pickup_time', $defaultPickupSlots[0] ?? $pickupSlots[0]);
                     $selectedDate = old('pickup_date');
                     $maxPickupDays = \App\Models\Order::pickupDateMaxDays();
-                    $groupIcons = [
-                        'sunrise' => '<path d="M3 18h18M5 18a7 7 0 0 1 14 0M12 4v3M4.6 9.6l1.4 1.4M19.4 9.6 18 11"/>',
-                        'sun' => '<circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6 7 7M17 17l1.4 1.4M5.6 18.4 7 17M17 7l1.4-1.4"/>',
-                        'sunset' => '<path d="M3 20h18M5 20a7 7 0 0 1 14 0M12 8V5M9 6l3 3 3-3"/>',
-                    ];
                 @endphp
 
                 <label class="agr-pickup-label" id="agr-pickup-label" for="agr-pickup-trigger">
@@ -139,14 +137,13 @@
                 </button>
                 <p class="agr-pickup-hint">Jam operasional kebun 08.00 - 16.00 WIB.</p>
 
-                <input type="hidden" name="pickup_date" id="pickup-date-value" value="{{ $selectedDate }}">
+                <input type="hidden" name="pickup_date" id="pickup-date-value" value="{{ $selectedDate ?: $defaultPickupDate }}">
 
                 <dialog class="agr-pickup-dialog" id="agr-pickup-dialog" aria-labelledby="agr-pickup-dialog-title">
                     <div class="agr-pickup-sheet">
                         <div class="agr-pickup-sheet-head">
                             <div class="agr-pickup-sheet-grow">
-                                <h2 id="agr-pickup-dialog-title">Pilih tanggal dan jam ambil</h2>
-                                <p>Pilih tanggal dan perkiraan jam Anda datang ke kebun.</p>
+                                <h2 id="agr-pickup-dialog-title">Kapan Anda datang ke kebun?</h2>
                             </div>
                             <button type="button" class="agr-pickup-close" id="agr-pickup-close" aria-label="Tutup">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
@@ -172,30 +169,29 @@
                                             </div>
                                             <div class="agr-cal-days" id="agr-cal-days"></div>
                                         </div>
-                                        <button type="button" class="agr-cal-today" id="agr-cal-today">Hari ini</button>
                                     </div>
 
                                     <div class="agr-pickup-times">
                                         <div class="agr-pickup-times-scroll" role="radiogroup" aria-label="Rencana waktu ambil">
-                                            @foreach ($pickupGroups as $group)
-                                                <p class="agr-pickup-group-head">
-                                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{!! $groupIcons[$group['icon']] ?? '' !!}</svg>
-                                                    <span>{{ $group['label'] }}</span>
-                                                </p>
-                                                @foreach ($group['slots'] as $value)
-                                                    <label class="agr-pickup-slot">
-                                                        <input type="radio"
-                                                               name="pickup_time"
-                                                               value="{{ $value }}"
-                                                               @checked($selectedPickup === $value)
-                                                               required>
-                                                        <span class="agr-pickup-row">
-                                                            <span class="agr-pickup-radio" aria-hidden="true"></span>
-                                                            <span>{{ substr($value, 0, 5) }}</span><span class="agr-pickup-wib">&nbsp;WIB</span>
-                                                        </span>
-                                                    </label>
-                                                @endforeach
+                                            <p class="agr-pickup-group-head">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6 7 7M17 17l1.4 1.4M5.6 18.4 7 17M17 7l1.4-1.4"/></svg>
+                                                <span>Jam tersedia</span>
+                                            </p>
+                                            @foreach ($pickupSlots as $value)
+                                                <label class="agr-pickup-slot" data-slot="{{ $value }}">
+                                                    <input type="radio"
+                                                           name="pickup_time"
+                                                           value="{{ $value }}"
+                                                           data-time="{{ $value }}"
+                                                           @checked($selectedPickup === $value)
+                                                           required>
+                                                    <span class="agr-pickup-row">
+                                                        <span class="agr-pickup-radio" aria-hidden="true"></span>
+                                                        <span>{{ substr($value, 0, 5) }}</span><span class="agr-pickup-wib">&nbsp;WIB</span>
+                                                    </span>
+                                                </label>
                                             @endforeach
+                                            <p class="agr-pickup-empty" id="agr-pickup-empty" hidden>Tanggal ini sudah tidak punya jam tersedia. Pilih tanggal lain.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -273,22 +269,38 @@
         const titleEl = document.getElementById('agr-cal-title');
         const prevBtn = document.getElementById('agr-cal-prev');
         const nextBtn = document.getElementById('agr-cal-next');
-        const todayBtn = document.getElementById('agr-cal-today');
         const dateInput = document.getElementById('pickup-date-value');
         const summaryEl = document.getElementById('pickup-selected-value');
         const closeBtn = document.getElementById('agr-pickup-close');
         const cancelBtn = document.getElementById('agr-pickup-cancel');
         const applyBtn = document.getElementById('agr-pickup-apply');
+        const emptyEl = document.getElementById('agr-pickup-empty');
         const radios = Array.from(document.querySelectorAll('input[name="pickup_time"]'));
 
         const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-        const now = new Date();
-        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        // Slot ambil memakai WIB, sedangkan jam browser bisa beda zona waktu.
+        const WIB_OFFSET_MINUTES = 420;
+        const toWib = (d) => new Date(d.getTime() + (d.getTimezoneOffset() + WIB_OFFSET_MINUTES) * 60000);
+        const wibNow = toWib(new Date());
+        const nowMinutes = (wibNow.getHours() * 60) + wibNow.getMinutes();
+
+        const today = new Date(wibNow.getFullYear(), wibNow.getMonth(), wibNow.getDate());
         const max = new Date(today);
         max.setDate(max.getDate() + MAX_DAYS);
 
         const sameDay = (a, b) => a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+
+        const slotMinutes = (value) => {
+            const [h, m] = value.split('.');
+            return (Number(h) * 60) + Number(m || 0);
+        };
+        const availableTimes = (date) => {
+            const all = radios.map((r) => r.dataset.time || r.value);
+            if (!sameDay(date, today)) return all;
+            return all.filter((t) => slotMinutes(t) >= nowMinutes);
+        };
+
         const pad = (n) => (n < 10 ? '0' + n : '' + n);
         const toValue = (d) => d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
         const formatDate = (d) => HARI[d.getDay()] + ', ' + d.getDate() + ' ' + BULAN[d.getMonth()].slice(0, 3) + ' ' + d.getFullYear();
@@ -301,16 +313,20 @@
         };
 
         const defaultDate = () => {
-            const d = new Date(today);
-            d.setDate(d.getDate() + DEFAULT_OFFSET);
-            return d > max ? new Date(today) : d;
+            for (let offset = DEFAULT_OFFSET; offset <= MAX_DAYS; offset++) {
+                const d = new Date(today);
+                d.setDate(d.getDate() + offset);
+                if (d > max) break;
+                if (availableTimes(d).length) return d;
+            }
+            return new Date(today);
         };
 
         const parseInitial = () => {
             const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec((dateInput && dateInput.value) || '');
             if (match) {
                 const parsed = new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]));
-                if (parsed >= today && parsed <= max) return parsed;
+                if (parsed >= today && parsed <= max && availableTimes(parsed).length) return parsed;
             }
             return defaultDate();
         };
@@ -325,6 +341,25 @@
             }
         };
 
+        const syncSlots = () => {
+            const available = availableTimes(selected);
+            radios.forEach((radio) => {
+                const enabled = available.includes(radio.dataset.time || radio.value);
+                radio.disabled = !enabled;
+                const label = radio.closest('.agr-pickup-slot');
+                if (label) label.classList.toggle('is-unavailable', !enabled);
+            });
+
+            if (emptyEl) emptyEl.hidden = available.length > 0;
+
+            const checkedUsable = radios.some((r) => r.checked && !r.disabled);
+            if (!checkedUsable) {
+                setTime(available[0] || '');
+            }
+
+            if (applyBtn) applyBtn.disabled = available.length === 0;
+        };
+
         const renderCalendar = () => {
             titleEl.textContent = BULAN[view.getMonth()] + ' ' + view.getFullYear();
             daysEl.innerHTML = '';
@@ -334,6 +369,7 @@
                 daysEl.appendChild(document.createElement('span'));
             }
 
+            const todayEmpty = availableTimes(today).length === 0;
             const total = new Date(view.getFullYear(), view.getMonth() + 1, 0).getDate();
             for (let d = 1; d <= total; d++) {
                 const date = new Date(view.getFullYear(), view.getMonth(), d);
@@ -344,11 +380,12 @@
                 btn.setAttribute('aria-pressed', sameDay(date, selected) ? 'true' : 'false');
                 btn.setAttribute('aria-label', d + ' ' + BULAN[date.getMonth()] + ' ' + date.getFullYear());
 
-                if (date < today || date > max) {
+                if (date < today || date > max || (sameDay(date, today) && todayEmpty)) {
                     btn.disabled = true;
                 } else {
                     btn.addEventListener('click', () => {
                         selected = date;
+                        syncSlots();
                         renderCalendar();
                         updateSummary();
                     });
@@ -371,13 +408,6 @@
             renderCalendar();
         });
 
-        todayBtn.addEventListener('click', () => {
-            selected = new Date(today);
-            view = new Date(today.getFullYear(), today.getMonth(), 1);
-            renderCalendar();
-            updateSummary();
-        });
-
         radios.forEach((radio) => {
             radio.addEventListener('change', updateSummary);
         });
@@ -390,6 +420,7 @@
                 selected = parseInitial();
             }
             view = new Date(selected.getFullYear(), selected.getMonth(), 1);
+            syncSlots();
             renderCalendar();
             updateSummary();
         };
@@ -416,6 +447,8 @@
         };
 
         const applyPicker = () => {
+            if (availableTimes(selected).length === 0 || !currentTime()) return;
+
             applied = { date: new Date(selected), time: currentTime() };
 
             if (triggerText) {
@@ -448,6 +481,7 @@
         }
 
         renderCalendar();
+        syncSlots();
         updateSummary();
     })();
 </script>

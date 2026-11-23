@@ -47,8 +47,27 @@ class CheckoutController extends Controller
         $validated = $request->validate([
             'customer_name' => ['required', 'string', 'max:120'],
             'customer_whatsapp' => ['required', 'string', 'max:24', 'regex:/^[0-9+()\s-]{8,24}$/'],
-            'pickup_date' => ['required', 'date', 'after_or_equal:today', 'before_or_equal:' . now()->addDays(Order::pickupDateMaxDays())->toDateString()],
-            'pickup_time' => ['required', 'string', Rule::in(array_keys(Order::pickupTimeOptions()))],
+            'pickup_date' => [
+                'required',
+                'date',
+                'after_or_equal:' . Order::pickupNow()->toDateString(),
+                'before_or_equal:' . Order::pickupNow()->addDays(Order::pickupDateMaxDays())->toDateString(),
+                function (string $attribute, mixed $value, \Closure $fail): void {
+                    if (Order::availablePickupTimes((string) $value) === []) {
+                        $fail('Hari ini sudah tidak ada jam ambil yang tersedia. Silakan pilih tanggal lain.');
+                    }
+                },
+            ],
+            'pickup_time' => [
+                'required',
+                'string',
+                Rule::in(array_keys(Order::pickupTimeOptions())),
+                function (string $attribute, mixed $value, \Closure $fail) use ($request): void {
+                    if (! Order::isPickupSlotAvailable($request->input('pickup_date'), (string) $value)) {
+                        $fail('Jam ambil yang kamu pilih sudah lewat. Silakan pilih jam lain.');
+                    }
+                },
+            ],
             'notes' => ['nullable', 'string', 'max:1000'],
         ]);
 

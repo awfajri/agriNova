@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
 
 class Order extends Model
 {
@@ -97,36 +98,72 @@ class Order extends Model
     ];
 
     /**
-     * Pengelompokan slot jam pengambilan untuk tampilan checkout.
-     * Key slot harus sejalan dengan pickupTimeOptions().
-     */
-    public static function pickupTimeGroups(): array
-    {
-        return [
-            [
-                'label' => 'Pagi',
-                'icon' => 'sunrise',
-                'slots' => ['08.00', '09.00', '10.00'],
-            ],
-            [
-                'label' => 'Siang',
-                'icon' => 'sun',
-                'slots' => ['11.00', '12.00', '13.00', '14.00'],
-            ],
-            [
-                'label' => 'Sore',
-                'icon' => 'sunset',
-                'slots' => ['15.00', '16.00'],
-            ],
-        ];
-    }
-
-    /**
      * Batas pemesanan tanggal ambil: hari ini s/d 30 hari ke depan.
      */
     public static function pickupDateMaxDays(): int
     {
         return 30;
+    }
+
+    /**
+     * Zona waktu acuan jadwal ambil kebun (slot memakai WIB).
+     */
+    public static function pickupTimezone(): string
+    {
+        return 'Asia/Jakarta';
+    }
+
+    /**
+     * Waktu sekarang pada zona waktu jadwal ambil.
+     */
+    public static function pickupNow(): Carbon
+    {
+        return now(self::pickupTimezone());
+    }
+
+    /**
+     * Ubah slot "08.30" menjadi jumlah menit sejak tengah malam.
+     */
+    private static function slotToMinutes(string $slot): int
+    {
+        [$hour, $minute] = array_pad(explode('.', $slot), 2, '0');
+
+        return ((int) $hour * 60) + (int) $minute;
+    }
+
+    /**
+     * Slot jam yang masih bisa dipilih untuk tanggal tertentu.
+     * Tanggal selain hari ini (WIB) selalu mengembalikan semua slot.
+     *
+     * @return list<string>
+     */
+    public static function availablePickupTimes(?string $date = null): array
+    {
+        $slots = array_keys(self::pickupTimeOptions());
+        $now = self::pickupNow();
+
+        if ($date === null || $date !== $now->toDateString()) {
+            return $slots;
+        }
+
+        $nowMinutes = ($now->hour * 60) + $now->minute;
+
+        return array_values(array_filter(
+            $slots,
+            fn (string $slot): bool => self::slotToMinutes($slot) >= $nowMinutes
+        ));
+    }
+
+    /**
+     * Apakah kombinasi tanggal + jam masih boleh dipesan?
+     */
+    public static function isPickupSlotAvailable(?string $date, ?string $time): bool
+    {
+        if (! $date || ! $time) {
+            return false;
+        }
+
+        return in_array($time, self::availablePickupTimes($date), true);
     }
 
     public function pickupTimeLabel(): ?string
