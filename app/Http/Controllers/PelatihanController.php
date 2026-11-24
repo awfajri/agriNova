@@ -6,6 +6,7 @@ use App\Models\TrainingClass;
 use App\Models\TrainingRegistration;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
 class PelatihanController extends Controller
@@ -64,8 +65,22 @@ class PelatihanController extends Controller
      */
     public function register(Request $request, string $slug): RedirectResponse
     {
-        $class = TrainingClass::query()->where('slug', $slug)->firstOrFail();
+        $class = TrainingClass::query()
+            ->where('slug', $slug)
+            ->where('status', '!=', 'Nonaktif')
+            ->firstOrFail();
+
         abort_unless($class->is_available, 422, 'Pendaftaran kelas ini sedang ditutup.');
+
+        $kelasData = $class->toPublicArray();
+        $allowedSessions = [
+            'Sesi Pagi (09.00 - 12.00 WIB)',
+            'Sesi Siang (13.00 - 16.00 WIB)',
+        ];
+
+        if (filled($kelasData['jadwal'])) {
+            array_unshift($allowedSessions, "Sesuai Jadwal Kelas ({$kelasData['jadwal']})");
+        }
 
         $validated = $request->validate([
             'nama' => ['required', 'string', 'max:120'],
@@ -73,6 +88,7 @@ class PelatihanController extends Controller
             'email' => ['nullable', 'email', 'max:120'],
             'instansi' => ['nullable', 'string', 'max:120'],
             'jumlah_peserta' => ['required', 'integer', 'min:1', 'max:50'],
+            'tanggal_pelatihan' => ['required', 'date', 'after_or_equal:today'],
             'catatan' => ['nullable', 'string', 'max:500'],
         ]);
 
@@ -84,6 +100,7 @@ class PelatihanController extends Controller
             'email' => $validated['email'] ?? ($request->user()?->email ?? '-'),
             'institution' => $validated['instansi'] ?? null,
             'participants' => $validated['jumlah_peserta'],
+            'preferred_date' => $validated['tanggal_pelatihan'],
             'notes' => $validated['catatan'] ?? null,
         ]);
 
