@@ -19,6 +19,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'admin' => EnsureAdminAuthentication::class,
         ]);
+        $middleware->redirectGuestsTo(fn () => route('auth.login'));
         $middleware->validateCsrfTokens(except: [
             'payments/midtrans/notification',
         ]);

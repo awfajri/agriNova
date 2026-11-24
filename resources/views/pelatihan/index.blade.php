@@ -48,6 +48,12 @@
                         <h2>{{ $item['judul'] }}</h2>
                         <p>{{ $item['ringkasan'] }}</p>
 
+                        @if (filled($item['durasi']))
+                            <p style="font-size: 0.875rem; font-weight: 600; color: #163a28; margin: 0.5rem 0;">
+                                Durasi: {{ $item['durasi'] }}
+                            </p>
+                        @endif
+
                         <div class="agr-edu-card-meta">
                             <div>
                                 <strong>Rp{{ number_format($item['harga'], 0, ',', '.') }}</strong>
