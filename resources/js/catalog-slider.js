@@ -1,22 +1,38 @@
 export function initCatalogSlider() {
     const slider = document.querySelector("[data-catalog-slider]");
-    const track = slider?.querySelector("[data-catalog-slider-track]");
-    const slides = [...(slider?.querySelectorAll("[data-catalog-slide]") ?? [])];
-    const dots = [...(slider?.querySelectorAll("[data-catalog-dot]") ?? [])];
-    const previous = slider?.querySelector("[data-catalog-prev]");
-    const next = slider?.querySelector("[data-catalog-next]");
+    if (!slider) return;
 
-    if (!slider || !track || slides.length < 2) return;
+    const track = slider.querySelector("[data-catalog-slider-track]");
+    const slides = [...slider.querySelectorAll("[data-catalog-slide]")];
+    const dots = [...slider.querySelectorAll("[data-catalog-dot]")];
+    const previous = slider.querySelector("[data-catalog-prev]");
+    const next = slider.querySelector("[data-catalog-next]");
+
+    if (!track || slides.length === 0) return;
+
+    if (slides.length < 2) {
+        if (previous) previous.style.display = "none";
+        if (next) next.style.display = "none";
+        dots.forEach((dot) => (dot.style.display = "none"));
+        return;
+    }
 
     let index = 0;
     let startX = 0;
     let currentX = 0;
     let isDragging = false;
-    let autoPlay;
+    let autoPlay = null;
 
     const setIndex = (nextIndex, animate = true) => {
-        index = Math.max(0, Math.min(slides.length - 1, nextIndex));
-        track.style.transition = animate ? "transform 420ms cubic-bezier(.22,.61,.36,1)" : "none";
+        if (nextIndex < 0) {
+            index = slides.length - 1;
+        } else if (nextIndex >= slides.length) {
+            index = 0;
+        } else {
+            index = nextIndex;
+        }
+
+        track.style.transition = animate ? "transform 460ms cubic-bezier(.22,.61,.36,1)" : "none";
         track.style.transform = `translate3d(${-index * 100}%, 0, 0)`;
 
         dots.forEach((dot, dotIndex) => {
@@ -24,18 +40,21 @@ export function initCatalogSlider() {
             dot.classList.toggle("is-active", active);
             dot.setAttribute("aria-selected", String(active));
         });
-
-        if (previous) previous.disabled = index === 0;
-        if (next) next.disabled = index === slides.length - 1;
     };
 
-    const stopAutoPlay = () => window.clearInterval(autoPlay);
+    const stopAutoPlay = () => {
+        if (autoPlay) {
+            window.clearInterval(autoPlay);
+            autoPlay = null;
+        }
+    };
+
     const startAutoPlay = () => {
         stopAutoPlay();
         if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
         autoPlay = window.setInterval(() => {
-            setIndex(index === slides.length - 1 ? 0 : index + 1);
-        }, 5000);
+            setIndex(index + 1);
+        }, 4500);
     };
 
     const finishDrag = () => {
@@ -43,7 +62,7 @@ export function initCatalogSlider() {
         isDragging = false;
         slider.classList.remove("is-dragging");
         const distance = currentX - startX;
-        const threshold = slider.offsetWidth * 0.2;
+        const threshold = slider.offsetWidth * 0.15;
 
         if (Math.abs(distance) > threshold) {
             setIndex(index + (distance < 0 ? 1 : -1));
@@ -55,6 +74,7 @@ export function initCatalogSlider() {
     };
 
     track.addEventListener("pointerdown", (event) => {
+        if (event.target.closest("a, button")) return;
         isDragging = true;
         startX = event.clientX;
         currentX = startX;
@@ -77,16 +97,21 @@ export function initCatalogSlider() {
         if (isDragging) finishDrag();
     });
 
-    previous?.addEventListener("click", () => {
+    previous?.addEventListener("click", (e) => {
+        e.preventDefault();
         setIndex(index - 1);
         startAutoPlay();
     });
-    next?.addEventListener("click", () => {
+
+    next?.addEventListener("click", (e) => {
+        e.preventDefault();
         setIndex(index + 1);
         startAutoPlay();
     });
+
     dots.forEach((dot) => {
-        dot.addEventListener("click", () => {
+        dot.addEventListener("click", (e) => {
+            e.preventDefault();
             setIndex(Number(dot.dataset.catalogDot));
             startAutoPlay();
         });
@@ -104,6 +129,7 @@ export function initCatalogSlider() {
             startAutoPlay();
         }
     });
+
     slider.addEventListener("mouseenter", stopAutoPlay);
     slider.addEventListener("mouseleave", startAutoPlay);
 

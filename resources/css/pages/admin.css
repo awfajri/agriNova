@@ -4,80 +4,88 @@
 
 .agr-admin-dropdown {
     display: block;
-    margin: 2px 0;
+    margin: 1px 0;
 }
 
 .agr-admin-dropdown-btn {
-    list-style: none;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    list-style: none !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
     width: 100%;
-    padding: 0.72rem 0.95rem;
-    border-radius: 14px;
-    color: rgba(255, 255, 255, 0.84);
+    padding: 0.72rem 0.85rem !important;
+    border-radius: 0.7rem;
+    color: rgba(255, 255, 255, 0.75) !important;
     font-size: 0.95rem;
     font-weight: 600;
     cursor: pointer;
     user-select: none;
-    transition:
-        background-color 0.18s ease,
-        color 0.18s ease;
+    transition: background-color 0.18s ease, color 0.18s ease;
+    box-sizing: border-box;
+    border: none;
+    background: transparent;
 }
 
 /* Hilangkan marker panah bawaan browser di Chrome, Edge, Safari, Firefox */
-.agr-admin-dropdown-btn::marker,
-.agr-admin-dropdown-btn::-webkit-details-marker {
+.agr-admin-dropdown-btn::-webkit-details-marker,
+.agr-admin-dropdown-btn::marker {
     display: none !important;
     content: "" !important;
 }
 
 .agr-admin-dropdown-btn:hover,
 .agr-admin-dropdown-btn.is-active {
-    background-color: rgba(255, 255, 255, 0.12);
-    color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
 }
 
-.agr-admin-dropdown-btn svg {
-    transition: transform 0.2s ease;
-    opacity: 0.85;
+/* Panah Chevron Induk Dropdown */
+.agr-admin-dropdown-btn .agr-dropdown-arrow {
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    opacity: 0.8;
+    flex-shrink: 0;
 }
 
-.agr-admin-dropdown[open] .agr-admin-dropdown-btn svg {
+.agr-admin-dropdown[open] .agr-admin-dropdown-btn .agr-dropdown-arrow {
     transform: rotate(180deg);
+    opacity: 1;
 }
 
-/* Tree Submenu */
+/* Tree Submenu (Digeser lebih ke kanan agar hierarki terlihat sangat jelas) */
 .agr-admin-tree {
     display: flex;
     flex-direction: column;
-    gap: 2px;
-    margin: 6px 0 8px 18px;
-    padding-left: 12px;
-    border-left: 1px solid rgba(255, 255, 255, 0.2);
+    gap: 3px;
+    margin: 4px 0 8px 24px;
+    padding-left: 14px;
+    border-left: 2px solid rgba(255, 255, 255, 0.2);
+    position: relative;
 }
 
 .agr-admin-tree a {
     position: relative;
-    display: flex;
+    display: flex !important;
     align-items: center;
-    padding: 0.52rem 0.75rem !important;
-    border-radius: 10px;
-    font-size: 0.88rem !important;
+    padding: 0.46rem 0.8rem !important;
+    border-radius: 8px !important;
+    font-size: 0.84rem !important;
     font-weight: 500;
-    color: rgba(255, 255, 255, 0.72) !important;
+    color: rgba(255, 255, 255, 0.68) !important;
     background: transparent !important;
     text-decoration: none;
+    transition: all 0.15s ease;
 }
 
+/* Garis cabang horizontal penunjuk menu anak */
 .agr-admin-tree a::before {
     content: "";
     position: absolute;
-    left: -12px;
+    left: -14px;
     top: 50%;
-    width: 8px;
-    height: 1px;
+    width: 10px;
+    height: 2px;
     background-color: rgba(255, 255, 255, 0.2);
+    transition: background-color 0.15s ease;
 }
 
 .agr-admin-tree a:hover {
@@ -85,10 +93,25 @@
     background-color: rgba(255, 255, 255, 0.08) !important;
 }
 
+.agr-admin-tree a:hover::before {
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
 .agr-admin-tree a.is-active {
     color: #ffffff !important;
-    background-color: rgba(255, 255, 255, 0.14) !important;
+    background-color: rgba(255, 255, 255, 0.16) !important;
     font-weight: 700;
+}
+
+.agr-admin-tree a.is-active::before {
+    background-color: #ffffff;
+    height: 2px;
+}
+
+@media (max-width: 991px) {
+    .agr-admin-dropdown {
+        grid-column: 1 / -1;
+    }
 }
 
 /* Helper Grid untuk Halaman Kategori */

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Banner;
 use App\Models\Category;
 use App\Models\PreOrder;
 use App\Models\Product;
@@ -94,8 +95,11 @@ class CatalogController extends Controller
             ? \Carbon\Carbon::parse($activePreOrder->booking_close_at)->timestamp * 1000
             : now()->addDays(2)->addHours(8)->addMinutes(30)->timestamp * 1000;
 
+        $banners = Banner::query()->active()->get();
+
         return view('catalog', [
             'isFiltering' => $isFiltering,
+            'banners' => $banners,
             'products' => $products,
             'readyProducts' => $readyProducts,
             'preorderProducts' => $preorderProducts,

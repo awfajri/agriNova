@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminAuthController;
+use App\Http\Controllers\Admin\AdminBannerController;
 use App\Http\Controllers\Admin\AdminCategoryController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminEduwisataPackageController;
@@ -35,6 +36,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/preorders/banner-settings', fn () => redirect()->route('admin.preorders.index'));
         Route::resource('preorders', AdminPreOrderController::class)->except(['show']);
         Route::post('/preorders/banner-settings', [AdminPreOrderController::class, 'updateBanner'])->name('preorders.banner');
+        Route::post('/banners', [AdminBannerController::class, 'store'])->name('banners.store');
+        Route::put('/banners/{banner}', [AdminBannerController::class, 'update'])->name('banners.update');
+        Route::patch('/banners/{banner}/toggle', [AdminBannerController::class, 'toggle'])->name('banners.toggle');
+        Route::delete('/banners/{banner}', [AdminBannerController::class, 'destroy'])->name('banners.destroy');
 
         // Transaksi & Reservasi Masuk
         Route::get('/orders', [AdminOrderController::class, 'index'])->name('orders.index');
@@ -51,6 +56,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('gallery', AdminGalleryController::class)->except(['show']);
         Route::get('/reviews', [AdminReviewController::class, 'index'])->name('reviews.index');
         Route::patch('/reviews/{review}', [AdminReviewController::class, 'update'])->name('reviews.update');
+        Route::post('/reviews/{review}/reply', [AdminReviewController::class, 'reply'])->name('reviews.reply');
+        Route::delete('/reviews/{review}/reply', [AdminReviewController::class, 'deleteReply'])->name('reviews.reply.delete');
         Route::delete('/reviews/{review}', [AdminReviewController::class, 'destroy'])->name('reviews.destroy');
 
         Route::get('/settings', [AdminSettingController::class, 'edit'])->name('settings.edit');

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Banner;
 use App\Models\PreOrder;
 use App\Models\Product;
 use App\Models\SiteSetting;
@@ -30,7 +31,9 @@ class AdminPreOrderController extends Controller
             'cta_url' => SiteSetting::get('catalog_banner_url', ''),
         ];
 
-        return view('admin.preorders.index', compact('preorders', 'activePreOrder', 'bannerSettings'));
+        $banners = Banner::query()->orderBy('order')->orderByDesc('id')->get();
+
+        return view('admin.preorders.index', compact('preorders', 'activePreOrder', 'bannerSettings', 'banners'));
     }
 
     public function updateBanner(Request $request): RedirectResponse

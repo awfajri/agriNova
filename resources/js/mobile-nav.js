@@ -57,36 +57,34 @@ function initAgrinovaMobileNav() {
         }
     });
 
-    // Live Pre-Order Countdown di Hero Katalog
-    const countdownEl = document.getElementById("catalog-preorder-countdown");
-    if (countdownEl) {
-        const deadline = Number.parseInt(
-            countdownEl.dataset.deadline || "0",
-            10,
-        );
-        if (deadline > 0) {
-            const updateHeroTimer = () => {
-                const diff = deadline - Date.now();
-                if (diff <= 0) {
-                    countdownEl.textContent =
-                        "Periode pre-order sedang berlangsung";
-                    return;
-                }
-                const days = String(
-                    Math.floor(diff / (1000 * 60 * 60 * 24)),
-                ).padStart(2, "0");
-                const hours = String(
-                    Math.floor((diff / (1000 * 60 * 60)) % 24),
-                ).padStart(2, "0");
-                const mins = String(
-                    Math.floor((diff / (1000 * 60)) % 60),
-                ).padStart(2, "0");
-                countdownEl.textContent = `Tutup dalam ${days} hari : ${hours} jam : ${mins} mnt`;
-            };
+    // Live Pre-Order Countdown di Hero & Multi-Banner Katalog
+    const countdownElements = document.querySelectorAll(".catalog-preorder-countdown, #catalog-preorder-countdown");
+    if (countdownElements.length > 0) {
+        countdownElements.forEach((el) => {
+            const deadline = Number.parseInt(el.dataset.deadline || "0", 10);
+            if (deadline > 0) {
+                const updateHeroTimer = () => {
+                    const diff = deadline - Date.now();
+                    if (diff <= 0) {
+                        el.textContent = "Periode pre-order sedang berlangsung";
+                        return;
+                    }
+                    const days = String(
+                        Math.floor(diff / (1000 * 60 * 60 * 24)),
+                    ).padStart(2, "0");
+                    const hours = String(
+                        Math.floor((diff / (1000 * 60 * 60)) % 24),
+                    ).padStart(2, "0");
+                    const mins = String(
+                        Math.floor((diff / (1000 * 60)) % 60),
+                    ).padStart(2, "0");
+                    el.textContent = `Tutup dalam ${days} hari : ${hours} jam : ${mins} mnt`;
+                };
 
-            updateHeroTimer();
-            setInterval(updateHeroTimer, 60000);
-        }
+                updateHeroTimer();
+                setInterval(updateHeroTimer, 60000);
+            }
+        });
     }
 }
 

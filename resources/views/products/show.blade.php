@@ -233,6 +233,19 @@
                             @if (filled($review->comment))
                                 <p class="agr-pdp-review-comment">{{ $review->comment }}</p>
                             @endif
+
+                            @if (filled($review->admin_reply))
+                                <div class="agr-pdp-admin-reply" style="margin-top: 10px; padding: 10px 12px; background-color: #f2f7f5; border-left: 3px solid #236e59; border-radius: 8px;">
+                                    <div style="display: flex; align-items: center; justify-content: space-between; gap: 6px; margin-bottom: 4px;">
+                                        <div style="display: flex; align-items: center; gap: 6px;">
+                                            <span style="background-color: #236e59; color: #ffffff; font-size: 10px; padding: 1px 6px; border-radius: 4px; font-weight: 700;">Admin</span>
+                                            <strong style="font-size: 12px; color: #11332b;">Balasan Toko Agrinova</strong>
+                                        </div>
+                                        <span style="font-size: 11px; color: #4a635d;">{{ $review->admin_reply_at?->diffForHumans() }}</span>
+                                    </div>
+                                    <p style="margin: 0; font-size: 13px; line-height: 1.45; color: #2d5248;">{{ $review->admin_reply }}</p>
+                                </div>
+                            @endif
                         </article>
                     @endforeach
                 </div>

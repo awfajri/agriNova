@@ -31,6 +31,33 @@ class AdminReviewController extends Controller
         return back()->with('success', 'Status ulasan berhasil diperbarui.');
     }
 
+    public function reply(Request $request, ProductReview $review): RedirectResponse
+    {
+        $validated = $request->validate([
+            'admin_reply' => ['required', 'string', 'max:2000'],
+        ], [
+            'admin_reply.required' => 'Balasan tidak boleh kosong.',
+            'admin_reply.max' => 'Balasan maksimal 2000 karakter.',
+        ]);
+
+        $review->update([
+            'admin_reply' => $validated['admin_reply'],
+            'admin_reply_at' => now(),
+        ]);
+
+        return back()->with('success', 'Balasan untuk ulasan berhasil disimpan.');
+    }
+
+    public function deleteReply(ProductReview $review): RedirectResponse
+    {
+        $review->update([
+            'admin_reply' => null,
+            'admin_reply_at' => null,
+        ]);
+
+        return back()->with('success', 'Balasan ulasan berhasil dihapus.');
+    }
+
     public function destroy(ProductReview $review): RedirectResponse
     {
         $review->delete();

@@ -37,19 +37,84 @@
             <span class="agr-pickup-card-arrow" aria-hidden="true">&rarr;</span>
         </a>
 
-       {{-- 2. Hero Pre-Order Card --}}
-        <div class="agr-hero-banner" style="--hero-bg: url('{{ asset($bannerImage) }}');">
-            <div class="agr-hero-overlay">
-                <span class="agr-hero-eyebrow">{{ $batchTitle }}</span>
-                <h1>Booking sekarang, panen segar {{ $harvestFormatted }}.</h1>
-                <p class="agr-hero-countdown" id="catalog-preorder-countdown" data-deadline="{{ $deadlineTimestamp }}">
-                    Menghitung waktu...
-                </p>
-                <a href="{{ $heroActionUrl }}" class="agr-hero-cta">
-                    <span>{{ $bannerCtaText }}</span>
-                    <span aria-hidden="true">&rarr;</span>
-                </a>
+        {{-- 2. Hero Multi-Banner Slider (Tokopedia Style) --}}
+        @php
+            $hasMultipleBanners = isset($banners) && $banners->count() > 1;
+        @endphp
+
+        <div class="agr-slider-wrap" data-catalog-slider tabindex="0" role="region" aria-label="Banner Pilihan Agrinova">
+            <div class="agr-slider-viewport">
+                <div class="agr-slider-track" data-catalog-slider-track>
+                    @if (isset($banners) && $banners->isNotEmpty())
+                        @foreach ($banners as $index => $banner)
+                            <div class="agr-slide" data-catalog-slide style="--slide-bg: url('{{ $banner->image_url }}');">
+                                <div class="agr-slide-overlay">
+                                    @if (filled($banner->eyebrow))
+                                        <span class="agr-slide-eyebrow">{{ $banner->eyebrow }}</span>
+                                    @endif
+
+                                    @if (filled($banner->title))
+                                        <h2 class="agr-slide-title">{{ $banner->title }}</h2>
+                                    @endif
+
+                                    @if ($banner->is_countdown)
+                                        @php
+                                            $bannerDeadline = $banner->countdown_end_at
+                                                ? \Carbon\Carbon::parse($banner->countdown_end_at)->timestamp * 1000
+                                                : $deadlineTimestamp;
+                                        @endphp
+                                        <p class="agr-slide-countdown catalog-preorder-countdown" id="catalog-preorder-countdown-{{ $banner->id }}" data-deadline="{{ $bannerDeadline }}">
+                                            Menghitung waktu...
+                                        </p>
+                                    @endif
+
+                                    @if (filled($banner->cta_text))
+                                        <a href="{{ filled($banner->cta_url) ? url($banner->cta_url) : route('catalog') }}" class="agr-slide-cta">
+                                            <span>{{ $banner->cta_text }}</span>
+                                            <span aria-hidden="true">&rarr;</span>
+                                        </a>
+                                    @endif
+                                </div>
+                            </div>
+                        @endforeach
+                    @else
+                        <div class="agr-slide" data-catalog-slide style="--slide-bg: url('{{ asset($bannerImage) }}');">
+                            <div class="agr-slide-overlay">
+                                <span class="agr-slide-eyebrow">{{ $batchTitle }}</span>
+                                <h2 class="agr-slide-title">Booking sekarang, panen segar {{ $harvestFormatted }}.</h2>
+                                <p class="agr-slide-countdown catalog-preorder-countdown" id="catalog-preorder-countdown" data-deadline="{{ $deadlineTimestamp }}">
+                                    Menghitung waktu...
+                                </p>
+                                <a href="{{ $heroActionUrl }}" class="agr-slide-cta">
+                                    <span>{{ $bannerCtaText }}</span>
+                                    <span aria-hidden="true">&rarr;</span>
+                                </a>
+                            </div>
+                        </div>
+                    @endif
+                </div>
             </div>
+
+            @if ($hasMultipleBanners)
+                {{-- Tombol Navigasi Panah --}}
+                <button type="button" class="agr-slider-arrow agr-slider-arrow--prev" data-catalog-prev aria-label="Banner sebelumnya">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                </button>
+                <button type="button" class="agr-slider-arrow agr-slider-arrow--next" data-catalog-next aria-label="Banner berikutnya">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </button>
+
+                {{-- Indikator Dots Bulat / Pill --}}
+                <div class="agr-slider-dots" role="tablist">
+                    @foreach ($banners as $index => $banner)
+                        <button type="button" class="agr-slider-dot {{ $index === 0 ? 'is-active' : '' }}" data-catalog-dot="{{ $index }}" aria-label="Ke slide {{ $index + 1 }}" aria-selected="{{ $index === 0 ? 'true' : 'false' }}"></button>
+                    @endforeach
+                </div>
+            @endif
         </div>
 
         {{-- Alerts --}}

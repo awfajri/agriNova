@@ -14,12 +14,15 @@ class ProductReview extends Model
         'order_id',
         'rating',
         'comment',
+        'admin_reply',
+        'admin_reply_at',
         'is_approved',
     ];
 
     protected $casts = [
         'rating' => 'integer',
         'is_approved' => 'boolean',
+        'admin_reply_at' => 'datetime',
     ];
 
     public function product(): BelongsTo

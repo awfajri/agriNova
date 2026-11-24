@@ -13,6 +13,10 @@
             || request()->routeIs('admin.categories.*')
             || request()->routeIs('admin.eduwisata-packages.*')
             || request()->routeIs('admin.trainings.*');
+
+        $isOrderMenuOpen = request()->routeIs('admin.orders.*')
+            || request()->routeIs('admin.eduwisata.*')
+            || request()->routeIs('admin.training-registrations.*');
     @endphp
 
     <div class="admin-shell">
@@ -28,7 +32,7 @@
                 <details class="agr-admin-dropdown" {{ $isProductMenuOpen ? 'open' : '' }}>
                     <summary class="agr-admin-dropdown-btn {{ $isProductMenuOpen ? 'is-active' : '' }}">
                         <span>Produk</span>
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="15" height="15" aria-hidden="true">
+                        <svg class="agr-dropdown-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="14" height="14" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/>
                         </svg>
                     </summary>
@@ -52,15 +56,29 @@
                 <a href="{{ route('admin.preorders.index') }}" class="{{ request()->routeIs('admin.preorders.*') ? 'is-active' : '' }}">
                     Banner &amp; Pre-order
                 </a>
-                <a href="{{ route('admin.orders.index') }}" class="{{ request()->routeIs('admin.orders.*') ? 'is-active' : '' }}">
-                    Order
-                </a>
-                <a href="{{ route('admin.eduwisata.index') }}" class="{{ request()->routeIs('admin.eduwisata.*') ? 'is-active' : '' }}">
-                    Reservasi Eduwisata
-                </a>
-                <a href="{{ route('admin.training-registrations.index') }}" class="{{ request()->routeIs('admin.training-registrations.*') ? 'is-active' : '' }}">
-                    Pendaftar Pelatihan
-                </a>
+
+                {{-- Dropdown Order & Reservasi --}}
+                <details class="agr-admin-dropdown" {{ $isOrderMenuOpen ? 'open' : '' }}>
+                    <summary class="agr-admin-dropdown-btn {{ $isOrderMenuOpen ? 'is-active' : '' }}">
+                        <span>Order</span>
+                        <svg class="agr-dropdown-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="14" height="14" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/>
+                        </svg>
+                    </summary>
+
+                    <div class="agr-admin-tree">
+                        <a href="{{ route('admin.orders.index') }}" class="{{ request()->routeIs('admin.orders.*') ? 'is-active' : '' }}">
+                            Buah &amp; Sayur
+                        </a>
+                        <a href="{{ route('admin.eduwisata.index') }}" class="{{ request()->routeIs('admin.eduwisata.*') ? 'is-active' : '' }}">
+                            Reservasi Eduwisata
+                        </a>
+                        <a href="{{ route('admin.training-registrations.index') }}" class="{{ request()->routeIs('admin.training-registrations.*') ? 'is-active' : '' }}">
+                            Reservasi Pelatihan
+                        </a>
+                    </div>
+                </details>
+
                 <a href="{{ route('admin.gallery.index') }}" class="{{ request()->routeIs('admin.gallery.*') ? 'is-active' : '' }}">
                     Galeri
                 </a>

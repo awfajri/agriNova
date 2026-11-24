@@ -402,7 +402,206 @@
     color: #11332b;
 }
 
-/* 2. Hero Banner Pre-Order */
+/* 2. Hero Multi-Banner Slider (Tokopedia Style) */
+.agr-slider-wrap {
+    position: relative;
+    border-radius: 22px;
+    overflow: hidden;
+    margin-bottom: 22px;
+    box-shadow: 0 10px 25px -5px rgba(17, 51, 43, 0.12);
+    user-select: none;
+}
+
+.agr-slider-viewport {
+    overflow: hidden;
+    width: 100%;
+    border-radius: 22px;
+}
+
+.agr-slider-track {
+    display: flex;
+    width: 100%;
+    touch-action: pan-y;
+    will-change: transform;
+}
+
+.agr-slide {
+    flex: 0 0 100%;
+    min-width: 100%;
+    position: relative;
+    background: #1b4332 var(--slide-bg) center / cover no-repeat;
+    min-height: 230px;
+    display: flex;
+    align-items: stretch;
+}
+
+@media (min-width: 768px) {
+    .agr-slide {
+        min-height: 290px;
+    }
+}
+
+.agr-slide-overlay {
+    width: 100%;
+    padding: 28px clamp(58px, 8vw, 76px) 34px;
+    background: linear-gradient(
+        105deg,
+        rgba(17, 51, 43, 0.92) 0%,
+        rgba(17, 51, 43, 0.68) 55%,
+        rgba(17, 51, 43, 0.25) 100%
+    );
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.agr-slide-eyebrow {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #93c5fd;
+    margin-bottom: 6px;
+}
+
+.agr-slide-title {
+    margin: 0 0 8px;
+    max-width: 440px;
+    font-size: 24px;
+    font-weight: 800;
+    line-height: 1.25;
+    color: #ffffff;
+}
+
+@media (min-width: 768px) {
+    .agr-slide-title {
+        font-size: 30px;
+    }
+}
+
+.agr-slide-countdown {
+    margin: 0 0 16px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #fef08a;
+    font-variant-numeric: tabular-nums;
+}
+
+.agr-slide-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 20px;
+    border-radius: 9999px;
+    background-color: #faf9f6;
+    color: #11332b;
+    font-size: 13.5px;
+    font-weight: 700;
+    text-decoration: none;
+    align-self: flex-start;
+    transition: transform 0.18s ease, background-color 0.18s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.agr-slide-cta:hover {
+    background-color: #ffffff;
+    transform: translateY(-2px);
+    color: #0b241e;
+}
+
+/* Navigasi Panah Tokopedia Style */
+.agr-slider-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%) scale(0.92);
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(4px);
+    border: none;
+    color: #11332b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+    transition: opacity 0.22s ease, transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.15s ease;
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Tombol muncul halus saat kursor mengarah ke banner (Desktop) */
+.agr-slider-wrap:hover .agr-slider-arrow,
+.agr-slider-wrap:focus-within .agr-slider-arrow {
+    opacity: 0.95;
+    transform: translateY(-50%) scale(1);
+    pointer-events: auto;
+}
+
+.agr-slider-arrow:hover {
+    opacity: 1 !important;
+    background: #ffffff;
+    transform: translateY(-50%) scale(1.12) !important;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.28);
+}
+
+.agr-slider-arrow--prev {
+    left: 12px;
+}
+
+.agr-slider-arrow--next {
+    right: 12px;
+}
+
+/* Di layar mobile/HP (<640px), tombol panah disembunyikan agar teks leluasa; pengguna cukup swipe dengan jari */
+@media (max-width: 640px) {
+    .agr-slider-arrow {
+        display: none !important;
+    }
+    .agr-slide-overlay {
+        padding: 24px 20px 32px;
+    }
+}
+
+/* Indikator Dots Tokopedia Style */
+.agr-slider-dots {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    z-index: 10;
+    padding: 4px 10px;
+    background: rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(6px);
+    border-radius: 999px;
+}
+
+.agr-slider-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.45);
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.agr-slider-dot.is-active {
+    width: 22px;
+    border-radius: 999px;
+    background: #ffffff;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Legacy Hero Banner Pre-Order */
 .agr-hero-banner {
     position: relative;
     border-radius: 22px;
