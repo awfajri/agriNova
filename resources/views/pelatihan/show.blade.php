@@ -23,6 +23,11 @@
         <div class="agr-edu-detail-head">
             <h2>{{ $kelas['judul'] }}</h2>
             <p>{{ $kelas['ringkasan'] ?: 'Terbuka untuk keluarga, sekolah, & instansi.' }}</p>
+            @if (filled($kelas['durasi']))
+                <p style="margin-top: 0.5rem; font-weight: 600; color: #163a28;">
+                    Durasi Pelatihan: {{ $kelas['durasi'] }} &middot; Jadwal fleksibel sesuai pilihan saat pendaftaran
+                </p>
+            @endif
         </div>
 
         <section class="agr-edu-highlights-section">

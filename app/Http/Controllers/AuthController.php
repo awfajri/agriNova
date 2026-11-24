@@ -15,7 +15,8 @@ class AuthController extends Controller
 {
     public function login(Request $request): View
     {
-        $intended = $this->safeIntended($request->input('redirect'));
+        $rawRedirect = $request->input('redirect') ?: session('url.intended');
+        $intended = $this->safeIntended($rawRedirect);
 
         return view('auth.login', [
             'intended' => $intended,
@@ -25,7 +26,8 @@ class AuthController extends Controller
 
     public function redirectToGoogle(Request $request): RedirectResponse
     {
-        $intended = $this->safeIntended($request->input('redirect'));
+        $rawRedirect = $request->input('redirect') ?: session()->pull('url.intended');
+        $intended = $this->safeIntended($rawRedirect);
         session()->put('auth.intended', $intended);
 
         if (! filled(config('services.google.client_id')) || ! filled(config('services.google.client_secret'))) {

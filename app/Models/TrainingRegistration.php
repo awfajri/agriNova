@@ -17,12 +17,15 @@ class TrainingRegistration extends Model
         'email',
         'institution',
         'participants',
+        'preferred_date',
+        'preferred_session',
         'notes',
         'status',
     ];
 
     protected $casts = [
         'participants' => 'integer',
+        'preferred_date' => 'date',
     ];
 
     protected static function booted(): void

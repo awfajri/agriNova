@@ -1,15 +1,15 @@
 @extends('layouts.app')
 
 @section('title', 'Masuk Akun | Agrinova')
-@section('meta_description', 'Masuk menggunakan akun Google untuk mengunci pesanan produk Agrinova tanpa kata sandi baru.')
+@section('meta_description', 'Masuk menggunakan akun Google untuk melanjutkan transaksi dan pendaftaran layanan Agrinova tanpa kata sandi baru.')
 @section('body_class', 'has-auth')
 
 @section('content')
 <section class="auth-page">
     <div class="container">
         <div class="auth-card">
-            <span class="eyebrow">Keamanan Pesanan</span>
-            <h1>Masuk untuk mengunci pesananmu</h1>
+            <span class="eyebrow">Autentikasi Akun</span>
+            <h1>Masuk untuk melanjutkan</h1>
             <p>Cukup 1 klik dengan akun Google. Nama dan email otomatis terisi tanpa perlu buat kata sandi baru.</p>
 
             @if (session('error'))
@@ -32,7 +32,7 @@
                 </div>
             @endif
 
-            <a href="{{ route('cart') }}" class="auth-back">Kembali ke keranjang</a>
+            <a href="{{ url()->previous() !== url()->current() ? url()->previous() : route('home') }}" class="auth-back">Kembali ke halaman sebelumnya</a>
         </div>
     </div>
 </section>
