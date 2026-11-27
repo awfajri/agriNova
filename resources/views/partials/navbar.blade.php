@@ -57,7 +57,7 @@
 
         @auth
             {{-- Card Akun Saya (Logged In) --}}
-            <a href="{{ route('profile.show') }}" class="agr-drawer-account-card">
+            <a href="{{ route('profile.show') }}" class="agr-drawer-account-card {{ request()->routeIs('profile.*') ? 'is-active' : '' }}">
                 <span class="agr-drawer-account-icon" aria-hidden="true">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9">
                         <circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5"/>
@@ -84,7 +84,7 @@
         <div class="agr-drawer-group">
             <p class="agr-drawer-group-title">Jelajahi Agrinova</p>
 
-            <a href="{{ route('catalog') }}" class="agr-drawer-item {{ request()->routeIs('catalog') || request()->routeIs('home') ? 'is-active' : '' }}">
+            <a href="{{ route('catalog') }}" class="agr-drawer-item {{ (request()->routeIs('catalog') || request()->routeIs('home')) && request('availability') !== 'preorder' ? 'is-active' : '' }}">
                 <span class="agr-drawer-item-icon" aria-hidden="true">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9">
                         <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
@@ -153,7 +153,7 @@
             <div class="agr-drawer-group">
                 <p class="agr-drawer-group-title">Aktivitas saya</p>
 
-                <a href="{{ route('profile.show') }}#pesanan" class="agr-drawer-item">
+                <a href="{{ route('profile.show') }}#pesanan" class="agr-drawer-item {{ request()->routeIs('profile.show', 'orders.tracking') ? 'is-active' : '' }}">
                     <span class="agr-drawer-item-icon" aria-hidden="true">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9">
                             <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/>
@@ -166,7 +166,7 @@
                     <span class="agr-drawer-chevron" aria-hidden="true">&rsaquo;</span>
                 </a>
 
-                <a href="{{ route('registrations.track') }}" class="agr-drawer-item">
+                <a href="{{ route('registrations.track') }}" class="agr-drawer-item {{ request()->routeIs('registrations.track', 'registrations.show') ? 'is-active' : '' }}">
                     <span class="agr-drawer-item-icon" aria-hidden="true">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9">
                             <rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>
@@ -239,11 +239,41 @@
                 <a class="navbar-brand font-heading fw-bold" href="{{ route('catalog') }}">Agrinova</a>
 
                 <div class="collapse navbar-collapse nav-links home-nav-links" id="mainNav">
-                    <a class="nav-link {{ request()->routeIs('catalog') || $isHome ? 'active' : '' }}" href="{{ route('catalog') }}">Belanja produk</a>
+                    <a class="nav-link {{ (request()->routeIs('catalog') || $isHome) && request('availability') !== 'preorder' ? 'active' : '' }}" href="{{ route('catalog') }}">Belanja produk</a>
                     <a class="nav-link {{ request('availability') === 'preorder' ? 'active' : '' }}" href="{{ route('catalog', ['availability' => 'preorder']) }}">Pre-order panen</a>
                     <a class="nav-link {{ request()->routeIs('eduwisata.*') ? 'active' : '' }}" href="{{ route('eduwisata.index') }}">Eduwisata</a>
                     <a class="nav-link {{ request()->routeIs('pelatihan.*') ? 'active' : '' }}" href="{{ route('pelatihan.index') }}">Pelatihan budidaya</a>
+
+                    @auth
+                        <details class="nav-menu-dropdown">
+                            <summary class="nav-link {{ request()->routeIs('orders.tracking', 'registrations.track', 'registrations.show') ? 'active' : '' }}">
+                                Aktivitas saya
+                                <span aria-hidden="true">⌄</span>
+                            </summary>
+                            <div class="nav-menu-dropdown-panel">
+                                <a href="{{ route('profile.show') }}#pesanan">Pesanan saya</a>
+                                <a href="{{ route('registrations.track') }}">Reservasi saya</a>
+                            </div>
+                        </details>
+                        <details class="nav-menu-dropdown">
+                            <summary class="nav-link {{ request()->routeIs('profile.*') ? 'active' : '' }}">
+                                Akun saya
+                                <span aria-hidden="true">⌄</span>
+                            </summary>
+                            <div class="nav-menu-dropdown-panel">
+                                <a href="{{ route('profile.show') }}">Akun saya</a>
+                                <form method="POST" action="{{ route('auth.logout') }}">
+                                    @csrf
+                                    <button type="submit">Keluar</button>
+                                </form>
+                            </div>
+                        </details>
+                    @else
+                        <a class="nav-link {{ request()->routeIs('auth.login') ? 'active' : '' }}" href="{{ route('auth.login') }}">Masuk dengan Google</a>
+                    @endauth
+
                     <a class="nav-link {{ request()->routeIs('about') ? 'active' : '' }}" href="{{ route('about') }}">Tentang Agrinova</a>
+                    <a class="nav-link" href="{{ $waHelpUrl }}" target="_blank" rel="noopener">Bantuan &amp; kontak</a>
                 </div>
 
                 <div class="nav-actions">
@@ -252,19 +282,6 @@
                         <svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
                         <input id="nav-search" name="q" type="search" value="{{ request('q') }}" placeholder="Cari produk" autocomplete="off">
                     </form>
-                    @auth
-                        <a class="nav-account-link" href="{{ route('profile.show') }}" aria-label="Buka profil saya">
-                            @if (auth()->user()->avatar_url)
-                                <img src="{{ auth()->user()->avatar_url }}" alt="" referrerpolicy="no-referrer">
-                            @else
-                                <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5"/></svg>
-                            @endif
-                        </a>
-                    @else
-                        <a class="nav-account-link" href="{{ route('auth.login') }}" aria-label="Masuk atau daftar">
-                            <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5"/></svg>
-                        </a>
-                    @endauth
                     <a class="nav-cart" href="{{ route('cart') }}" aria-label="Buka keranjang">
                         <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M3 4h2l2.2 11.1a2 2 0 0 0 2 1.6h7.9a2 2 0 0 0 1.9-1.5L21 8H6"/><circle cx="10" cy="20" r="1.25"/><circle cx="18" cy="20" r="1.25"/></svg>
                         @if ($cartCount > 0)

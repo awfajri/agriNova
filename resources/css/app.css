@@ -5922,3 +5922,125 @@ html {
         scroll-behavior: auto;
     }
 }
+
+.nav-menu-dropdown {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.nav-menu-dropdown summary {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    list-style: none;
+    cursor: pointer;
+}
+
+.nav-menu-dropdown summary::-webkit-details-marker,
+.nav-menu-dropdown summary::marker {
+    display: none;
+    content: "";
+}
+
+.nav-menu-dropdown-panel {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 0;
+    z-index: 1100;
+    display: grid;
+    min-width: 180px;
+    padding: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
+    background: var(--c-ink);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
+}
+
+.nav-menu-dropdown-panel a {
+    padding: 9px 11px;
+    border-radius: 8px;
+    color: rgba(255, 255, 255, 0.88);
+    font-size: 0.875rem;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.nav-menu-dropdown-panel a:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--c-white);
+}
+
+.nav-menu-dropdown-panel form {
+    margin: 0;
+}
+
+.nav-menu-dropdown-panel button {
+    width: 100%;
+    padding: 9px 11px;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.88);
+    font: inherit;
+    font-size: 0.875rem;
+    text-align: left;
+    cursor: pointer;
+}
+
+.nav-menu-dropdown-panel button:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--c-white);
+}
+
+.agr-drawer-account-card.is-active {
+    box-shadow: inset 0 0 0 1px rgba(27, 67, 50, 0.22);
+}
+
+@media (min-width: 768px) {
+    .nav-pill {
+        flex-wrap: wrap;
+    }
+
+    .nav-pill .navbar-brand {
+        order: 1;
+    }
+
+    .nav-pill .nav-actions {
+        order: 2;
+    }
+
+    .nav-pill .collapse.nav-links:not(.show),
+    .nav-pill .collapse.nav-links.show {
+        display: flex;
+        order: 3;
+        flex: 0 0 100%;
+        justify-content: space-between;
+        margin: 0;
+        padding-top: 0.4rem;
+    }
+
+    .nav-pill .nav-link {
+        padding: 0.45rem 0.6rem;
+        font-size: 0.84rem;
+        white-space: nowrap;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .nav-pill .collapse.nav-links:not(.show),
+    .nav-pill .collapse.nav-links.show {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 2px 6px;
+        padding-top: 0.65rem;
+    }
+
+    .nav-menu-dropdown {
+        display: block;
+    }
+
+    .nav-menu-dropdown summary {
+        min-height: 100%;
+    }
+}

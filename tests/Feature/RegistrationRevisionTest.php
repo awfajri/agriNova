@@ -117,7 +117,32 @@ class RegistrationRevisionTest extends TestCase
             ->assertOk()
             ->assertSee('Pelatihan budidaya')
             ->assertSee('Pre-order panen')
-            ->assertSee('Eduwisata');
+            ->assertSee('Eduwisata')
+            ->assertSee('Tentang Agrinova')
+            ->assertSee('Bantuan & kontak')
+            ->assertSee('Masuk dengan Google')
+            ->assertSee('href="' . route('auth.login') . '"', false)
+            ->assertSee('href="' . route('catalog', ['availability' => 'preorder']) . '"', false)
+            ->assertSee('href="' . route('about') . '"', false);
+    }
+
+    public function test_desktop_navigation_includes_signed_in_mobile_menu_destinations(): void
+    {
+        $user = \App\Models\User::factory()->create();
+
+        $this->actingAs($user)
+            ->get('/')
+            ->assertOk()
+            ->assertSee('Aktivitas saya')
+            ->assertSee('Pesanan saya')
+            ->assertSee('Reservasi saya')
+            ->assertSee('Tentang Agrinova')
+            ->assertSee('Bantuan & kontak')
+            ->assertSee('Akun saya')
+            ->assertSee('Keluar')
+            ->assertSee('href="' . route('profile.show') . '"', false)
+            ->assertSee('href="' . route('registrations.track') . '"', false)
+            ->assertSee('action="' . route('auth.logout') . '"', false);
     }
 
     public function test_eduwisata_reservation_form_contains_four_session_options(): void
