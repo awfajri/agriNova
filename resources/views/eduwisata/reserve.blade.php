@@ -89,24 +89,42 @@
             </div>
 
             <div class="agr-flow-field">
-                <label>Sesi Waktu Kunjungan <span class="is-required">*</span></label>
+                <label>Waktu Mulai Kunjungan <span class="is-required">*</span></label>
                 <div class="agr-session-grid">
                     <label class="agr-session-card">
-                        <input type="radio" name="sesi_waktu" value="Sesi Pagi (08.30 - 11.30 WIB)" @checked(old('sesi_waktu', 'Sesi Pagi (08.30 - 11.30 WIB)') === 'Sesi Pagi (08.30 - 11.30 WIB)') required>
+                        <input type="radio" name="sesi_waktu" value="Sesi Pagi – 07.30 WIB" @checked(old('sesi_waktu', 'Sesi Pagi – 07.30 WIB') === 'Sesi Pagi – 07.30 WIB') required>
                         <div class="agr-session-top">
                             <strong>Sesi Pagi</strong>
                             <span class="agr-session-check">&#10003;</span>
                         </div>
-                        <span>08.30 - 11.30 WIB</span>
+                        <span>07.30 WIB</span>
                     </label>
 
                     <label class="agr-session-card">
-                        <input type="radio" name="sesi_waktu" value="Sesi Siang (13.00 - 15.30 WIB)" @checked(old('sesi_waktu') === 'Sesi Siang (13.00 - 15.30 WIB)')>
+                        <input type="radio" name="sesi_waktu" value="Sesi Pagi – 08.00 WIB" @checked(old('sesi_waktu') === 'Sesi Pagi – 08.00 WIB')>
                         <div class="agr-session-top">
-                            <strong>Sesi Siang</strong>
+                            <strong>Sesi Pagi</strong>
                             <span class="agr-session-check">&#10003;</span>
                         </div>
-                        <span>13.00 - 15.30 WIB</span>
+                        <span>08.00 WIB</span>
+                    </label>
+
+                    <label class="agr-session-card">
+                        <input type="radio" name="sesi_waktu" value="Sesi Pagi – 08.30 WIB" @checked(old('sesi_waktu') === 'Sesi Pagi – 08.30 WIB')>
+                        <div class="agr-session-top">
+                            <strong>Sesi Pagi</strong>
+                            <span class="agr-session-check">&#10003;</span>
+                        </div>
+                        <span>08.30 WIB</span>
+                    </label>
+
+                    <label class="agr-session-card">
+                        <input type="radio" name="sesi_waktu" value="Sesi Sore – 15.30 WIB" @checked(old('sesi_waktu') === 'Sesi Sore – 15.30 WIB')>
+                        <div class="agr-session-top">
+                            <strong>Sesi Sore</strong>
+                            <span class="agr-session-check">&#10003;</span>
+                        </div>
+                        <span>15.30 WIB</span>
                     </label>
                 </div>
             </div>

@@ -6,6 +6,7 @@ use App\Models\EduwisataReservation;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
 class EduwisataController extends Controller
@@ -68,7 +69,16 @@ class EduwisataController extends Controller
             'asal_rombongan' => ['nullable', 'string', 'max:150'],
             'whatsapp' => ['required', 'string', 'max:30'],
             'tanggal_kunjungan' => ['required', 'date'],
-            'sesi_waktu' => ['required', 'string'],
+            'sesi_waktu' => [
+                'required',
+                'string',
+                Rule::in([
+                    'Sesi Pagi – 07.30 WIB',
+                    'Sesi Pagi – 08.00 WIB',
+                    'Sesi Pagi – 08.30 WIB',
+                    'Sesi Sore – 15.30 WIB',
+                ]),
+            ],
             'jumlah_peserta' => ['required', 'integer', 'min:5', 'max:200'],
             'catatan' => ['nullable', 'string', 'max:500'],
         ]);
@@ -80,7 +90,7 @@ class EduwisataController extends Controller
             'contact_name' => $validated['nama_pic'],
             'group_name' => $validated['asal_rombongan'] ?? '-',
             'package_name' => $package['title'],
-            'whatsapp' => preg_replace('/\D+/', '', $validated['whatsapp']) ?: $validated['whatsapp'],
+            'whatsapp' => $this->normalizeWhatsApp($validated['whatsapp']),
             'visit_date' => $validated['tanggal_kunjungan'],
             'session' => $validated['sesi_waktu'],
             'participants' => $validated['jumlah_peserta'],
@@ -88,6 +98,21 @@ class EduwisataController extends Controller
         ]);
 
         return redirect()->route('registrations.show', ['eduwisata', $reservation->reference_number]);
+    }
+
+    private function normalizeWhatsApp(string $phone): string
+    {
+        $digits = preg_replace('/\D+/', '', $phone) ?: '';
+
+        if (str_starts_with($digits, '08')) {
+            return '62' . substr($digits, 1);
+        }
+
+        if (str_starts_with($digits, '8') && strlen($digits) >= 10) {
+            return '62' . $digits;
+        }
+
+        return $digits;
     }
 
     /**

@@ -119,6 +119,17 @@
             @yield('content')
         </main>
     </div>
+    @unless (request()->routeIs('admin.dashboard'))
+        <a href="{{ route('admin.dashboard') }}" class="admin-fab" aria-label="Kembali ke dashboard">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20" aria-hidden="true">
+                <rect x="3" y="3" width="7" height="7" rx="1"/>
+                <rect x="14" y="3" width="7" height="7" rx="1"/>
+                <rect x="3" y="14" width="7" height="7" rx="1"/>
+                <rect x="14" y="14" width="7" height="7" rx="1"/>
+            </svg>
+            <span>Dashboard</span>
+        </a>
+    @endunless
     @stack('scripts')
 </body>
 </html>

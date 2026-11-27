@@ -32,12 +32,12 @@ class RegistrationTrackingController extends Controller
         $record = match ($type) {
             'pelatihan' => TrainingRegistration::query()
                 ->where('reference_number', $reference)
-                ->where('whatsapp', $phone)
-                ->first(),
+                ->get()
+                ->first(fn (TrainingRegistration $item) => $this->normalizePhone($item->whatsapp) === $phone),
             'eduwisata' => EduwisataReservation::query()
                 ->where('reference_number', $reference)
-                ->where('whatsapp', $phone)
-                ->first(),
+                ->get()
+                ->first(fn (EduwisataReservation $item) => $this->normalizePhone($item->whatsapp) === $phone),
             default => null,
         };
 
@@ -90,10 +90,12 @@ class RegistrationTrackingController extends Controller
                 . "Mohon konfirmasi ketersediaan jadwal dan instruksi pembayaran DP-nya. Terima kasih!";
         } else {
             $classTitle = $registration->trainingClass->title ?? $registration->class_title ?? 'Pelatihan Budidaya';
+            $trainingDate = $registration->preferred_date?->translatedFormat('d M Y') ?? '-';
             $message = "Halo Admin Agrinova, saya ingin konfirmasi *Pendaftaran Pelatihan*:\n\n"
                 . "Kode Referensi: *#{$registration->reference_number}*\n"
                 . "Nama Peserta: {$registration->name}\n"
                 . "Program: {$classTitle}\n"
+                . "Tanggal Pelatihan: {$trainingDate}\n"
                 . "Jumlah Peserta: {$registration->participants} orang\n\n"
                 . "Mohon informasi jadwal dan langkah selanjutnya. Terima kasih!";
         }
@@ -103,6 +105,16 @@ class RegistrationTrackingController extends Controller
 
     private function normalizePhone(string $phone): string
     {
-        return preg_replace('/\D+/', '', $phone) ?: '';
+        $digits = preg_replace('/\D+/', '', $phone) ?: '';
+
+        if (str_starts_with($digits, '08')) {
+            return '62' . substr($digits, 1);
+        }
+
+        if (str_starts_with($digits, '8') && strlen($digits) >= 10) {
+            return '62' . $digits;
+        }
+
+        return $digits;
     }
 }

@@ -26,6 +26,31 @@
     background: transparent;
 }
 
+.admin-fab {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 40;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 48px;
+    padding: 0 16px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 999px;
+    background: #1b4332;
+    color: #ffffff;
+    box-shadow: 0 10px 24px rgba(17, 51, 43, 0.24);
+    font-size: 13px;
+    font-weight: 800;
+    text-decoration: none;
+}
+
+.admin-fab:hover {
+    background: #143326;
+    color: #ffffff;
+}
+
 /* Hilangkan marker panah bawaan browser di Chrome, Edge, Safari, Firefox */
 .agr-admin-dropdown-btn::-webkit-details-marker,
 .agr-admin-dropdown-btn::marker {
@@ -111,6 +136,37 @@
 @media (max-width: 991px) {
     .agr-admin-dropdown {
         grid-column: 1 / -1;
+    }
+}
+
+.agr-admin-dropdown-btn {
+    min-height: 44px;
+}
+
+.agr-admin-dropdown-btn .agr-dropdown-arrow {
+    width: 16px;
+    height: 16px;
+}
+
+@media (min-width: 801px) {
+    .admin-main {
+        padding-left: clamp(24px, 3vw, 48px);
+        padding-right: clamp(24px, 3vw, 48px);
+    }
+}
+
+@media (max-width: 800px) {
+    .admin-fab {
+        right: 16px;
+        bottom: 16px;
+    }
+
+    .admin-sidebar-footer {
+        margin-top: 12px;
+    }
+
+    .admin-nav {
+        align-items: start;
     }
 }
 

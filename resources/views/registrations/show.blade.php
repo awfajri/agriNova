@@ -26,8 +26,9 @@
         ? [
             ['label' => 'Program pelatihan', 'value' => $registration->trainingClass->title ?? $registration->class_title],
             ['label' => 'Nama peserta', 'value' => $registration->name],
+            ['label' => 'Tanggal pelatihan', 'value' => $registration->preferred_date?->translatedFormat('d M Y') ?? '-'],
             ['label' => 'Jumlah peserta', 'value' => $registration->participants . ' orang'],
-            ['label' => 'Kontak', 'value' => 'WhatsApp terdaftar'],
+            ['label' => 'Kontak', 'value' => $registration->whatsapp],
         ]
         : [
             ['label' => 'Paket eduwisata', 'value' => $registration->package_name],

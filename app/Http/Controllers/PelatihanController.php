@@ -96,7 +96,7 @@ class PelatihanController extends Controller
             'training_class_id' => $class->id,
             'class_title' => $class->title,
             'name' => $validated['nama'],
-            'whatsapp' => preg_replace('/\D+/', '', $validated['whatsapp']) ?: $validated['whatsapp'],
+            'whatsapp' => $this->normalizeWhatsApp($validated['whatsapp']),
             'email' => $validated['email'] ?? ($request->user()?->email ?? '-'),
             'institution' => $validated['instansi'] ?? null,
             'participants' => $validated['jumlah_peserta'],
@@ -105,5 +105,20 @@ class PelatihanController extends Controller
         ]);
 
         return redirect()->route('registrations.show', ['pelatihan', $registration->reference_number]);
+    }
+
+    private function normalizeWhatsApp(string $phone): string
+    {
+        $digits = preg_replace('/\D+/', '', $phone) ?: '';
+
+        if (str_starts_with($digits, '08')) {
+            return '62' . substr($digits, 1);
+        }
+
+        if (str_starts_with($digits, '8') && strlen($digits) >= 10) {
+            return '62' . $digits;
+        }
+
+        return $digits;
     }
 }

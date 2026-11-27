@@ -239,10 +239,11 @@
                 <a class="navbar-brand font-heading fw-bold" href="{{ route('catalog') }}">Agrinova</a>
 
                 <div class="collapse navbar-collapse nav-links home-nav-links" id="mainNav">
-                    <a class="nav-link {{ request()->routeIs('catalog') || $isHome ? 'active' : '' }}" href="{{ route('catalog') }}">Belanja</a>
-                    <a class="nav-link {{ request()->routeIs('pelatihan.*') ? 'active' : '' }}" href="{{ route('pelatihan.index') }}">Pelatihan</a>
+                    <a class="nav-link {{ request()->routeIs('catalog') || $isHome ? 'active' : '' }}" href="{{ route('catalog') }}">Belanja produk</a>
+                    <a class="nav-link {{ request('availability') === 'preorder' ? 'active' : '' }}" href="{{ route('catalog', ['availability' => 'preorder']) }}">Pre-order panen</a>
                     <a class="nav-link {{ request()->routeIs('eduwisata.*') ? 'active' : '' }}" href="{{ route('eduwisata.index') }}">Eduwisata</a>
-                    <a class="nav-link {{ request()->routeIs('about') ? 'active' : '' }}" href="{{ route('about') }}">Tentang</a>
+                    <a class="nav-link {{ request()->routeIs('pelatihan.*') ? 'active' : '' }}" href="{{ route('pelatihan.index') }}">Pelatihan budidaya</a>
+                    <a class="nav-link {{ request()->routeIs('about') ? 'active' : '' }}" href="{{ route('about') }}">Tentang Agrinova</a>
                 </div>
 
                 <div class="nav-actions">

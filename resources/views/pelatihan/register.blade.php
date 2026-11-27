@@ -192,25 +192,27 @@
             @csrf
             <h2 class="agr-flow-section-heading">Data peserta</h2>
 
-            <div class="agr-flow-field">
-                <label for="nama">Nama lengkap <span class="is-required">*</span></label>
-                <input id="nama" name="nama" type="text" value="{{ old('nama', auth()->user()->name ?? '') }}" placeholder="Nama lengkap peserta" required>
-            </div>
+            <div class="agr-flow-field-grid">
+                <div class="agr-flow-field">
+                    <label for="nama">Nama lengkap <span class="is-required">*</span></label>
+                    <input id="nama" name="nama" type="text" value="{{ old('nama', auth()->user()->name ?? '') }}" placeholder="Nama lengkap peserta" required>
+                </div>
 
-            <div class="agr-flow-field">
-                <label for="whatsapp">Nomor WhatsApp <span class="is-required">*</span></label>
-                <input id="whatsapp" name="whatsapp" type="tel" value="{{ old('whatsapp', auth()->user()->phone ?? '') }}" placeholder="Contoh: 081234567890" required>
-                <small>Gunakan nomor aktif agar admin bisa mengirim jadwal &amp; konfirmasi.</small>
-            </div>
+                <div class="agr-flow-field">
+                    <label for="whatsapp">Nomor WhatsApp <span class="is-required">*</span></label>
+                    <input id="whatsapp" name="whatsapp" type="tel" value="{{ old('whatsapp', auth()->user()->phone ?? '') }}" placeholder="Contoh: 081234567890" required>
+                    <small>Gunakan nomor aktif agar admin bisa mengirim jadwal &amp; konfirmasi.</small>
+                </div>
 
-            <div class="agr-flow-field">
-                <label for="email">Alamat Email <span>(Opsional)</span></label>
-                <input id="email" name="email" type="email" value="{{ old('email', auth()->user()->email ?? '') }}" placeholder="nama@email.com">
-            </div>
+                <div class="agr-flow-field">
+                    <label for="email">Alamat Email <span>(Opsional)</span></label>
+                    <input id="email" name="email" type="email" value="{{ old('email', auth()->user()->email ?? '') }}" placeholder="nama@email.com">
+                </div>
 
-            <div class="agr-flow-field">
-                <label for="instansi">Instansi / Komunitas <span>(Opsional)</span></label>
-                <input id="instansi" name="instansi" type="text" value="{{ old('instansi') }}" placeholder="Kosongkan jika mendaftar pribadi">
+                <div class="agr-flow-field">
+                    <label for="instansi">Instansi / Komunitas <span>(Opsional)</span></label>
+                    <input id="instansi" name="instansi" type="text" value="{{ old('instansi') }}" placeholder="Kosongkan jika mendaftar pribadi">
+                </div>
             </div>
 
             <div class="agr-flow-field">
